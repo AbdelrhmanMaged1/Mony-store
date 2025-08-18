@@ -6,17 +6,30 @@
 <title>Mony Store - Shoes &amp; Bags Inventory (Modified)</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
+        /* Custom smaller font size for general text */
+        .text-2xs {
+            font-size: 0.75rem; /* 12px */
+        }
+
+        body {
+            font-size: 0.875rem; /* text-sm equivalent for base font size */
+        }
+
         .inventory-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 1rem;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* Slightly smaller minmax */
+            gap: 0.75rem; /* Reduced gap */
         }
         .product-card {
             transition: transform 0.22s ease, box-shadow 0.22s ease;
+            padding: 0.75rem; /* Reduced padding */
         }
         .product-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 12px 30px rgba(13,38,76,0.08);
+            transform: translateY(-4px); /* Slightly less hover effect */
+            box-shadow: 0 8px 20px rgba(13,38,76,0.06); /* Slightly less shadow */
+        }
+        .product-card img {
+            height: 120px; /* Reduced image height */
         }
         /* Hide scrollbar for size options */
         #size-color-options::-webkit-scrollbar { display: none; }
@@ -25,15 +38,18 @@
         .glass { background: linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.6)); backdrop-filter: blur(6px); }
 
         /* Custom CSS for responsive navbar */
-        @media (max-width: 639px) { /* Tailwind's sm breakpoint is 640px */
+        @media (max-width: 639px) {
+    /* Make modals smaller on mobile */
+    .modal-container { max-width: 90% !important; padding: 1rem !important; }
+ /* Tailwind's sm breakpoint is 640px */
             #navbar-items {
                 display: none; /* Hidden by default on small screens */
                 flex-direction: column;
                 width: 100%;
                 background-color: white; /* Or match header background */
                 border-top: 1px solid #e5e7eb; /* gray-200 */
-                padding-top: 0.5rem;
-                padding-bottom: 0.5rem;
+                padding-top: 0.25rem; /* Reduced padding */
+                padding-bottom: 0.25rem; /* Reduced padding */
             }
             #navbar-items.active {
                 display: flex; /* Show when active */
@@ -41,10 +57,11 @@
             #navbar-items button {
                 width: 100%;
                 text-align: left;
-                padding-left: 1rem;
-                padding-right: 1rem;
-                padding-top: 0.5rem;
-                padding-bottom: 0.5rem;
+                padding-left: 0.75rem; /* Reduced padding */
+                padding-right: 0.75rem; /* Reduced padding */
+                padding-top: 0.25rem; /* Reduced padding */
+                padding-bottom: 0.25rem; /* Reduced padding */
+                font-size: 0.75rem; /* text-xs */
             }
             #navbar-toggler {
                 display: block; /* Show toggler on small screens */
@@ -54,8 +71,8 @@
             #filter-controls {
                 display: none; /* Hidden by default on small screens */
                 flex-direction: column;
-                gap: 1rem; /* Maintain gap between filter items */
-                padding-top: 1rem;
+                gap: 0.75rem; /* Reduced gap */
+                padding-top: 0.75rem; /* Reduced padding */
             }
             #filter-controls.active {
                 display: flex; /* Show when active */
@@ -65,6 +82,65 @@
             }
             #inventory-filters { /* Adjust padding/margin for the main filter container */
                 padding-bottom: 0; /* Remove bottom padding when toggler is present */
+            }
+
+            /* Make forms smaller on phone sizes */
+            #login-view .max-w-md {
+                max-width: 20rem; /* Even smaller for phones */
+                padding: 1.5rem; /* Reduced padding */
+            }
+            #register-modal .max-w-md,
+            #create-admin-modal .max-w-md,
+            #create-limited-modal .max-w-md,
+            #add-to-cart-modal .max-w-sm {
+                max-width: 20rem; /* Even smaller for phones */
+                padding: 1.5rem; /* Reduced padding */
+            }
+            #add-shoe-modal .max-w-xl,
+            #add-bag-modal .max-w-xl {
+                max-width: 28rem; /* Smaller for phones */
+                padding: 1.5rem; /* Reduced padding */
+            }
+
+            /* Adjust font sizes and padding for inputs/buttons in forms on phones */
+            .login-title {
+                font-size: 1.125rem; /* text-base */
+            }
+            .login-subtitle {
+                font-size: 0.625rem; /* text-2xs */
+            }
+            .login-input, .login-button {
+                padding: 0.25rem 0.5rem; /* py-1 px-2 */
+                font-size: 0.75rem; /* text-xs */
+            }
+            .login-tip {
+                font-size: 0.5rem; /* even smaller */
+            }
+
+            .modal-title {
+                font-size: 1rem; /* text-sm */
+            }
+            #register-form input, #create-admin-form input, #create-limited-form input,
+            #add-shoe-form input, #add-bag-form input, #add-to-cart-form input,
+            #register-form button, #create-admin-form button, #create-limited-form button,
+            #add-shoe-form button, #add-bag-form button, #add-to-cart-form button {
+                padding: 0.25rem 0.5rem; /* py-1 px-2 */
+                font-size: 0.75rem; /* text-xs */
+            }
+            .filter-label {
+                font-size: 0.625rem; /* text-2xs */
+            }
+            #checkout-discount, #payment-method {
+                width: 6rem; /* Even smaller width */
+                padding: 0.125rem 0.25rem; /* py-0.5 px-1 */
+                font-size: 0.625rem; /* text-2xs */
+            }
+            .cart-total-section .text-lg {
+                font-size: 1rem; /* text-base */
+            }
+            .checkout-btn {
+                padding: 0.5rem 1rem; /* py-2 px-4 */
+                font-size: 0.875rem; /* text-sm */
             }
         }
         @media (min-width: 640px) { /* Tailwind's sm breakpoint */
@@ -81,18 +157,145 @@
                 display: flex !important; /* Always show on larger screens */
                 flex-direction: row;
                 flex-wrap: wrap;
-                gap: 1rem;
+                gap: 0.75rem; /* Reduced gap */
             }
             #filter-toggler {
                 display: none; /* Hide toggler on larger screens */
             }
+
+            /* Default sizes for larger screens */
+            #login-view .max-w-md {
+                max-width: 24rem; /* max-w-sm */
+            }
+            #register-modal .max-w-md,
+            #create-admin-modal .max-w-md,
+            #create-limited-modal .max-w-md,
+            #add-to-cart-modal .max-w-sm {
+                max-width: 24rem; /* max-w-sm */
+            }
+            #add-shoe-modal .max-w-xl,
+            #add-bag-modal .max-w-xl {
+                max-width: 36rem; /* max-w-lg */
+            }
+
+            /* Default input/button sizes for larger screens */
+            input[type="text"],
+            input[type="password"],
+            input[type="number"],
+            select {
+                padding: 0.375rem 0.75rem; /* py-1.5 px-3 */
+                font-size: 0.875rem; /* text-sm */
+            }
+            button {
+                padding: 0.5rem 1rem; /* py-2 px-4 */
+                font-size: 0.875rem; /* text-sm */
+            }
+            .login-title {
+                font-size: 1.5rem; /* text-2xl */
+            }
+            .login-subtitle {
+                font-size: 0.875rem; /* text-sm */
+            }
+            .login-input {
+                padding: 0.5rem 0.75rem; /* py-2 px-3 */
+            }
+            .login-button {
+                padding: 0.5rem 0.75rem; /* py-2 px-3 */
+            }
+            .login-tip {
+                font-size: 0.75rem; /* text-xs */
+            }
+            .modal-title {
+                font-size: 1.125rem; /* text-base */
+            }
+            #checkout-discount,
+            #payment-method {
+                width: 8rem; /* Original width */
+                padding: 0.25rem 0.5rem; /* py-1 px-2 */
+                font-size: 0.75rem; /* text-xs */
+            }
+            .cart-total-section .text-lg {
+                font-size: 1.25rem; /* text-xl */
+            }
+            .checkout-btn {
+                padding: 0.625rem 1.25rem; /* py-2.5 px-5 */
+                font-size: 1rem; /* text-base */
+            }
         }
         /* Custom CSS for sales history item images */
         .sales-history-item-image {
-            width: 80px; /* Increased width for larger image */
-            height: 80px; /* Increased height for larger image */
+            width: 30px; /* Even smaller width for image */
+            height: 30px; /* Even smaller height for image */
             object-fit: cover;
             border-radius: 4px;
+            margin-right: 4px; /* Space between image and text */
+        }
+
+        /* Specific overrides for smaller elements */
+        .header-logo {
+            height: 32px; /* h-8 */
+        }
+        .header-title {
+            font-size: 1.125rem; /* text-base */
+        }
+        .header-subtitle {
+            font-size: 0.625rem; /* text-2xs */
+        }
+        .navbar-button {
+            padding: 0.25rem 0.5rem; /* py-1 px-2 */
+            font-size: 0.75rem; /* text-xs */
+        }
+        .inventory-dashboard-title {
+            font-size: 1.25rem; /* text-xl */
+        }
+        .admin-action-button {
+            padding: 0.375rem 0.75rem; /* py-1.5 px-3 */
+            font-size: 0.75rem; /* text-xs */
+        }
+        .product-card h4 {
+            font-size: 0.875rem; /* text-sm */
+            font-weight: 500; /* font-medium */
+        }
+        .product-card p {
+            font-size: 0.75rem; /* text-xs */
+        }
+        .product-card .text-xs {
+            font-size: 0.625rem; /* text-2xs */
+        }
+        .product-card .font-bold {
+            font-size: 0.875rem; /* text-sm */
+        }
+        .product-card .add-to-cart-btn,
+        .product-card .edit-item-btn {
+            padding: 0.25rem 0.75rem; /* py-1 px-3 */
+            font-size: 0.75rem; /* text-xs */
+        }
+        .sales-history-table th,
+        .sales-history-table td {
+            padding: 0.375rem 0.75rem; /* py-1.5 px-3 */
+            font-size: 0.75rem; /* text-xs */
+        }
+        .sales-history-title {
+            font-size: 1.125rem; /* text-base */
+        }
+        .cart-item-row {
+            padding: 0.5rem; /* Reduced padding */
+        }
+        .cart-item-row img {
+            width: 48px; /* Reduced image size */
+            height: 48px;
+        }
+        .cart-item-row .font-semibold {
+            font-size: 0.875rem; /* text-sm */
+        }
+        .cart-item-row .text-xs {
+            font-size: 0.625rem; /* text-2xs */
+        }
+        .cart-item-row .font-bold {
+            font-size: 0.875rem; /* text-sm */
+        }
+        .cart-total-section {
+            padding: 0.75rem; /* Reduced padding */
         }
     </style>
 </head>
@@ -102,26 +305,23 @@
 <div class="flex items-center justify-center h-screen bg-gradient-to-br from-indigo-50 to-pink-50 px-4" id="login-view">
 <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md glass">
 <div class="text-center mb-6">
-<h1 class="text-3xl font-extrabold text-gray-900 mb-1">Mony Store</h1>
-<p class="text-gray-600">Inventory &amp; Sales Dashboard</p>
+<h1 class="login-title font-extrabold text-gray-900 mb-1">Mony Store</h1>
+<p class="login-subtitle text-gray-600">Inventory &amp; Sales Dashboard</p>
 </div>
 <form class="space-y-6" id="login-form">
 <div>
 <label class="block text-sm font-medium text-gray-700 mb-1" for="username">Username</label>
-<input class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition" id="username" required="" type="text"/>
+<input class="login-input w-full rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition" id="username" required="" type="text"/>
 </div>
 <div>
 <label class="block text-sm font-medium text-gray-700 mb-1" for="password">Password</label>
-<input class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition" id="password" required="" type="password"/>
+<input class="login-input w-full rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition" id="password" required="" type="password"/>
 </div>
-<button class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-xl transition transform hover:scale-[1.01]" type="submit">
+<button class="login-button w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl transition transform hover:scale-[1.01]" type="submit">
                         Login
                     </button>
 <div class="text-center mt-4">
 <button class="text-indigo-600 hover:text-indigo-800 text-sm font-medium" id="register-btn" type="button">Create Admin Account</button>
-</div>
-<div class="mt-3 text-sm text-gray-500">
-                        Tip: use <span class="font-medium">admin/admin123</span> or <span class="font-medium">limited/limited123</span>
 </div>
 </form>
 </div>
@@ -130,20 +330,20 @@
 <div class="hidden fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center p-4 z-50" id="register-modal">
 <div class="bg-white rounded-xl shadow-2xl p-6 w-full max-w-md">
 <div class="text-center mb-4">
-<h2 class="text-2xl font-bold text-gray-800">Create Admin Account</h2>
+<h2 class="modal-title font-bold text-gray-800">Create Admin Account</h2>
 </div>
 <form class="space-y-4" id="register-form">
 <div>
 <label class="block text-sm font-medium text-gray-700 mb-1" for="new-username">Username</label>
-<input class="w-full px-4 py-2 rounded-lg border border-gray-300" id="new-username" required="" type="text"/>
+<input class="w-full px-3 py-1.5 rounded-lg border border-gray-300" id="new-username" required="" type="text"/>
 </div>
 <div>
 <label class="block text-sm font-medium text-gray-700 mb-1" for="new-password">Password</label>
-<input class="w-full px-4 py-2 rounded-lg border border-gray-300" id="new-password" required="" type="password"/>
+<input class="w-full px-3 py-1.5 rounded-lg border border-gray-300" id="new-password" required="" type="password"/>
 </div>
 <div class="flex justify-between pt-4">
-<button class="px-4 py-2 text-gray-600 hover:text-gray-800" id="cancel-register" type="button">Cancel</button>
-<button class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700" type="submit">Register</button>
+<button class="px-3 py-1.5 text-gray-600 hover:text-gray-800" id="cancel-register" type="button">Cancel</button>
+<button class="px-3 py-1.5 bg-green-600 text-white rounded-md hover:bg-green-700" type="submit">Register</button>
 </div>
 </form>
 </div>
@@ -152,20 +352,20 @@
 <div class="hidden fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center p-4 z-50" id="create-admin-modal">
 <div class="bg-white rounded-xl shadow-2xl p-6 w-full max-w-md">
 <div class="text-center mb-4">
-<h2 class="text-2xl font-bold text-gray-800">Create New Admin Account</h2>
+<h2 class="modal-title font-bold text-gray-800">Create New Admin Account</h2>
 </div>
 <form class="space-y-4" id="create-admin-form">
 <div>
 <label class="block text-sm font-medium text-gray-700 mb-1" for="admin-username">Username</label>
-<input class="w-full px-4 py-2 rounded-lg border border-gray-300" id="admin-username" required="" type="text"/>
+<input class="w-full px-3 py-1.5 rounded-lg border border-gray-300" id="admin-username" required="" type="text"/>
 </div>
 <div>
 <label class="block text-sm font-medium text-gray-700 mb-1" for="admin-password">Password</label>
-<input class="w-full px-4 py-2 rounded-lg border border-gray-300" id="admin-password" required="" type="password"/>
+<input class="w-full px-3 py-1.5 rounded-lg border border-gray-300" id="admin-password" required="" type="password"/>
 </div>
 <div class="flex justify-between pt-4">
-<button class="px-4 py-2 text-gray-600 hover:text-gray-800" id="cancel-admin-creation" type="button">Cancel</button>
-<button class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700" type="submit">Create Account</button>
+<button class="px-3 py-1.5 text-gray-600 hover:text-gray-800" id="cancel-admin-creation" type="button">Cancel</button>
+<button class="px-3 py-1.5 bg-green-600 text-white rounded-md hover:bg-green-700" type="submit">Create Account</button>
 </div>
 </form>
 </div>
@@ -174,20 +374,20 @@
 <div class="hidden fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center p-4 z-50" id="create-limited-modal">
 <div class="bg-white rounded-xl shadow-2xl p-6 w-full max-w-md">
 <div class="text-center mb-4">
-<h2 class="text-2xl font-bold text-gray-800">Create Limited Account</h2>
+<h2 class="modal-title font-bold text-gray-800">Create Limited Account</h2>
 </div>
 <form class="space-y-4" id="create-limited-form">
 <div>
 <label class="block text-sm font-medium text-gray-700 mb-1" for="limited-username">Username</label>
-<input class="w-full px-4 py-2 rounded-lg border border-gray-300" id="limited-username" required="" type="text"/>
+<input class="w-full px-3 py-1.5 rounded-lg border border-gray-300" id="limited-username" required="" type="text"/>
 </div>
 <div>
 <label class="block text-sm font-medium text-gray-700 mb-1" for="limited-password">Password</label>
-<input class="w-full px-4 py-2 rounded-lg border border-gray-300" id="limited-password" required="" type="password"/>
+<input class="w-full px-3 py-1.5 rounded-lg border border-gray-300" id="limited-password" required="" type="password"/>
 </div>
 <div class="flex justify-between pt-4">
-<button class="px-4 py-2 text-gray-600 hover:text-gray-800" id="cancel-limited-creation" type="button">Cancel</button>
-<button class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700" type="submit">Create Account</button>
+<button class="px-3 py-1.5 text-gray-600 hover:text-gray-800" id="cancel-limited-creation" type="button">Cancel</button>
+<button class="px-3 py-1.5 bg-green-600 text-white rounded-md hover:bg-green-700" type="submit">Create Account</button>
 </div>
 </form>
 </div>
@@ -195,95 +395,96 @@
 <!-- Inventory View -->
 <div class="hidden" id="inventory-view">
 <header class="bg-white shadow-sm sticky top-0 z-50">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row justify-between items-center gap-3">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col sm:flex-row justify-between items-center gap-2">
 <div class="flex items-center justify-between w-full sm:w-auto">
-<div class="flex items-center gap-3">
-<img alt="logo" class="h-10 w-auto mr-2" src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/367b9096-ee32-4690-826d-30982b44976d.png"/>
+<div class="flex items-center gap-2">
+<img alt="logo" class="header-logo w-auto mr-1" src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/367b9096-ee32-4690-826d-30982b44976d.png"/>
 <div>
-<h1 class="text-lg font-bold text-gray-900">Mony Store Inventory</h1>
-<p class="text-xs text-gray-500">Shoes &amp; Bags • Manage stock &amp; sales</p>
+<h1 class="header-title font-bold text-gray-900">Mony Store Inventory</h1>
+<p class="header-subtitle text-gray-500">Shoes &amp; Bags • Manage stock &amp; sales</p>
 </div>
 </div>
 <!-- Toggler button for small screens -->
-<button class="sm:hidden text-gray-600 hover:text-gray-900 p-2 rounded-md" id="navbar-toggler" type="button">
-<svg class="h-6 w-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<button class="sm:hidden text-gray-600 hover:text-gray-900 p-1.5 rounded-md" id="navbar-toggler" type="button">
+<svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 <path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
 </svg>
 </button>
 </div>
-<div class="flex flex-col sm:flex-row sm:items-center sm:space-x-3 w-full sm:w-auto" id="navbar-items">
-<button class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium" id="sales-history-btn">Sales History</button>
-<button class="relative text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium" id="view-cart-btn">
+<div class="flex flex-col sm:flex-row sm:items-center sm:space-x-2 w-full sm:w-auto" id="navbar-items">
+<button class="navbar-button text-gray-600 hover:text-gray-900 rounded-md font-medium" id="sales-history-btn">Sales History</button>
+<button class="relative navbar-button text-gray-600 hover:text-gray-900 rounded-md font-medium" id="view-cart-btn">
                             Cart (<span id="cart-count">0</span>)
                         </button>
-<button class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium" id="create-limited-account-btn">Create Limited Account</button>
-<button class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium" id="create-admin-account-btn">Create Admin Account</button>
-<button class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium" id="logout-btn">Logout</button>
+<button class="navbar-button text-gray-600 hover:text-gray-900 rounded-md font-medium" id="create-limited-account-btn">Create Limited Account</button>
+<button class="navbar-button text-gray-600 hover:text-gray-900 rounded-md font-medium" id="create-admin-account-btn">Create Admin Account</button>
+<button class="navbar-button text-gray-600 hover:text-gray-900 rounded-md font-medium" id="logout-btn">Logout</button>
 </div>
 </div>
 </header>
-<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-<div class="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-<h2 class="text-2xl font-bold text-gray-800">Inventory Dashboard</h2>
-<div class="flex space-x-3" id="admin-actions">
-<button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium" id="add-shoe-btn">Add Shoe</button>
-<button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium" id="add-bag-btn">Add Bag</button>
-<button class="bg-red-100 text-red-700 px-3 py-2 rounded-md text-sm" id="clear-storage-btn">Reset Data</button>
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="mb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+<h2 class="inventory-dashboard-title font-bold text-gray-800">Inventory Dashboard</h2>
+<div class="flex space-x-2" id="admin-actions">
+<button class="admin-action-button bg-green-600 hover:bg-green-700 text-white rounded-md font-medium" id="add-shoe-btn">Add Shoe</button>
+<button class="admin-action-button bg-green-600 hover:bg-green-700 text-white rounded-md font-medium" id="add-bag-btn">Add Bag</button>
+<button class="admin-action-button bg-red-100 text-red-700 rounded-md" id="clear-storage-btn">Reset Data</button>
+<button class="admin-action-button bg-red-600 hover:bg-red-700 text-white rounded-md font-medium" id="delete-account-btn">Delete Account</button>
 </div>
 </div>
 <!-- Filters -->
-<div class="mb-6 bg-white p-4 rounded-lg shadow-sm flex flex-col" id="inventory-filters">
-<div class="flex justify-between items-center mb-4 sm:mb-0">
-<h3 class="text-lg font-semibold text-gray-800">Filters</h3>
-<button class="sm:hidden text-gray-600 hover:text-gray-900 p-2 rounded-md" id="filter-toggler" type="button">
-<svg class="h-6 w-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<div class="mb-4 bg-white p-3 rounded-lg shadow-sm flex flex-col" id="inventory-filters">
+<div class="flex justify-between items-center mb-3 sm:mb-0">
+<h3 class="text-base font-semibold text-gray-800">Filters</h3>
+<button class="sm:hidden text-gray-600 hover:text-gray-900 p-1.5 rounded-md" id="filter-toggler" type="button">
+<svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 <path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
 </svg>
 </button>
 </div>
-<div class="flex flex-wrap gap-4" id="filter-controls">
+<div class="flex flex-wrap gap-3" id="filter-controls">
 <div>
-<label class="block text-sm font-medium text-gray-700">Type</label>
-<select class="border border-gray-300 rounded-md px-3 py-2" id="filter-type">
+<label class="filter-label block font-medium text-gray-700">Type</label>
+<select class="border border-gray-300 rounded-md" id="filter-type">
 <option value="">All</option>
 <option value="shoes">Shoes</option>
 <option value="bags">Bags</option>
 </select>
 </div>
 <div>
-<label class="block text-sm font-medium text-gray-700">Brand</label>
-<select class="border border-gray-300 rounded-md px-3 py-2" id="filter-brand">
+<label class="filter-label block font-medium text-gray-700">Brand</label>
+<select class="border border-gray-300 rounded-md" id="filter-brand">
 <option value="">All</option>
 </select>
 </div>
 <div>
-<label class="block text-sm font-medium text-gray-700">Color</label>
-<select class="border border-gray-300 rounded-md px-3 py-2" id="filter-color">
+<label class="filter-label block font-medium text-gray-700">Color</label>
+<select class="border border-gray-300 rounded-md" id="filter-color">
 <option value="">All</option>
 </select>
 </div>
 <div>
-<label class="block text-sm font-medium text-gray-700">Min Price</label>
-<input class="border border-gray-300 rounded-md px-3 py-2" id="filter-min-price" step="0.01" type="number"/>
+<label class="filter-label block font-medium text-gray-700">Min Price</label>
+<input class="border border-gray-300 rounded-md" id="filter-min-price" step="0.01" type="number"/>
 </div>
 <div>
-<label class="block text-sm font-medium text-gray-700">Max Price</label>
-<input class="border border-gray-300 rounded-md px-3 py-2" id="filter-max-price" step="0.01" type="number"/>
+<label class="filter-label block font-medium text-gray-700">Max Price</label>
+<input class="border border-gray-300 rounded-md" id="filter-max-price" step="0.01" type="number"/>
 </div>
 <!-- New: Item Code Filter -->
 <div>
-    <label class="block text-sm font-medium text-gray-700">Item Code</label>
-    <input class="border border-gray-300 rounded-md px-3 py-2" id="filter-code" type="text" placeholder="e.g., S001"/>
+    <label class="filter-label block font-medium text-gray-700">Item Code</label>
+    <input class="border border-gray-300 rounded-md" id="filter-code" type="text" placeholder="e.g., S001"/>
 </div>
 
 <div class="flex items-end">
-    <button id="reset-filters-btn" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-md text-sm font-medium">Reset Filters</button>
+    <button id="reset-filters-btn" class="admin-action-button bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-md font-medium">Reset Filters</button>
 </div>
 
 </div>
 </div>
-<div class="mb-8">
-<h3 class="text-lg font-semibold text-gray-800 mb-4" id="inventory-type-title">All Products</h3>
+<div class="mb-6">
+<h3 class="text-base font-semibold text-gray-800 mb-3" id="inventory-type-title">All Products</h3>
 <div class="inventory-grid" id="inventory-list">
 <!-- Products will be dynamically inserted here -->
 </div>
@@ -291,54 +492,54 @@
 </main>
 </div>
 <!-- Sales History View -->
-<div class="hidden max-w-7xl mx-auto px-4 py-8" id="sales-history-view">
-<div class="mb-4 font-semibold text-gray-800" id="salesSummary"></div>
-<header class="bg-white shadow-sm mb-6 sticky top-0 z-40">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-<h1 class="text-xl font-bold text-gray-900">Sales History</h1>
-<button class="text-indigo-600 hover:text-indigo-800 px-3 py-2 rounded-md text-sm font-medium" id="back-to-inventory-from-history">← Back</button>
+<div class="hidden max-w-7xl mx-auto px-4 py-6" id="sales-history-view">
+<div class="mb-3 font-semibold text-gray-800" id="salesSummary"></div>
+<header class="bg-white shadow-sm mb-4 sticky top-0 z-40">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
+<h1 class="sales-history-title font-bold text-gray-900">Sales History</h1>
+<button class="navbar-button text-indigo-600 hover:text-indigo-800 rounded-md font-medium" id="back-to-inventory-from-history">← Back</button>
 </div>
 </header>
-<div class="mb-4 flex items-center gap-4">
-<label class="text-sm font-medium text-gray-700" for="filter-sales-date">Filter by Date:</label>
-<input class="border border-gray-300 rounded-md px-3 py-2" id="filter-sales-date" type="date"/>
-<button class="px-3 py-2 bg-gray-200 rounded-md text-sm" id="clear-sales-date">Clear</button>
+<div class="mb-3 flex items-center gap-3">
+<label class="text-xs font-medium text-gray-700" for="filter-sales-date">Filter by Date:</label>
+<input class="border border-gray-300 rounded-md" id="filter-sales-date" type="date"/>
+<button class="px-2.5 py-1.5 bg-gray-200 rounded-md text-xs" id="clear-sales-date">Clear</button>
 </div>
 <div class="overflow-x-auto bg-white rounded-lg shadow-sm">
-<table class="min-w-full text-sm text-gray-700" id="sales-history-table">
+<table class="min-w-full text-xs text-gray-700" id="sales-history-table">
 <thead class="bg-gray-100">
 <tr>
-<th class="px-4 py-2 text-left">Date &amp; Time</th>
-<th class="px-4 py-2 text-left">Items</th>
-<th class="px-4 py-2 text-left">Payment Method</th>
-<th class="px-4 py-2 text-right">Total ($)</th>
+<th class="px-3 py-1.5 text-left">Date &amp; Time</th>
+<th class="px-3 py-1.5 text-left">Items</th>
+<th class="px-3 py-1.5 text-left">Payment Method</th>
+<th class="px-3 py-1.5 text-right">Total ($)</th>
 </tr>
 </thead>
 <tbody></tbody>
 </table>
 </div>
-<div class="mt-4 font-semibold text-gray-800" id="daily-total"></div>
-<div class="mt-2 font-semibold text-gray-800" id="monthly-total"></div>
+<div class="mt-3 font-semibold text-gray-800" id="daily-total"></div>
+<div class="mt-1.5 font-semibold text-gray-800" id="monthly-total"></div>
 </div>
 <!-- Cart View -->
-<div class="hidden max-w-7xl mx-auto px-4 py-8" id="cart-view">
-<header class="bg-white shadow-sm mb-6 sticky top-0 z-40">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-<h1 class="text-xl font-bold text-gray-900">Your Shopping Cart</h1>
-<button class="text-indigo-600 hover:text-indigo-800 px-3 py-2 rounded-md text-sm font-medium" id="back-to-inventory-btn">← Back to Inventory</button>
+<div class="hidden max-w-7xl mx-auto px-4 py-6" id="cart-view">
+<header class="bg-white shadow-sm mb-4 sticky top-0 z-40">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
+<h1 class="sales-history-title font-bold text-gray-900">Your Shopping Cart</h1>
+<button class="navbar-button text-indigo-600 hover:text-indigo-800 rounded-md font-medium" id="back-to-inventory-btn">← Back to Inventory</button>
 </div>
 </header>
 <main>
-<div class="space-y-4 mb-6" id="cart-items-list"></div>
-<div class="bg-white rounded-lg shadow-sm p-4 flex flex-col sm:flex-row justify-between items-center gap-4">
-<div class="w-full sm:w-auto text-sm">
+<div class="space-y-3 mb-4" id="cart-items-list"></div>
+<div class="bg-white rounded-lg shadow-sm p-3 flex flex-col sm:flex-row justify-between items-center gap-3">
+<div class="w-full sm:w-auto text-xs">
 <label class="block text-gray-600">Discount (%)</label>
-<input class="border border-gray-300 rounded-md px-3 py-2 w-32" id="checkout-discount" max="100" min="0" step="0.01" type="number" value="0"/>
+<input class="border border-gray-300 rounded-md w-24" id="checkout-discount" max="100" min="0" step="0.01" type="number" value="0"/>
 </div>
 
-<div class="w-full sm:w-auto text-sm">
+<div class="w-full sm:w-auto text-xs">
     <label class="block text-gray-600">Payment Method</label>
-    <select id="payment-method" class="border border-gray-300 rounded-md px-3 py-2 w-48">
+    <select id="payment-method" class="border border-gray-300 rounded-md w-36">
         <option value="cash">Cash</option>
         <option value="visa">Visa</option>
         <option value="instapay">Instapay</option>
@@ -346,71 +547,71 @@
     </select>
 </div>
 
-<p class="text-xl font-bold">Total: $<span id="cart-total">0.00</span></p>
-<button class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-md text-lg font-medium" id="checkout-btn">Proceed to Checkout</button>
+<p class="text-lg font-bold">Total: $<span id="cart-total">0.00</span></p>
+<button class="checkout-btn bg-green-600 hover:bg-green-700 text-white rounded-md font-medium" id="checkout-btn">Proceed to Checkout</button>
 </div>
 </main>
 </div>
 <!-- Add Shoe Modal -->
 <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden" id="add-shoe-modal">
-<div class="bg-white rounded-lg shadow-xl w-full max-w-2xl">
-<div class="p-6">
-<div class="flex justify-between items-center mb-4">
-<h3 class="text-xl font-bold text-gray-800">Add / Edit Shoe</h3>
+<div class="bg-white rounded-lg shadow-xl w-full max-w-xl">
+<div class="p-4">
+<div class="flex justify-between items-center mb-3">
+<h3 class="modal-title font-bold text-gray-800">Add / Edit Shoe</h3>
 <button class="text-gray-500 hover:text-gray-700" id="close-shoe-modal">
-<svg class="h-6 w-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
 </button>
 </div>
-<form class="space-y-4" id="add-shoe-form">
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<form class="space-y-3" id="add-shoe-form">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-3">
 <div>
-<label class="block text-sm font-medium text-gray-700 mb-1" for="shoe-brand">Brand</label>
-<input class="w-full px-3 py-2 border border-gray-300 rounded-md" id="shoe-brand" required="" type="text"/>
+<label class="block text-xs font-medium text-gray-700 mb-1" for="shoe-brand">Brand</label>
+<input class="w-full border border-gray-300 rounded-md" id="shoe-brand" required="" type="text"/>
 </div>
 <div>
-<label class="block text-sm font-medium text-gray-700 mb-1" for="shoe-model">Model</label>
-<input class="w-full px-3 py-2 border border-gray-300 rounded-md" id="shoe-model" required="" type="text"/>
+<label class="block text-xs font-medium text-gray-700 mb-1" for="shoe-model">Model</label>
+<input class="w-full border border-gray-300 rounded-md" id="shoe-model" required="" type="text"/>
 </div>
 <div>
-<label class="block text-sm font-medium text-gray-700 mb-1" for="shoe-color">Color</label>
-<input class="w-full px-3 py-2 border border-gray-300 rounded-md" id="shoe-color" required="" type="text"/>
+<label class="block text-xs font-medium text-gray-700 mb-1" for="shoe-color">Color</label>
+<input class="w-full border border-gray-300 rounded-md" id="shoe-color" required="" type="text"/>
 </div>
 <div>
-<label class="block text-sm font-medium text-gray-700 mb-1" for="shoe-original-price">Original Price ($)</label>
-<input class="w-full px-3 py-2 border border-gray-300 rounded-md" id="shoe-original-price" min="0" required="" step="0.01" type="number"/>
+<label class="block text-xs font-medium text-gray-700 mb-1" for="shoe-original-price">Original Price ($)</label>
+<input class="w-full border border-gray-300 rounded-md" id="shoe-original-price" min="0" required="" step="0.01" type="number"/>
 </div>
 <div>
-<label class="block text-sm font-medium text-gray-700 mb-1" for="shoe-min-price">Min Sales Price ($)</label>
-<input class="w-full px-3 py-2 border border-gray-300 rounded-md" id="shoe-min-price" min="0" step="0.01" type="number"/>
+<label class="block text-xs font-medium text-gray-700 mb-1" for="shoe-min-price">Min Sales Price ($)</label>
+<input class="w-full border border-gray-300 rounded-md" id="shoe-min-price" min="0" step="0.01" type="number"/>
 </div>
 <div>
-<label class="block text-sm font-medium text-gray-700 mb-1" for="shoe-price">Sales Price ($)</label>
-<input class="w-full px-3 py-2 border border-gray-300 rounded-md" id="shoe-price" min="0" required="" step="0.01" type="number"/>
+<label class="block text-xs font-medium text-gray-700 mb-1" for="shoe-price">Sales Price ($)</label>
+<input class="w-full border border-gray-300 rounded-md" id="shoe-price" min="0" required="" step="0.01" type="number"/>
 </div>
 <div>
-<label class="block text-sm font-medium text-gray-700 mb-1" for="shoe-code">Item Code</label>
-<input class="w-full px-3 py-2 border border-gray-300 rounded-md" id="shoe-code" required="" type="text"/>
+<label class="block text-xs font-medium text-gray-700 mb-1" for="shoe-code">Item Code</label>
+<input class="w-full border border-gray-300 rounded-md" id="shoe-code" required="" type="text"/>
 </div>
 <div>
-<label class="block text-sm font-medium text-gray-700 mb-1" for="shoe-quantity">Quantity (per size)</label>
-<input class="w-full px-3 py-2 border border-gray-300 rounded-md" id="shoe-quantity" min="0" required="" type="number"/>
+<label class="block text-xs font-medium text-gray-700 mb-1" for="shoe-quantity">Quantity (per size)</label>
+<input class="w-full border border-gray-300 rounded-md" id="shoe-quantity" min="0" required="" type="number"/>
 </div>
 <div>
-<label class="block text-sm font-medium text-gray-700 mb-1" for="shoe-sizes">Available Sizes (comma-separated)</label>
-<input class="w-full px-3 py-2 border border-gray-300 rounded-md" id="shoe-sizes" placeholder="e.g., 38,39,40" required="" type="text"/>
+<label class="block text-xs font-medium text-gray-700 mb-1" for="shoe-sizes">Available Sizes (comma-separated)</label>
+<input class="w-full border border-gray-300 rounded-md" id="shoe-sizes" placeholder="e.g., 38,39,40" required="" type="text"/>
 </div>
 <div class="md:col-span-2">
-<label class="block text-sm font-medium text-gray-700 mt-3 mb-1">Image (file or url) — <span class="text-xs text-gray-500" id="shoe-image-note">editable when adding only</span></label>
-<input accept="image/*" class="w-full px-3 py-2 border border-gray-300 rounded-md" id="shoe-image-file" type="file"/>
-<input class="w-full px-3 py-2 border border-gray-300 rounded-md mt-2" id="shoe-image-url" placeholder="https://example.com/image.jpg" type="text"/>
-<div class="mt-4">
-<img alt="Image Preview" class="hidden w-40 h-32 object-cover rounded-md mx-auto border" id="shoe-image-preview" src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/e8513746-6820-4bba-9260-b0f38c8939ad.png">
+<label class="block text-xs font-medium text-gray-700 mt-2 mb-1">Image (file or url) — <span class="text-2xs text-gray-500" id="shoe-image-note">editable when adding only</span></label>
+<input accept="image/*" class="w-full border border-gray-300 rounded-md" id="shoe-image-file" type="file"/>
+<input class="w-full border border-gray-300 rounded-md mt-1" id="shoe-image-url" placeholder="https://example.com/image.jpg" type="text"/>
+<div class="mt-3">
+<img alt="Image Preview" class="hidden w-32 h-24 object-cover rounded-md mx-auto border" id="shoe-image-preview" src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/e8513746-6820-4bba-9260-b0f38c8939ad.png">
 </div>
 </div>
 </div>
-<div class="flex justify-end space-x-3 pt-4">
-<button class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50" id="cancel-shoe" type="button">Cancel</button>
-<button class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700" type="submit">Save</button>
+<div class="flex justify-end space-x-2 pt-3">
+<button class="px-3 py-1.5 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50" id="cancel-shoe" type="button">Cancel</button>
+<button class="px-3 py-1.5 bg-indigo-600 text-white rounded-md hover:bg-indigo-700" type="submit">Save</button>
 </div>
 </form>
 </div>
@@ -418,61 +619,61 @@
 </div>
 <!-- Add Bag Modal -->
 <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden" id="add-bag-modal">
-<div class="bg-white rounded-lg shadow-xl w-full max-w-2xl">
-<div class="p-6">
-<div class="flex justify-between items-center mb-4">
-<h3 class="text-xl font-bold text-gray-800">Add / Edit Bag</h3>
+<div class="bg-white rounded-lg shadow-xl w-full max-w-xl">
+<div class="p-4">
+<div class="flex justify-between items-center mb-3">
+<h3 class="modal-title font-bold text-gray-800">Add / Edit Bag</h3>
 <button class="text-gray-500 hover:text-gray-700" id="close-bag-modal">
-<svg class="h-6 w-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
 </button>
 </div>
-<form class="space-y-4" id="add-bag-form">
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<form class="space-y-3" id="add-bag-form">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-3">
 <div>
-<label class="block text-sm font-medium text-gray-700 mb-1" for="bag-brand">Brand</label>
-<input class="w-full px-3 py-2 border border-gray-300 rounded-md" id="bag-brand" required="" type="text"/>
+<label class="block text-xs font-medium text-gray-700 mb-1" for="bag-brand">Brand</label>
+<input class="w-full border border-gray-300 rounded-md" id="bag-brand" required="" type="text"/>
 </div>
 <div>
-<label class="block text-sm font-medium text-gray-700 mb-1" for="bag-model">Model</label>
-<input class="w-full px-3 py-2 border border-gray-300 rounded-md" id="bag-model" required="" type="text"/>
+<label class="block text-xs font-medium text-gray-700 mb-1" for="bag-model">Model</label>
+<input class="w-full border border-gray-300 rounded-md" id="bag-model" required="" type="text"/>
 </div>
 <div>
-<label class="block text-sm font-medium text-gray-700 mb-1" for="bag-color">Color</label>
-<input class="w-full px-3 py-2 border border-gray-300 rounded-md" id="bag-color" required="" type="text"/>
+<label class="block text-xs font-medium text-gray-700 mb-1" for="bag-color">Color</label>
+<input class="w-full border border-gray-300 rounded-md" id="bag-color" required="" type="text"/>
 </div>
 <div>
-<label class="block text-sm font-medium text-gray-700 mb-1" for="bag-original-price">Original Price ($)</label>
-<input class="w-full px-3 py-2 border border-gray-300 rounded-md" id="bag-original-price" min="0" required="" step="0.01" type="number"/>
+<label class="block text-xs font-medium text-gray-700 mb-1" for="bag-original-price">Original Price ($)</label>
+<input class="w-full border border-gray-300 rounded-md" id="bag-original-price" min="0" required="" step="0.01" type="number"/>
 </div>
 <div>
-<label class="block text-sm font-medium text-gray-700 mb-1" for="bag-min-price">Min Sales Price ($)</label>
-<input class="w-full px-3 py-2 border border-gray-300 rounded-md" id="bag-min-price" min="0" step="0.01" type="number"/>
+<label class="block text-xs font-medium text-gray-700 mb-1" for="bag-min-price">Min Sales Price ($)</label>
+<input class="w-full border border-gray-300 rounded-md" id="bag-min-price" min="0" step="0.01" type="number"/>
 </div>
 <div>
-<label class="block text-sm font-medium text-gray-700 mb-1" for="bag-price">Sales Price ($)</label>
-<input class="w-full px-3 py-2 border border-gray-300 rounded-md" id="bag-price" min="0" required="" step="0.01" type="number"/>
+<label class="block text-xs font-medium text-gray-700 mb-1" for="bag-price">Sales Price ($)</label>
+<input class="w-full border border-gray-300 rounded-md" id="bag-price" min="0" required="" step="0.01" type="number"/>
 </div>
 <div>
-<label class="block text-sm font-medium text-gray-700 mb-1" for="bag-quantity">Quantity</label>
-<input class="w-full px-3 py-2 border border-gray-300 rounded-md" id="bag-quantity" min="0" required="" type="number"/>
+<label class="block text-xs font-medium text-gray-700 mb-1" for="bag-quantity">Quantity</label>
+<input class="w-full border border-gray-300 rounded-md" id="bag-quantity" min="0" required="" type="number"/>
 </div>
 <!-- New: Item Code for Bag -->
 <div>
-    <label class="block text-sm font-medium text-gray-700 mb-1" for="bag-code">Item Code</label>
-    <input class="w-full px-3 py-2 border border-gray-300 rounded-md" id="bag-code" required="" type="text"/>
+    <label class="block text-xs font-medium text-gray-700 mb-1" for="bag-code">Item Code</label>
+    <input class="w-full border border-gray-300 rounded-md" id="bag-code" required="" type="text"/>
 </div>
 <div class="md:col-span-2">
-<label class="block text-sm font-medium text-gray-700 mt-3 mb-1">Image (file or url) — <span class="text-xs text-gray-500" id="bag-image-note">editable when adding only</span></label>
-<input accept="image/*" class="w-full px-3 py-2 border border-gray-300 rounded-md" id="bag-image-file" type="file"/>
-<input class="w-full px-3 py-2 border border-gray-300 rounded-md mt-2" id="bag-image-url" placeholder="https://example.com/image.jpg" type="text"/>
-<div class="mt-4">
-<img alt="Image Preview" class="hidden w-40 h-32 object-cover rounded-md mx-auto border" id="bag-image-preview" src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/8985c871-cd01-42e0-af4e-7dd15f59e8ad.png">
+<label class="block text-xs font-medium text-gray-700 mt-2 mb-1">Image (file or url) — <span class="text-2xs text-gray-500" id="bag-image-note">editable when adding only</span></label>
+<input accept="image/*" class="w-full border border-gray-300 rounded-md" id="bag-image-file" type="file"/>
+<input class="w-full border border-gray-300 rounded-md mt-1" id="bag-image-url" placeholder="https://example.com/image.jpg" type="text"/>
+<div class="mt-3">
+<img alt="Image Preview" class="hidden w-32 h-24 object-cover rounded-md mx-auto border" id="bag-image-preview" src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/8985c871-cd01-42e0-af4e-7dd15f59e8ad.png">
 </div>
 </div>
 </div>
-<div class="flex justify-end space-x-3 pt-4">
-<button class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50" id="cancel-bag" type="button">Cancel</button>
-<button class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700" type="submit">Save</button>
+<div class="flex justify-end space-x-2 pt-3">
+<button class="px-3 py-1.5 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50" id="cancel-bag" type="button">Cancel</button>
+<button class="px-3 py-1.5 bg-indigo-600 text-white rounded-md hover:bg-indigo-700" type="submit">Save</button>
 </div>
 </form>
 </div>
@@ -480,27 +681,27 @@
 </div>
 <!-- Add to Cart Modal (for size/color selection) -->
 <div class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50" id="add-to-cart-modal">
-<div class="bg-white rounded-lg shadow-xl w-full max-w-md">
-<div class="p-6">
-<div class="flex justify-between items-center mb-4">
-<h3 class="text-xl font-bold text-gray-800" id="add-to-cart-modal-title">Add to Cart</h3>
+<div class="bg-white rounded-lg shadow-xl w-full max-w-sm">
+<div class="p-4">
+<div class="flex justify-between items-center mb-3">
+<h3 class="modal-title font-bold text-gray-800" id="add-to-cart-modal-title">Add to Cart</h3>
 <button class="text-gray-500 hover:text-gray-700" id="close-add-to-cart-modal" type="button">
-<svg class="h-6 w-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
 </button>
 </div>
-<form class="space-y-4" id="add-to-cart-form">
-<div class="max-h-60 overflow-y-auto pr-2" id="size-color-options"></div>
-<p class="text-sm text-gray-600" id="selected-item-stock">Stock: --</p>
+<form class="space-y-3" id="add-to-cart-form">
+<div class="max-h-48 overflow-y-auto pr-2" id="size-color-options"></div>
+<p class="text-xs text-gray-600" id="selected-item-stock">Stock: --</p>
 <!-- Price Options -->
 <div id="price-options-container" class="hidden">
-    <label class="block text-sm font-medium text-gray-700 mb-1">Select Sold Price:</label>
-    <div id="price-options" class="flex flex-col space-y-2">
+    <label class="block text-xs font-medium text-gray-700 mb-1">Select Sold Price:</label>
+    <div id="price-options" class="flex flex-col space-y-1.5">
         <!-- Price radio buttons will be inserted here -->
     </div>
 </div>
-<div class="flex justify-end space-x-3 pt-4">
-<button class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50" id="cancel-add-to-cart" type="button">Cancel</button>
-<button class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700" type="submit">Add to Cart</button>
+<div class="flex justify-end space-x-2 pt-3">
+<button class="px-3 py-1.5 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50" id="cancel-add-to-cart" type="button">Cancel</button>
+<button class="px-3 py-1.5 bg-indigo-600 text-white rounded-md hover:bg-indigo-700" type="submit">Add to Cart</button>
 </div>
 </form>
 </div>
@@ -508,1338 +709,999 @@
 </div>
 </div>
 <script>
-/* ---------------------------
-   Storage + Init
-   --------------------------- */
-function getInventoryData() {
-    const raw = localStorage.getItem('inventoryData');
-    return raw ? JSON.parse(raw) : null;
-}
-function saveInventoryData(data) {
-    localStorage.setItem('inventoryData', JSON.stringify(data));
-}
+document.addEventListener('DOMContentLoaded', () => {
+  // ---------- DOM Shortcuts ----------
+  const loginView = document.getElementById('login-view');
+  const inventoryView = document.getElementById('inventory-view');
+  const cartView = document.getElementById('cart-view');
+  const salesHistoryView = document.getElementById('sales-history-view');
 
-// track current logged in user's role
-let currentUser = null; // { username, role }
+  const loginForm = document.getElementById('login-form');
+  const registerBtn = document.getElementById('register-btn');
+  const registerModal = document.getElementById('register-modal');
+  const registerForm = document.getElementById('register-form');
+  const cancelRegister = document.getElementById('cancel-register');
 
-/* Initialize sample data if not present */
-(function ensureInitialData(){
-    if (!localStorage.getItem('inventoryData')) {
-        const sampleData = {
-            shoes: [
-                {
-                    id: 1,
-                    brand: "Nike",
-                    model: "Air Max",
-                    color: "White/Black",
-                    originalPrice: 150.00,
-                    price: 129.99,
-                    minPrice: 120.00, // Added minPrice for testing
-                    stock: { "White/Black_38": 5, "White/Black_39": 5, "White/Black_40": 5, "White/Black_41": 5, "White/Black_42": 5 },
-                    availableSizes: [38,39,40,41,42],
-                    availableColors: ["White/Black"],
-                    image: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d9c-98f6-345daea10e18.png",
-                    type: "shoes",
-                    code: "S001"
-                },
-                {
-                    id: 2,
-                    brand: "Adidas",
-                    model: "Superstar",
-                    color: "Black",
-                    originalPrice: 100.00,
-                    price: 89.99,
-                    minPrice: 80.00, // Added minPrice for testing
-                    stock: { "Black_36": 7, "Black_37": 7, "Black_38": 7, "Black_39": 7, "Black_40": 7 },
-                    availableSizes: [36,37,38,39,40],
-                    availableColors: ["Black"],
-                    image: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d9c-98f6-345daea10e18.png",
-                    type: "shoes",
-                    code: "S002"
-                }
-            ],
-            bags: [
-                {
-                    id: 1,
-                    brand: "Gucci",
-                    model: "GG Marmont",
-                    color: "Beige",
-                    originalPrice: 2800.00,
-                    price: 2490.00,
-                    minPrice: 2400.00, // Added minPrice for testing
-                    stock: { "Beige": 5, "Black": 3 },
-                    availableColors: ["Beige", "Black"],
-                    image: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d9c-98f6-345daea10e18.png",
-                    type: "bags",
-                    code: "B001"
-                },
-                {
-                    id: 2,
-                    brand: "Coach",
-                    model: "Willow Tote",
-                    color: "Black",
-                    originalPrice: 400.00,
-                    price: 349.99,
-                    minPrice: 300.00, // Added minPrice for testing
-                    stock: { "Black": 8, "Brown": 4 },
-                    availableColors: ["Black", "Brown"],
-                    image: "https://storage.googleapis.com/workspace-0f70711f-8b4e-4d9c-98f6-345daea10e18.png",
-                    type: "bags",
-                    code: "B002"
-                }
-            ],
-            admins: [
-                { username: "admin", password: "admin123", role: "admin" },
-                { username: "test", password: "test123", role: "admin" },
-                { username: "limited", password: "limited123", role: "viewer" } // limited account
-            ],
-            cart: []
-        };
-        saveInventoryData(sampleData);
+  const createLimitedAccountBtn = document.getElementById('create-limited-account-btn');
+  const createLimitedModal = document.getElementById('create-limited-modal');
+  const createLimitedForm = document.getElementById('create-limited-form');
+  const cancelLimitedCreation = document.getElementById('cancel-limited-creation');
+
+  const createAdminAccountBtn = document.getElementById('create-admin-account-btn');
+  const createAdminModal = document.getElementById('create-admin-modal');
+  const createAdminForm = document.getElementById('create-admin-form');
+  const cancelAdminCreation = document.getElementById('cancel-admin-creation');
+
+  const logoutBtn = document.getElementById('logout-btn');
+
+  // Navbar + filter togglers (mobile)
+  const navbarToggler = document.getElementById('navbar-toggler');
+  const navbarItems = document.getElementById('navbar-items');
+  const filterToggler = document.getElementById('filter-toggler');
+  const filterControls = document.getElementById('filter-controls');
+
+  // Inventory controls
+  const addShoeBtn = document.getElementById('add-shoe-btn');
+  const addBagBtn = document.getElementById('add-bag-btn');
+  const addShoeModal = document.getElementById('add-shoe-modal');
+  const addBagModal = document.getElementById('add-bag-modal');
+  const closeShoeModal = document.getElementById('close-shoe-modal');
+  const closeBagModal = document.getElementById('close-bag-modal');
+  const cancelShoeBtn = document.getElementById('cancel-shoe');
+  const cancelBagBtn = document.getElementById('cancel-bag');
+  const addShoeForm = document.getElementById('add-shoe-form');
+  const addBagForm = document.getElementById('add-bag-form');
+
+  // Shoe fields
+  const shoeBrand = document.getElementById('shoe-brand');
+  const shoeModel = document.getElementById('shoe-model');
+  const shoeColor = document.getElementById('shoe-color');
+  const shoeOriginalPrice = document.getElementById('shoe-original-price');
+  const shoeMinPrice = document.getElementById('shoe-min-price');
+  const shoePrice = document.getElementById('shoe-price');
+  const shoeCode = document.getElementById('shoe-code');
+  const shoeQuantity = document.getElementById('shoe-quantity');
+  const shoeSizes = document.getElementById('shoe-sizes');
+  const shoeImgFile = document.getElementById('shoe-image-file');
+  const shoeImgUrl = document.getElementById('shoe-image-url');
+  const shoeImgPreview = document.getElementById('shoe-image-preview');
+  const shoeImageNote = document.getElementById('shoe-image-note');
+
+
+  // Bag fields
+  const bagBrand = document.getElementById('bag-brand');
+  const bagModel = document.getElementById('bag-model');
+  const bagColor = document.getElementById('bag-color');
+  const bagOriginalPrice = document.getElementById('bag-original-price');
+  const bagMinPrice = document.getElementById('bag-min-price');
+  const bagPrice = document.getElementById('bag-price');
+  const bagQuantity = document.getElementById('bag-quantity');
+  const bagCode = document.getElementById('bag-code');
+  const bagImgFile = document.getElementById('bag-image-file');
+  const bagImgUrl = document.getElementById('bag-image-url');
+  const bagImgPreview = document.getElementById('bag-image-preview');
+  const bagImageNote = document.getElementById('bag-image-note');
+
+
+  // Inventory list + filters
+  const inventoryList = document.getElementById('inventory-list');
+  const inventoryTypeTitle = document.getElementById('inventory-type-title');
+  const filterType = document.getElementById('filter-type');
+  const filterBrand = document.getElementById('filter-brand');
+  const filterColor = document.getElementById('filter-color');
+  const filterMinPrice = document.getElementById('filter-min-price');
+  const filterMaxPrice = document.getElementById('filter-max-price');
+  const filterCode = document.getElementById('filter-code');
+  const resetFiltersBtn = document.getElementById('reset-filters-btn');
+
+  // Cart + sales
+  const viewCartBtn = document.getElementById('view-cart-btn');
+  const cartItemsList = document.getElementById('cart-items-list');
+  const cartTotalEl = document.getElementById('cart-total');
+  const cartCountEl = document.getElementById('cart-count');
+  const backToInventoryBtn = document.getElementById('back-to-inventory-btn');
+  const checkoutBtn = document.getElementById('checkout-btn');
+  const discountInput = document.getElementById('checkout-discount');
+  const paymentMethod = document.getElementById('payment-method');
+
+  const salesHistoryBtn = document.getElementById('sales-history-btn');
+  const backToInventoryFromHistory = document.getElementById('back-to-inventory-from-history');
+  const salesHistoryTable = document.getElementById('sales-history-table').querySelector('tbody');
+  const salesSummary = document.getElementById('salesSummary');
+  const dailyTotal = document.getElementById('daily-total');
+  const monthlyTotal = document.getElementById('monthly-total');
+  const filterSalesDate = document.getElementById('filter-sales-date');
+  const clearSalesDate = document.getElementById('clear-sales-date');
+
+  // Add to Cart Modal
+  const addToCartModal = document.getElementById('add-to-cart-modal');
+  const closeAddToCartModalBtn = document.getElementById('close-add-to-cart-modal');
+  const cancelAddToCartBtn = document.getElementById('cancel-add-to-cart');
+  const addToCartForm = document.getElementById('add-to-cart-form');
+  const sizeColorOptions = document.getElementById('size-color-options');
+  const selectedItemStockEl = document.getElementById('selected-item-stock');
+  const priceOptionsContainer = document.getElementById('price-options-container');
+  const priceOptions = document.getElementById('price-options');
+  const addToCartModalTitle = document.getElementById('add-to-cart-modal-title');
+
+  // ---------- App State ----------
+  let currentUser = null;
+  let cart = []; // session cart, persisted in JSONBin on checkout
+  let currentData = null; // latest JSONBin data
+  let selectedItemForCart = null; // { type, id, brand, model, code, price, minPrice, originalPrice, sizesStock or qty, image }
+
+  const JSONBIN_BIN_ID = "689ce95f43b1c97be91dac6e";
+  const JSONBIN_API_KEY = "$2a$10$pQWGhc3nsux3Gmixzmy2QudoWSLo7yy42SqxRKL5E1CcSEgAQ3Jky";
+
+  // ---------- JSONBin helpers ----------
+  async function getData() {
+    try {
+      const res = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`, {
+        headers: { "X-Master-Key": JSONBIN_API_KEY }
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const json = await res.json();
+      return json.record || {};
+    } catch (e) {
+      console.error("JSONBin getData error:", e);
+      alert("Couldn't load data from server. Check console/network.");
+      return null;
     }
-})();
+  }
 
-/* ---------------------------
-   DOM refs
-   --------------------------- */
-const loginView = document.getElementById('login-view');
-const inventoryView = document.getElementById('inventory-view');
-const cartView = document.getElementById('cart-view');
-const loginForm = document.getElementById('login-form');
-const logoutBtn = document.getElementById('logout-btn');
-const inventoryList = document.getElementById('inventory-list');
-const registerBtn = document.getElementById('register-btn'); // This is the button on the login screen
-const registerModal = document.getElementById('register-modal'); // This is the modal for initial admin creation
-const registerForm = document.getElementById('register-form');
-const cancelRegister = document.getElementById('cancel-register');
-
-const addShoeBtn = document.getElementById('add-shoe-btn');
-const addBagBtn = document.getElementById('add-bag-btn');
-const addShoeModal = document.getElementById('add-shoe-modal');
-const addBagModal = document.getElementById('add-bag-modal');
-const closeShoeModal = document.getElementById('close-shoe-modal');
-const closeBagModal = document.getElementById('close-bag-modal');
-const cancelShoe = document.getElementById('cancel-shoe');
-const cancelBag = document.getElementById('cancel-bag');
-const addShoeForm = document.getElementById('add-shoe-form');
-const addBagForm = document.getElementById('add-bag-form');
-const viewCartBtn = document.getElementById('view-cart-btn');
-const cartCountSpan = document.getElementById('cart-count');
-const cartItemsList = document.getElementById('cart-items-list');
-const cartTotalSpan = document.getElementById('cart-total');
-const checkoutBtn = document.getElementById('checkout-btn');
-const backToInventoryBtn = document.getElementById('back-to-inventory-btn');
-const clearStorageBtn = document.getElementById('clear-storage-btn');
-
-const addToCartModal = document.getElementById('add-to-cart-modal');
-const addToCartModalTitle = document.getElementById('add-to-cart-modal-title');
-const closeAddToCartModal = document.getElementById('close-add-to-cart-modal');
-const addToCartForm = document.getElementById('add-to-cart-form');
-const sizeColorOptions = document.getElementById('size-color-options');
-const selectedItemStock = document.getElementById('selected-item-stock');
-const cancelAddToCart = document.getElementById('cancel-add-to-cart');
-const priceOptionsContainer = document.getElementById('price-options-container'); // New
-const priceOptionsDiv = document.getElementById('price-options'); // New
-
-const shoeImageFile = document.getElementById('shoe-image-file');
-const shoeImageUrl = document.getElementById('shoe-image-url');
-const shoeImagePreview = document.getElementById('shoe-image-preview');
-
-const bagImageFile = document.getElementById('bag-image-file');
-const bagImageUrl = document.getElementById('bag-image-url');
-const bagImagePreview = document.getElementById('bag-image-preview');
-
-const adminActions = document.getElementById('admin-actions');
-const shoeImageNote = document.getElementById('shoe-image-note');
-const bagImageNote = document.getElementById('bag-image-note');
-const checkoutDiscountInput = document.getElementById('checkout-discount');
-
-// Sales History DOM elements
-const salesHistoryBtn = document.getElementById('sales-history-btn');
-const salesHistoryView = document.getElementById('sales-history-view');
-const backToInventoryFromHistoryBtn = document.getElementById('back-to-inventory-from-history');
-const filterSalesDateInput = document.getElementById('filter-sales-date');
-const clearSalesDateBtn = document.getElementById('clear-sales-date');
-const salesHistoryTableBody = document.querySelector('#sales-history-table tbody');
-const salesSummaryDiv = document.getElementById('salesSummary');
-const dailyTotalDiv = document.getElementById('daily-total');
-const monthlyTotalDiv = document.getElementById('monthly-total');
-
-// New DOM elements for account creation
-const createLimitedAccountBtn = document.getElementById('create-limited-account-btn');
-const createLimitedModal = document.getElementById('create-limited-modal');
-const createLimitedForm = document.getElementById('create-limited-form');
-const cancelLimitedCreationBtn = document.getElementById('cancel-limited-creation');
-
-// New DOM elements for creating another admin account
-const createAdminAccountBtn = document.getElementById('create-admin-account-btn'); // Button in inventory view
-const createAdminModal = document.getElementById('create-admin-modal'); // New modal for admin creation
-const createAdminForm = document.getElementById('create-admin-form');
-const cancelAdminCreationBtn = document.getElementById('cancel-admin-creation');
-
-// Navbar Toggler DOM elements
-const navbarToggler = document.getElementById('navbar-toggler');
-const navbarItems = document.getElementById('navbar-items');
-
-// Filter Toggler DOM elements
-const filterToggler = document.getElementById('filter-toggler');
-const filterControls = document.getElementById('filter-controls');
-
-// New DOM reference for the filter-code input
-const filterCodeInput = document.getElementById('filter-code');
-
-
-/* ---------------------------
-   Cart & inventory helpers
-   --------------------------- */
-let currentItemToAdd = null;
-let currentItemType = null;
-
-function updateCartCount() {
-    const data = getInventoryData();
-    const cart = (data && data.cart) || [];
-    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-    cartCountSpan.textContent = totalItems;
-}
-
-function userIsViewer() {
-    return currentUser && currentUser.role === 'viewer';
-}
-
-// Original renderInventory function
-function _renderInventory() {
-    const data = getInventoryData();
-    if (!data) return;
-    inventoryList.innerHTML = '';
-
-    const filters = getFilterValues();
-    let allItems = [...(data.shoes || []), ...(data.bags || [])];
-    allItems = allItems.filter(item => {
-        if (filters.type && item.type !== filters.type) return false;
-        if (filters.brand && item.brand && item.brand.toLowerCase() !== filters.brand.toLowerCase()) return false;
-        if (filters.color && item.color && item.color.toLowerCase() !== filters.color.toLowerCase()) return false;
-        if (filters.minPrice !== null && item.price < filters.minPrice) return false;
-        if (filters.maxPrice !== null && item.price > filters.maxPrice) return false;
-        // New: Filter by item code
-        if (filters.code && item.code && !item.code.toLowerCase().includes(filters.code)) return false;
-        return true;
-    });
-
-    if (allItems.length === 0) {
-        inventoryList.innerHTML = '<p class="col-span-full text-center py-10 text-gray-500">No items match filters.</p>';
-        return;
+  async function putData(data) {
+    try {
+      const res = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Master-Key": JSONBIN_API_KEY
+        },
+        body: JSON.stringify(data)
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return true;
+    } catch (e) {
+      console.error("JSONBin putData error:", e);
+      alert("Couldn't save data to server. Check console/network.");
+      return false;
     }
-
-    allItems.forEach(item => {
-        const card = document.createElement('div');
-        card.className = 'product-card bg-white rounded-xl overflow-hidden shadow-md border border-gray-100 p-4 flex flex-col';
-
-        let totalQuantity = 0;
-        for (const key in (item.stock || {})) {
-            const v = Number(item.stock[key]) || 0;
-            totalQuantity += v;
-        }
-
-        // show original price only to admin
-        const originalPriceHtml = userIsViewer() ? '' : `<p class="text-xs text-gray-400">Orig: $${Number(item.originalPrice || 0).toFixed(2)}</p>`;
-
-        card.innerHTML = `
-            <div class="h-44 overflow-hidden mb-4 rounded-lg">
-                <img src="${item.image || 'https://via.placeholder.com/300x200'}" alt="${item.brand} ${item.model}" class="w-full h-full object-cover">
-            </div>
-            <h3 class="font-bold text-lg text-gray-800">${item.brand} ${item.model}</h3>
-            <p class="text-sm text-gray-600">Color: ${item.color || '-'}</p>
-            ${item.type === 'shoes' ? `<p class="text-sm text-gray-600">Sizes: ${ (item.availableSizes || []).join(', ') }</p>` : ''}
-            <div class="mt-2 mb-2">${originalPriceHtml}<p class="font-semibold text-gray-800">$${Number(item.price || 0).toFixed(2)}</p></div>
-            <p class="text-sm text-gray-600 mb-4">Available: ${totalQuantity}</p>
-            <div class="flex space-x-2 mt-auto">
-                <button class="add-to-cart-btn flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-md text-sm font-medium" data-id="${item.id}" data-type="${item.type}">
-                    Add to Cart
-                </button>
-                <button class="edit-item-btn bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded-md text-sm font-medium" data-id="${item.id}" data-type="${item.type}">
-                    Edit
-                </button>
-                <button class="delete-item-btn bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-md text-sm font-medium" data-id="${item.id}" data-type="${item.type}">
-                    Delete
-                </button>
-            </div>
-        `;
-        inventoryList.appendChild(card);
-    });
-
-    // attach listeners
-    document.querySelectorAll('.add-to-cart-btn').forEach(btn=>{
-        btn.addEventListener('click', (e)=>{
-            const id = parseInt(btn.dataset.id);
-            const type = btn.dataset.type;
-            openAddToCartModal(id, type);
-        });
-    });
-    document.querySelectorAll('.delete-item-btn').forEach(btn=>{
-        btn.addEventListener('click', (e)=>{
-            if (userIsViewer()) { alert('You do not have permission to delete products.'); return; }
-            const id = parseInt(btn.dataset.id);
-            const type = btn.dataset.type;
-            deleteItem(id, type);
-        });
-    });
-    document.querySelectorAll('.edit-item-btn').forEach(btn=>{
-        btn.addEventListener('click', (e)=>{
-            if (userIsViewer()) { alert('You do not have permission to edit products.'); return; }
-            const id = parseInt(btn.dataset.id);
-            const type = btn.dataset.type;
-            editItem(id, type);
-        });
-    });
-
-    updateCartCount();
-    updateFilterOptions();
-    applyRoleRestrictions(); // Apply restrictions after rendering
-}
-
-// Consolidated renderInventory function
-function renderInventory() {
-    _renderInventory(); // Call the base rendering logic
-    document.querySelectorAll('#inventory-list .product-card').forEach((card, idx) => {
-        const data = getInventoryData();
-        // Find the item corresponding to this card. This approach is fragile if filtering/sorting changes order.
-        // A more robust way would be to store item ID in data-attribute on card and retrieve from there.
-        // For now, assuming allItems[idx] still corresponds to the card.
-        let allItems = [...(data.shoes || []), ...(data.bags || [])];
-        // Filter allItems based on current filters to match what's actually rendered
-        const filters = getFilterValues();
-        let renderedItems = allItems.filter(item => {
-            if (filters.type && item.type !== filters.type) return false;
-            if (filters.brand && item.brand && item.brand.toLowerCase() !== filters.brand.toLowerCase()) return false;
-            if (filters.color && item.color && item.color.toLowerCase() !== filters.color.toLowerCase()) return false;
-            if (filters.minPrice !== null && item.price < filters.minPrice) return false;
-            if (filters.maxPrice !== null && item.price > filters.maxPrice) return false;
-            if (filters.code && item.code && !item.code.toLowerCase().includes(filters.code)) return false;
-            return true;
-        });
-
-        let item = renderedItems[idx]; // Get the item from the *rendered* list
-        if(item && item.minPrice){
-            let priceElem = card.querySelector('.font-semibold.text-gray-800');
-            if(priceElem){
-                // Check if min price already exists to prevent duplicates on re-render
-                if (!card.querySelector('.min-price-display')) {
-                    priceElem.insertAdjacentHTML('beforebegin', `<p class="text-xs text-gray-500 min-price-display">Min: $${Number(item.minPrice).toFixed(2)}</p>`);
-                }
-            }
-        }
-    });
-}
-
-
-function getFilterValues() {
-    return {
-        type: document.getElementById('filter-type').value,
-        brand: document.getElementById('filter-brand').value,
-        color: document.getElementById('filter-color').value,
-        minPrice: parseFloat(document.getElementById('filter-min-price').value) || null,
-        maxPrice: parseFloat(document.getElementById('filter-max-price').value) || null,
-        // Add the new filter for item code
-        code: document.getElementById('filter-code').value.trim().toLowerCase()
-    };
-}
-
-function updateFilterOptions() {
-    const data = getInventoryData();
-    if (!data) return;
-    const allItems = [...(data.shoes || []), ...(data.bags || [])];
-
-    const brands = new Set();
-    const colors = new Set();
-
-    allItems.forEach(item => {
-        if (item.brand) brands.add(item.brand);
-        if (item.color) colors.add(item.color);
-        if (item.availableColors) item.availableColors.forEach(c => colors.add(c));
-    });
-
-    const filterBrandSelect = document.getElementById('filter-brand');
-    const filterColorSelect = document.getElementById('filter-color');
-
-    filterBrandSelect.innerHTML = '<option value="">All</option>';
-    brands.forEach(brand => {
-        filterBrandSelect.innerHTML += `<option value="${brand}">${brand}</option>`;
-    });
-
-    filterColorSelect.innerHTML = '<option value="">All</option>';
-    colors.forEach(color => {
-        filterColorSelect.innerHTML += `<option value="${color}">${color}</option>`;
-    });
-}
-
-/* ---------------------------
-   Delete item
-   --------------------------- */
-function deleteItem(itemId, itemType) {
-    if (!confirm('Are you sure you want to delete this item?')) return;
-    const data = getInventoryData();
-    if (!data) return;
-    if (itemType === 'shoes') {
-        data.shoes = (data.shoes || []).filter(s => s.id !== itemId);
-    } else {
-        data.bags = (data.bags || []).filter(b => b.id !== itemId);
-    }
-    saveInventoryData(data);
-    renderInventory();
-}
-
-/* ---------------------------
-   Edit item
-   --------------------------- */
-function editItem(itemId, itemType) {
-    const data = getInventoryData();
-    if (!data) return;
-    let item;
-    let form;
-    let modal;
-
-    if (itemType === 'shoes') {
-        item = (data.shoes || []).find(s => s.id === itemId);
-        form = addShoeForm;
-        modal = addShoeModal;
-        document.getElementById('shoe-image-file').disabled = true;
-        document.getElementById('shoe-image-url').disabled = true;
-        shoeImageNote.textContent = 'image not editable when editing';
-    } else {
-        item = (data.bags || []).find(b => b.id === itemId);
-        form = addBagForm;
-        modal = addBagModal;
-        document.getElementById('bag-image-file').disabled = true;
-        document.getElementById('bag-image-url').disabled = true;
-        bagImageNote.textContent = 'image not editable when editing';
-    }
-
-    if (!item) { alert('Item not found for editing.'); return; }
-
-    form.reset();
-    form.setAttribute('data-edit-id', itemId);
-    document.querySelector(`#${form.id} button[type="submit"]`).textContent = 'Save Changes';
-
-    // Populate form fields
-    if (itemType === 'shoes') {
-        document.getElementById('shoe-brand').value = item.brand || '';
-        document.getElementById('shoe-model').value = item.model || '';
-        document.getElementById('shoe-color').value = item.color || '';
-        document.getElementById('shoe-original-price').value = item.originalPrice || 0;
-        document.getElementById('shoe-min-price').value = item.minPrice || 0; // Populate minPrice
-        document.getElementById('shoe-price').value = item.price || 0;
-        document.getElementById('shoe-code').value = item.code || '';
-        // For quantity, we can't easily set a single value if stock is per size.
-        // For simplicity, we might leave it blank or set to 0, or show a sum.
-        // For now, let's assume it's for adding new stock to existing sizes.
-        document.getElementById('shoe-quantity').value = 0; // User will add new quantity
-        document.getElementById('shoe-sizes').value = (item.availableSizes || []).join(',');
-        if (item.image) {
-            shoeImagePreview.src = item.image;
-            shoeImagePreview.classList.remove('hidden');
-        } else {
-            shoeImagePreview.classList.add('hidden');
-        }
-    } else { // bags
-        document.getElementById('bag-brand').value = item.brand || '';
-        document.getElementById('bag-model').value = item.model || '';
-        document.getElementById('bag-color').value = item.color || '';
-        document.getElementById('bag-original-price').value = item.originalPrice || 0;
-        document.getElementById('bag-min-price').value = item.minPrice || 0; // Populate minPrice
-        document.getElementById('bag-price').value = item.price || 0;
-        document.getElementById('bag-quantity').value = 0; // User will add new quantity
-        document.getElementById('bag-code').value = item.code || ''; // Populate bag code
-        if (item.image) {
-            bagImagePreview.src = item.image;
-            bagImagePreview.classList.remove('hidden');
-        } else {
-            bagImagePreview.classList.add('hidden');
-        }
-    }
-
-    modal.classList.remove('hidden');
-}
-
-
-/* ---------------------------
-   Cart rendering + operations
-   --------------------------- */
-function renderCart() {
-    const data = getInventoryData();
-    const cart = (data && data.cart) || [];
-    cartItemsList.innerHTML = '';
-    let subtotal = 0;
-    if (cart.length === 0) {
-        cartItemsList.innerHTML = '<p class="text-center text-gray-500">Your cart is empty.</p>';
-    } else {
-        cart.forEach((item, idx)=>{
-            const itemTotal = item.price * item.quantity;
-            subtotal += itemTotal;
-            const div = document.createElement('div');
-            div.className = 'flex items-center space-x-4 p-4 border rounded-lg bg-white shadow-sm';
-            div.innerHTML = `
-                <img src="${item.image || 'https://via.placeholder.com/100'}" alt="${item.brand}" class="w-20 h-20 object-cover rounded-md">
-                <div class="flex-1 min-w-0">
-                    <h4 class="font-semibold text-lg truncate">${item.brand} ${item.model}</h4>
-                    <p class="text-gray-600 truncate">Color: ${item.color}</p>
-                    ${item.size ? `<p class="text-gray-600">Size: ${item.size}</p>` : ''}
-                    <p class="text-gray-600">Quantity: ${item.quantity}</p>
-                    <p class="font-bold text-gray-800">$${item.price.toFixed(2)}</p>
-                </div>
-                <div class="flex flex-col items-end gap-2">
-                    <button type="button" class="remove-from-cart-btn text-red-600 hover:text-red-800 font-bold" data-index="${idx}" aria-label="Remove item">&times;</button>
-                </div>
-            `;
-            cartItemsList.appendChild(div);
-        });
-    }
-    const discountPerc = parseFloat(checkoutDiscountInput ? (checkoutDiscountInput.value || 0) : 0) || 0;
-    const discountedTotal = Math.max(0, subtotal * (1 - discountPerc/100));
-    cartTotalSpan.textContent = discountedTotal.toFixed(2);
-    updateCartCount();
-    document.querySelectorAll('.remove-from-cart-btn').forEach(btn=>{
-        btn.addEventListener('click', (e)=>{
-            const idx = parseInt(btn.dataset.index);
-            removeFromCart(idx);
-        });
-    });
-}
-
-function removeFromCart(index) {
-    const data = getInventoryData();
-    if (!data) return;
-    const cart = data.cart || [];
-    const item = cart[index];
-    if (!item) return;
-    // restore inventory
-    if (item.type === 'shoes') {
-        const shoe = (data.shoes || []).find(s => s.id === item.id);
-        if (shoe) {
-            const key = `${item.color}_${item.size}`;
-            shoe.stock[key] = (shoe.stock[key] || 0) + item.quantity;
-            // No need to re-add to availableSizes if it was already there.
-            // If a size was completely out of stock and now has quantity, it will be rendered.
-        }
-    } else {
-        const bag = (data.bags || []).find(b => b.id === item.id);
-        if (bag) {
-            bag.stock[item.color] = (bag.stock[item.color] || 0) + item.quantity;
-            // No need to re-add to availableColors if it was already there.
-        }
-    }
-    cart.splice(index, 1);
-    data.cart = cart;
-    saveInventoryData(data);
-    renderCart();
-    renderInventory();
-}
-
-/* ---------------------------
-   Sales history logic
-   --------------------------- */
-function getSalesHistory() {
-    const raw = localStorage.getItem('salesHistory');
-    return raw ? JSON.parse(raw) : [];
-}
-function saveSalesHistory(hist) {
-    localStorage.setItem('salesHistory', JSON.stringify(hist));
-}
-function addSaleRecord(items, total, discountPerc = 0, paymentMethod = 'N/A') {
-    const hist = getSalesHistory();
-    hist.push({ datetime: new Date().toISOString(), items, total, discountPerc, paymentMethod });
-    saveSalesHistory(hist);
-}
-
-// Original renderSalesHistory function
-function _renderSalesHistory(filterDate = null) {
-    const hist = getSalesHistory();
-    if (!salesHistoryTableBody) return;
-    salesHistoryTableBody.innerHTML = '';
-
-    let dailyTotal = 0;
-    let monthlyTotal = 0;
-    const salesByDate = {};
-    const now = new Date();
-    const currentMonthKey = now.toISOString().slice(0, 7); // YYYY-MM
-
-    const filteredHist = filterDate
-        ? hist.filter(rec => rec.datetime.startsWith(filterDate))
-        : hist;
-
-    filteredHist.sort((a, b) => new Date(b.datetime) - new Date(a.datetime)); // Sort by date descending
-
-    filteredHist.forEach(rec => {
-        const saleDate = new Date(rec.datetime);
-        const dateStr = saleDate.toLocaleDateString();
-        const timeStr = saleDate.toLocaleTimeString();
-        const dateKey = saleDate.toISOString().slice(0, 10); // YYYY-MM-DD
-
-        if (!salesByDate[dateKey]) salesByDate[dateKey] = 0;
-        salesByDate[dateKey] += rec.total || 0;
-
-        const itemsHtml = (rec.items || []).map(i => `
-            <div class="flex items-center gap-2 py-1">
-                <img src="${i.image || 'https://via.placeholder.com/80'}" alt="${i.brand || ''}" class="sales-history-item-image rounded">
-                <span>${i.brand} ${i.model} ${i.color ? `(${i.color})` : ''} ${i.size ? `Size ${i.size}` : ''} x${i.quantity}</span>
-                <span class="text-gray-500 text-sm ml-auto">$${(i.price * i.quantity).toFixed(2)}</span>
-            </div>
-        `).join('');
-
-        const tr = document.createElement('tr');
-        tr.className = 'border-b border-gray-200 last:border-b-0';
-        tr.innerHTML = `<td class="px-4 py-2">${dateStr} ${timeStr}</td>
-                        <td class="px-4 py-2">${itemsHtml}<br><span class="text-xs text-gray-500">Discount: ${rec.discountPerc || 0}%</span></td>
-                        <td class="px-4 py-2 text-left">${rec.paymentMethod || 'N/A'}</td>
-                        <td class="px-4 py-2 text-right">$${(rec.total || 0).toFixed(2)}</td>`;
-        salesHistoryTableBody.appendChild(tr);
-        dailyTotal += rec.total;
-    });
-
-    // Update sales-by-date summary
-    if (salesSummaryDiv) {
-        salesSummaryDiv.innerHTML = '<h3 class="text-lg font-semibold mb-2">Sales by Date</h3>';
-        Object.keys(salesByDate).sort().forEach(date => {
-            salesSummaryDiv.innerHTML += `<div class="text-sm text-gray-700">${date}: $${salesByDate[date].toFixed(2)}</div>`;
-        });
-    }
-
-    // Calculate monthly total for the current month
-    monthlyTotal = hist.filter(r => r.datetime.startsWith(currentMonthKey)).reduce((sum, r) => sum + (r.total || 0), 0);
-
-    if (dailyTotalDiv) {
-        dailyTotalDiv.textContent = filterDate ? `Total for ${filterDate}: $${dailyTotal.toFixed(2)}` : '';
-    }
-    if (monthlyTotalDiv) {
-        monthlyTotalDiv.textContent = `Total for current month: $${monthlyTotal.toFixed(2)}`;
-    }
-}
-
-// Consolidated renderSalesHistory function
-function renderSalesHistory(filterDate = null){
-    const adjustedDate = filterDate; // This variable was redundant, but kept for consistency with original intent
-    _renderSalesHistory(adjustedDate);
-};
-
-
-/* ---------------------------
-   Add shoe / bag modal logic
-   --------------------------- */
-addShoeBtn.addEventListener('click', ()=> {
-    if (userIsViewer()) { alert('You do not have permission to add products.'); return; }
-    addShoeForm.reset();
-    addShoeForm.removeAttribute('data-edit-id');
-    document.querySelector('#add-shoe-form button[type="submit"]').textContent = 'Add Shoe';
-    shoeImagePreview.classList.add('hidden');
-    shoeImagePreview.src = '';
-    shoeImageFile.value = '';
-    shoeImageUrl.value = '';
-    shoeImageFile.disabled = false;
-    shoeImageUrl.disabled = false;
-    shoeImageNote.textContent = 'editable when adding only';
-    addShoeModal.classList.remove('hidden');
-});
-closeShoeModal.addEventListener('click', ()=> addShoeModal.classList.add('hidden'));
-cancelShoe.addEventListener('click', ()=> addShoeModal.classList.add('hidden'));
-
-addBagBtn.addEventListener('click', ()=> {
-    if (userIsViewer()) { alert('You do not have permission to add products.'); return; }
-    addBagForm.reset();
-    addBagForm.removeAttribute('data-edit-id');
-    document.querySelector('#add-bag-form button[type="submit"]').textContent = 'Add Bag';
-    bagImagePreview.classList.add('hidden');
-    bagImagePreview.src = '';
-    bagImageFile.value = '';
-    bagImageUrl.value = '';
-    bagImageFile.disabled = false;
-    bagImageUrl.disabled = false;
-    bagImageNote.textContent = 'editable when adding only';
-    addBagModal.classList.remove('hidden');
-});
-closeBagModal.addEventListener('click', ()=> addBagModal.classList.add('hidden'));
-cancelBag.addEventListener('click', ()=> addBagModal.classList.add('hidden'));
-
-/* helper to generate unique id */
-function generateNewId(data) {
-    const allIds = [
-        ...(data.shoes || []).map(i => Number(i.id) || 0),
-        ...(data.bags || []).map(i => Number(i.id) || 0)
-    ].filter(n => !isNaN(n));
-    return allIds.length ? Math.max(...allIds) + 1 : 1;
-}
-
-/* Add shoe form submit */
-addShoeForm.addEventListener('submit', function(e){
-    e.preventDefault();
-    const data = getInventoryData();
-    if (!data) return;
-    const isEditing = this.hasAttribute('data-edit-id');
-    const editId = isEditing ? Number(this.getAttribute('data-edit-id')) : null;
-
-    const shoeBrand = document.getElementById('shoe-brand').value.trim();
-    const shoeModel = document.getElementById('shoe-model').value.trim();
-    const shoeColor = document.getElementById('shoe-color').value.trim();
-    const originalPrice = parseFloat(document.getElementById('shoe-original-price').value);
-    const minPrice = parseFloat(document.getElementById('shoe-min-price').value); // Get minPrice
-    const price = parseFloat(document.getElementById('shoe-price').value);
-    const code = document.getElementById('shoe-code').value.trim();
-    const qtyPerSize = parseInt(document.getElementById('shoe-quantity').value, 10);
-    const sizesInput = document.getElementById('shoe-sizes').value.trim();
-    // Allow duplicate sizes: parse raw sizes and count occurrences multiplied by qtyPerSize
-    const sizesRaw = sizesInput.length ? sizesInput.split(',').map(s => parseInt(s.trim())).filter(n => !isNaN(n)) : [];
-    const sizeCounts = {};
-    sizesRaw.forEach(sz => {
-        sizeCounts[sz] = (sizeCounts[sz] || 0) + (Number(qtyPerSize) || 0);
-    });
-    // Unique sizes array (sorted) used for availableSizes
-    const sizesArray = Object.keys(sizeCounts).map(n => parseInt(n)).sort((a,b)=>a-b);
-
-    // Image handling - ONLY accept file/url when adding (not when editing)
-
-    const file = shoeImageFile.files[0];
-    const urlVal = shoeImageUrl.value.trim();
-
-    const createOrUpdate = (imgSrc) => {
-        let stockObj = {};
-        let existingShoe = null;
-
-        if (isEditing && editId != null) {
-            existingShoe = (data.shoes || []).find(s => s.id === editId);
-            if (existingShoe) {
-                stockObj = { ...existingShoe.stock }; // Copy existing stock
-                // Update stock for existing sizes or add new ones
-                sizesArray.forEach(sz => {
-                    const key = `${shoeColor}_${sz}`;
-                    stockObj[key] = (stockObj[key] || 0) + (sizeCounts[sz] || 0); // Add new quantity to existing
-                });
-            }
-        } else {
-            sizesArray.forEach(sz => {
-                const key = `${shoeColor}_${sz}`;
-                stockObj[key] = (stockObj[key] || 0) + (sizeCounts[sz] || 0);
-            });
-        }
-
-        const formData = {
-            brand: shoeBrand,
-            model: shoeModel,
-            color: shoeColor,
-            originalPrice: isNaN(originalPrice) ? 0 : originalPrice,
-            minPrice: isNaN(minPrice) ? 0 : minPrice, // Save minPrice
-            price: isNaN(price) ? 0 : price,
-            code: code,
-            stock: stockObj,
-            availableSizes: sizesArray,
-            availableColors: [shoeColor],
-            // Preserve existing image if editing and no new image is provided
-            image: imgSrc || (existingShoe ? existingShoe.image : 'https://via.placeholder.com/300x200?text=No+Image'),
-            type: 'shoes'
-        };
-
-        if (isEditing && editId != null) {
-            const idx = (data.shoes || []).findIndex(s=>s.id === editId);
-            if (idx > -1) {
-                formData.id = editId;
-                data.shoes[idx] = formData;
-            }
-        } else {
-            formData.id = generateNewId(data);
-            data.shoes = data.shoes || [];
-            data.shoes.push(formData);
-        }
-
-        saveInventoryData(data);
-        addShoeModal.classList.add('hidden');
-        renderInventory();
-    };
-
-    if (!isEditing && file) { // Only process new file if not editing
-        const reader = new FileReader();
-        reader.onload = function(ev) {
-            createOrUpdate(ev.target.result);
-        };
-        reader.readAsDataURL(file);
-    } else if (!isEditing && urlVal) { // Only process new URL if not editing
-        createOrUpdate(urlVal);
-    } else {
-        // If editing, or no new image provided, pass empty string for imgSrc
-        // The createOrUpdate function will then use existingShoe.image
-        createOrUpdate('');
-    }
-});
-
-/* Add bag form submit */
-addBagForm.addEventListener('submit', function(e){
-    e.preventDefault();
-    const data = getInventoryData();
-    if (!data) return;
-    const isEditing = this.hasAttribute('data-edit-id');
-    const editId = isEditing ? Number(this.getAttribute('data-edit-id')) : null;
-
-    const brand = document.getElementById('bag-brand').value.trim();
-    const model = document.getElementById('bag-model').value.trim();
-    const color = document.getElementById('bag-color').value.trim();
-    const originalPrice = parseFloat(document.getElementById('bag-original-price').value);
-    const minPrice = parseFloat(document.getElementById('bag-min-price').value); // Get minPrice
-    const price = parseFloat(document.getElementById('bag-price').value);
-    const qty = parseInt(document.getElementById('bag-quantity').value, 10);
-    const code = document.getElementById('bag-code').value.trim(); // Get bag code
-
-    const file = bagImageFile.files[0];
-    const urlVal = bagImageUrl.value.trim();
-
-    const createOrUpdate = (imgSrc) => {
-        let stockObj = {};
-        let existingBag = null;
-
-        if (isEditing && editId != null) {
-            existingBag = (data.bags || []).find(b => b.id === editId);
-            if (existingBag) {
-                stockObj = { ...existingBag.stock }; // Copy existing stock
-            }
-        }
-        // This line was moved outside the if(existingBag) block
-        stockObj[color] = (stockObj[color] || 0) + qty; // Add new quantity to existing or new color
-
-        const formData = {
-            brand,
-            model,
-            color,
-            originalPrice: isNaN(originalPrice) ? 0 : originalPrice,
-            minPrice: isNaN(minPrice) ? 0 : minPrice, // Save minPrice
-            price: isNaN(price) ? 0 : price,
-            stock: stockObj,
-            availableColors: [color],
-            // Preserve existing image if editing and no new image is provided
-            image: imgSrc || (existingBag ? existingBag.image : 'https://via.placeholder.com/300x200?text=No+Image'),
-            type: 'bags',
-            code: code // Include bag code
-        };
-        if (isEditing && editId != null) {
-            const idx = (data.bags || []).findIndex(b => b.id === editId);
-            if (idx > -1) {
-                formData.id = editId;
-                data.bags[idx] = formData;
-            }
-        } else {
-            formData.id = generateNewId(data);
-            data.bags = data.bags || [];
-            data.bags.push(formData);
-        }
-        saveInventoryData(data);
-        addBagModal.classList.add('hidden');
-        renderInventory();
-    };
-
-    if (!isEditing && file) { // Only process new file if not editing
-        const reader = new FileReader();
-        reader.onload = function(ev) {
-            createOrUpdate(ev.target.result);
-        };
-        reader.readAsDataURL(file);
-    } else if (!isEditing && urlVal) { // Only process new URL if not editing
-        createOrUpdate(urlVal);
-    } else {
-        // If editing, or no new image provided, pass empty string for imgSrc
-        // The createOrUpdate function will then use existingBag.image
-        createOrUpdate('');
-    }
-});
-
-/* ---------------------------
-   Image preview helpers
-   --------------------------- */
-shoeImageFile.addEventListener('change', function(){
-    if (this.files && this.files[0]) {
-        const r = new FileReader();
-        r.onload = (e)=> {
-            shoeImagePreview.src = e.target.result;
-            shoeImagePreview.classList.remove('hidden');
-            shoeImageUrl.value = '';
-        };
-        r.readAsDataURL(this.files[0]);
-    } else {
-        shoeImagePreview.classList.add('hidden'); shoeImagePreview.src = '';
-    }
-});
-shoeImageUrl.addEventListener('input', function(){
-    if (this.value) { shoeImagePreview.src = this.value; shoeImagePreview.classList.remove('hidden'); shoeImageFile.value = ''; }
-    else { shoeImagePreview.classList.add('hidden'); shoeImagePreview.src = ''; }
-});
-bagImageFile.addEventListener('change', function(){
-    if (this.files && this.files[0]) {
-        const r = new FileReader();
-        r.onload = (e)=> { bagImagePreview.src = e.target.result; bagImagePreview.classList.remove('hidden'); bagImageUrl.value = ''; };
-        r.readAsDataURL(this.files[0]);
-    } else { bagImagePreview.classList.add('hidden'); bagImagePreview.src = ''; }
-});
-bagImageUrl.addEventListener('input', function(){
-    if (this.value) { bagImagePreview.src = this.value; bagImagePreview.classList.remove('hidden'); bagImageFile.value = ''; }
-    else { bagImagePreview.classList.add('hidden'); bagImagePreview.src = ''; }
-});
-
-/* ---------------------------
-   Add to Cart modal logic
-   --------------------------- */
-function openAddToCartModal(itemId, itemType) {
-    const data = getInventoryData();
-    if (!data) return;
-    let item = itemType === 'shoes' ? (data.shoes || []).find(s => s.id === itemId) : (data.bags || []).find(b => b.id === itemId);
-    if (!item) { alert('Item not found'); return; }
-
-    currentItemToAdd = item;
-    currentItemType = itemType;
-    addToCartModalTitle.textContent = `Add ${item.brand} ${item.model} to Cart`;
-    sizeColorOptions.innerHTML = '';
-    selectedItemStock.textContent = 'Stock: --';
-    priceOptionsDiv.innerHTML = ''; // Clear previous price options
-    priceOptionsContainer.classList.add('hidden'); // Hide price options by default
-
-    let hasOptions = false;
-    if (itemType === 'shoes') {
-        for (const key in item.stock) {
-            const stockQty = Number(item.stock[key]) || 0;
-            if (stockQty > 0) {
-                const [color, size] = key.split('_');
-                const rid = `opt-${key.replace(/\s+/g,'-')}`;
-                sizeColorOptions.innerHTML += `
-                    <div class="flex items-center mb-2">
-                        <input type="radio" id="${rid}" name="item-option" value="${key}" class="mr-2" required>
-                        <label for="${rid}" class="text-gray-700">${color} - Size ${size} (Stock: ${stockQty})</label>
-                    </div>
-                `;
-                hasOptions = true;
-            }
-        }
-    } else { // bags
-        for (const colorKey in item.stock) {
-            const stockQty = Number(item.stock[colorKey]) || 0;
-            if (stockQty > 0) {
-                const rid = `opt-${colorKey.replace(/\s+/g,'-')}`;
-                sizeColorOptions.innerHTML += `
-                    <div class="flex items-center mb-2">
-                        <input type="radio" id="${rid}" name="item-option" value="${colorKey}" class="mr-2" required>
-                        <label for="${rid}" class="text-gray-700">${colorKey} (Stock: ${stockQty})</label>
-                    </div>
-                `;
-                hasOptions = true;
-            }
-        }
-    }
-
-    document.querySelector('#add-to-cart-form button[type="submit"]').disabled = !hasOptions;
-
-    // update stock label and show price options on change
-    const radioButtons = sizeColorOptions.querySelectorAll('input[name="item-option"]');
-    radioButtons.forEach(radio => {
-        radio.addEventListener('change', (e) => {
-            const v = e.target.value;
-            selectedItemStock.textContent = `Stock: ${Number(currentItemToAdd.stock[v] || 0)}`;
-
-            // Generate price options
-            priceOptionsDiv.innerHTML = `
-                <div class="flex items-center">
-                    <input type="radio" id="price-choice-0" name="sold-price" value="${currentItemToAdd.minPrice.toFixed(2)}" class="mr-2" required checked>
-                    <label for="price-choice-0" class="text-gray-700">Minimum: ${currentItemToAdd.minPrice.toFixed(2)}</label>
-                </div>
-                <div class="flex items-center">
-                    <input type="radio" id="price-choice-1" name="sold-price" value="${currentItemToAdd.price.toFixed(2)}" class="mr-2" required>
-                    <label for="price-choice-1" class="text-gray-700">Regular: ${currentItemToAdd.price.toFixed(2)}</label>
-                </div>
-            `;
-            priceOptionsContainer.classList.remove('hidden'); // Show price options
-        });
-    });
-
-
-    addToCartModal.classList.remove('hidden');
-}
-
-closeAddToCartModal.addEventListener('click', ()=> { addToCartModal.classList.add('hidden'); addToCartForm.reset(); currentItemToAdd = null; currentItemType = null; });
-cancelAddToCart.addEventListener('click', ()=> { addToCartModal.classList.add('hidden'); addToCartForm.reset(); currentItemToAdd = null; currentItemType = null; });
-
-// Consolidated addToCartForm submit listener
-addToCartForm.addEventListener('submit', (e)=>{
-    e.preventDefault();
-    const selOption = document.querySelector('input[name="item-option"]:checked');
-    const selPrice = document.querySelector('input[name="sold-price"]:checked');
-
-    if (!selOption) { alert('Please select an item option (size/color).'); return; }
-    if (!selPrice) { alert('Please select a sold price.'); return; }
-
-    const soldPrice = parseFloat(selPrice.value);
-    const selectedValue = selOption.value;
-    const data = getInventoryData();
-    const cart = data.cart || [];
-
-    let color = null, size = null, stockKey = selectedValue;
-    if (currentItemType === 'shoes') {
-        const parts = selectedValue.split('_');
-        color = parts[0];
-        size = Number(parts[1]);
-    } else { // bags
-        color = selectedValue;
-    }
-
-    const currentStock = Number(currentItemToAdd.stock[stockKey] || 0);
-    if (currentStock <= 0) { alert('Out of stock'); return; }
-
-    const cartItem = {
-        id: currentItemToAdd.id,
-        brand: currentItemToAdd.brand,
-        model: currentItemToAdd.model,
-        price: soldPrice, // Use the chosen soldPrice
-        image: currentItemToAdd.image,
-        type: currentItemType,
-        color,
-        size,
-        quantity: 1
-    };
-
-    const idx = cart.findIndex(ci => ci.id === cartItem.id && ci.color === cartItem.color && (ci.size || null) === (cartItem.size || null));
-    if (idx > -1) {
-        // Check if adding another quantity exceeds stock
-        if (cart[idx].quantity + 1 > currentStock) {
-            alert('Cannot add more, not enough stock.');
-            return;
-        }
-        cart[idx].quantity += 1;
-    }
-    else {
-        cart.push(cartItem);
-    }
-
-    // decrement stock in inventory
-    if (currentItemType === 'shoes') {
-        const sidx = (data.shoes || []).findIndex(s => s.id === currentItemToAdd.id);
-        if (sidx > -1) data.shoes[sidx].stock[stockKey] = (Number(data.shoes[sidx].stock[stockKey]) || 0) - 1;
-    } else { // bags
-        const bidx = (data.bags || []).findIndex(b => b.id === currentItemToAdd.id);
-        if (bidx > -1) data.bags[bidx].stock[stockKey] = (Number(data.bags[bidx].stock[stockKey]) || 0) - 1;
-    }
-
-    data.cart = cart;
-    saveInventoryData(data);
-    alert('Item added to cart');
-    addToCartModal.classList.add('hidden');
-    addToCartForm.reset();
-    currentItemToAdd = null; currentItemType = null;
-    renderInventory();
-    updateCartCount();
-});
-
-/* ---------------------------
-   Login, register, navigation
-   --------------------------- */
-function showView(viewId) {
-    loginView.classList.add('hidden');
-    inventoryView.classList.add('hidden');
-    cartView.classList.add('hidden');
-    salesHistoryView.classList.add('hidden');
-    registerModal.classList.add('hidden'); // Ensure register modal is hidden
-    createLimitedModal.classList.add('hidden'); // Ensure limited creation modal is hidden
-    createAdminModal.classList.add('hidden'); // Ensure new admin creation modal is hidden
-
+  }
+
+  // Ensure structure
+  function normalizeData(data) {
+    const d = data || {};
+    if (!Array.isArray(d.admins)) d.admins = [];
+    if (!d.inventory) d.inventory = { shoes: [], bags: [] };
+    if (!Array.isArray(d.inventory.shoes)) d.inventory.shoes = [];
+    if (!Array.isArray(d.inventory.bags)) d.inventory.bags = [];
+    if (!Array.isArray(d.sales)) d.sales = [];
+    return d;
+  }
+
+  // ---------- Utility ----------
+  function showView(viewId) {
+    [loginView, inventoryView, cartView, salesHistoryView].forEach(v => v.classList.add('hidden'));
     document.getElementById(viewId).classList.remove('hidden');
-}
+  }
 
-function applyRoleRestrictions() {
-    if (currentUser && currentUser.role === 'viewer') {
-        adminActions.classList.add('hidden'); // Hide Add Shoe/Bag/Reset Data buttons
-        document.querySelectorAll('.edit-item-btn').forEach(btn => btn.classList.add('hidden'));
-        document.querySelectorAll('.delete-item-btn').forEach(btn => btn.classList.add('hidden'));
-        createLimitedAccountBtn.classList.add('hidden'); // Hide create limited account button for viewers
-        createAdminAccountBtn.classList.add('hidden'); // Hide create admin account button for viewers
-    } else { // Admin
-        adminActions.classList.remove('hidden');
-        document.querySelectorAll('.edit-item-btn').forEach(btn => btn.classList.remove('hidden'));
-        document.querySelectorAll('.delete-item-btn').forEach(btn => btn.classList.remove('hidden'));
-        createLimitedAccountBtn.classList.remove('hidden'); // Show create limited account button for admins
-        createAdminAccountBtn.classList.remove('hidden'); // Show create admin account button for admins
+  function applyRoleRestrictions() {
+    const adminActions = document.getElementById('admin-actions');
+    if (!currentUser || currentUser.role === 'viewer') {
+      adminActions.classList.add('hidden');
+      createLimitedAccountBtn.classList.add('hidden');
+      createAdminAccountBtn.classList.add('hidden');
+    } else {
+      adminActions.classList.remove('hidden');
+      createLimitedAccountBtn.classList.remove('hidden');
+      createAdminAccountBtn.classList.remove('hidden');
     }
-}
+  }
 
-loginForm.addEventListener('submit', function(e){
+  function uid() {
+    return String(Date.now()) + "-" + Math.random().toString(36).slice(2, 8);
+  }
+
+  function money(n) {
+    return (Number(n) || 0).toFixed(2);
+  }
+
+  function fileToDataURL(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  // ---------- Navbar/filter toggles ----------
+  if (navbarToggler && navbarItems) {
+    navbarToggler.addEventListener('click', () => {
+      navbarItems.classList.toggle('active');
+    });
+  }
+
+  if (filterToggler && filterControls) {
+    filterToggler.addEventListener('click', () => {
+      filterControls.classList.toggle('active');
+    });
+  }
+
+  // ---------- Auth ----------
+  loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const u = document.getElementById('username').value.trim();
     const p = document.getElementById('password').value.trim();
-    if (!u || !p) { alert('Enter username and password'); return; }
-    const data = getInventoryData();
+    if (!u || !p) return alert('Enter username and password');
+    const data = normalizeData(await getData());
     if (!data) return;
-    const admin = (data.admins || []).find(a => a.username === u && a.password === p);
-    if (admin) {
-        currentUser = { username: u, role: admin.role };
-        localStorage.setItem('currentUser', JSON.stringify(currentUser));
-        alert('Login successful as ' + u + ' (' + admin.role + ')');
-        showView('inventory-view');
-        renderInventory();
-        applyRoleRestrictions();
-    } else {
-        alert('Invalid username or password.');
-    }
-});
 
-logoutBtn.addEventListener('click', function() {
+    const account = (data.admins || []).find(a => a.username === u && a.password === p);
+    if (account) {
+      currentUser = { username: u, role: account.role };
+      localStorage.setItem('currentUser', JSON.stringify(currentUser));
+      currentData = data;
+      showInventory();
+      applyRoleRestrictions();
+    } else {
+      alert('Invalid username or password.');
+    }
+  });
+
+  logoutBtn.addEventListener('click', () => {
     currentUser = null;
     localStorage.removeItem('currentUser');
-    alert('Logged out.');
     showView('login-view');
-    // Clear any sensitive data or reset UI if necessary
-    checkAdminAccountExists(); // Re-check and show/hide register button on logout
-});
+    checkAdminAccountExists();
+  });
 
-registerBtn.addEventListener('click', () => {
+  registerBtn.addEventListener('click', () => {
     registerModal.classList.remove('hidden');
     registerForm.reset();
-});
+  });
+  cancelRegister.addEventListener('click', () => registerModal.classList.add('hidden'));
 
-cancelRegister.addEventListener('click', () => {
-    registerModal.classList.add('hidden');
-});
-
-registerForm.addEventListener('submit', function(e) {
+  registerForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const newUsername = document.getElementById('new-username').value.trim();
     const newPassword = document.getElementById('new-password').value.trim();
+    if (!newUsername || !newPassword) return alert('Enter both username and password.');
 
-    if (!newUsername || !newPassword) {
-        alert('Please enter both username and password.');
-        return;
-    }
-
-    const data = getInventoryData();
+    const data = normalizeData(await getData());
     if (!data) return;
+    if ((data.admins || []).some(a => a.username === newUsername)) return alert('Username already exists.');
 
-    if ((data.admins || []).some(a => a.username === newUsername)) {
-        alert('Username already exists. Please choose a different one.');
-        return;
-    }
-
-    data.admins = data.admins || [];
     data.admins.push({ username: newUsername, password: newPassword, role: 'admin' });
-    saveInventoryData(data);
-    alert('Admin account created successfully!');
-    registerModal.classList.add('hidden');
-    loginForm.reset(); // Clear login form
-    checkAdminAccountExists(); // Re-check and hide register button after creating an admin
-});
-
-// Limited Account Creation Logic
-createLimitedAccountBtn.addEventListener('click', () => {
-    if (currentUser && currentUser.role === 'admin') {
-        createLimitedModal.classList.remove('hidden');
-        createLimitedForm.reset();
-    } else {
-        alert('You do not have permission to create limited accounts.');
+    if (await putData(data)) {
+      alert('Admin account created!');
+      registerModal.classList.add('hidden');
+      checkAdminAccountExists();
     }
-});
+  });
 
-cancelLimitedCreationBtn.addEventListener('click', () => {
-    createLimitedModal.classList.add('hidden');
-});
-
-createLimitedForm.addEventListener('submit', function(e) {
-    e.preventDefault();
-    const limitedUsername = document.getElementById('limited-username').value.trim();
-    const limitedPassword = document.getElementById('limited-password').value.trim();
-
-    if (!limitedUsername || !limitedPassword) {
-        alert('Please enter both username and password for the limited account.');
-        return;
-    }
-
-    const data = getInventoryData();
-    if (!data) return;
-
-    if ((data.admins || []).some(a => a.username === limitedUsername)) {
-        alert('Username already exists. Please choose a different one.');
-        return;
-    }
-
-    data.admins = data.admins || [];
-    data.admins.push({ username: limitedUsername, password: limitedPassword, role: 'viewer' }); // Assign 'viewer' role
-    saveInventoryData(data);
-    alert('Limited account created successfully!');
-    createLimitedModal.classList.add('hidden');
+  createLimitedAccountBtn.addEventListener('click', () => {
+    if (currentUser?.role !== 'admin') return alert('No permission.');
+    createLimitedModal.classList.remove('hidden');
     createLimitedForm.reset();
-});
-
-// New Admin Account Creation Logic (for logged-in admin)
-createAdminAccountBtn.addEventListener('click', () => {
-    if (currentUser && currentUser.role === 'admin') {
-        createAdminModal.classList.remove('hidden');
-        createAdminForm.reset();
-    } else {
-        alert('You do not have permission to create admin accounts.');
-    }
-});
-
-cancelAdminCreationBtn.addEventListener('click', () => {
-    createAdminModal.classList.add('hidden');
-});
-
-createAdminForm.addEventListener('submit', function(e) {
+  });
+  cancelLimitedCreation.addEventListener('click', () => createLimitedModal.classList.add('hidden'));
+  createLimitedForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const adminUsername = document.getElementById('admin-username').value.trim();
-    const adminPassword = document.getElementById('admin-password').value.trim();
+    if (currentUser?.role !== 'admin') return alert('No permission.');
+    const u = document.getElementById('limited-username').value.trim();
+    const p = document.getElementById('limited-password').value.trim();
+    if (!u || !p) return alert('Enter both username and password.');
 
-    if (!adminUsername || !adminPassword) {
-        alert('Please enter both username and password for the new admin account.');
-        return;
+    const data = normalizeData(await getData());
+    if (!data) return;
+    if ((data.admins || []).some(a => a.username === u)) return alert('Username exists.');
+    data.admins.push({ username: u, password: p, role: 'viewer' });
+    if (await putData(data)) {
+      alert('Limited account created.');
+      createLimitedModal.classList.add('hidden');
+    }
+  });
+
+  createAdminAccountBtn.addEventListener('click', () => {
+    if (currentUser?.role !== 'admin') return alert('No permission.');
+    createAdminModal.classList.remove('hidden');
+    createAdminForm.reset();
+  });
+  cancelAdminCreation.addEventListener('click', () => createAdminModal.classList.add('hidden'));
+  createAdminForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (currentUser?.role !== 'admin') return alert('No permission.');
+    const u = document.getElementById('admin-username').value.trim();
+    const p = document.getElementById('admin-password').value.trim();
+    if (!u || !p) return alert('Enter both username and password.');
+
+    const data = normalizeData(await getData());
+    if (!data) return;
+    if ((data.admins || []).some(a => a.username === u)) return alert('Username exists.');
+    data.admins.push({ username: u, password: p, role: 'admin' });
+    if (await putData(data)) {
+      alert('New admin account created.');
+      createAdminModal.classList.add('hidden');
+    }
+  });
+
+  async function checkAdminAccountExists() {
+    const data = normalizeData(await getData());
+    const exists = (data.admins || []).some(a => a.role === 'admin');
+    if (exists) registerBtn.classList.add('hidden'); else registerBtn.classList.remove('hidden');
+  }
+  checkAdminAccountExists();
+
+  // ---------- Inventory Rendering & Filters ----------
+  function buildInventoryArray(data) {
+    const shoes = (data.inventory?.shoes || []).map(s => ({...s, _type: 'shoes'}));
+    const bags  = (data.inventory?.bags  || []).map(b => ({...b,  _type: 'bags'}));
+    return [...shoes, ...bags];
+  }
+
+  function applyFilters(items) {
+    let out = items.slice();
+    const t = filterType.value;
+    const b = filterBrand.value.toLowerCase();
+    const c = filterColor.value.toLowerCase();
+    const minP = parseFloat(filterMinPrice.value || ""); // NaN if empty
+    const maxP = parseFloat(filterMaxPrice.value || "");
+    const code = filterCode.value.trim().toLowerCase();
+
+    if (t) out = out.filter(i => i._type === t);
+    if (b) out = out.filter(i => (i.brand || "").toLowerCase() === b);
+    if (c) out = out.filter(i => (i.color || "").toLowerCase() === c);
+    if (!isNaN(minP)) out = out.filter(i => Number(i.price) >= minP);
+    if (!isNaN(maxP)) out = out.filter(i => Number(i.price) <= maxP);
+    if (code) out = out.filter(i => (i.code || "").toLowerCase().includes(code));
+    return out;
+  }
+
+  function refreshFilterOptions(items) {
+    const brands = Array.from(new Set(items.map(i => (i.brand || "").trim()).filter(Boolean))).sort();
+    const colors = Array.from(new Set(items.map(i => (i.color || "").trim()).filter(Boolean))).sort();
+    // Rebuild selects (keep "All" first option)
+    filterBrand.innerHTML = '<option value="">All</option>' + brands.map(v => `<option value="${v}">${v}</option>`).join("");
+    filterColor.innerHTML = '<option value="">All</option>' + colors.map(v => `<option value="${v}">${v}</option>`).join("");
+  }
+
+  function renderInventory(data) {
+    const all = buildInventoryArray(data);
+    refreshFilterOptions(all);
+    const filtered = applyFilters(all);
+    inventoryList.innerHTML = "";
+    if (!filtered.length) {
+      inventoryList.innerHTML = '<p class="text-gray-500">No products found.</p>';
+      return;
+    }
+    filtered.forEach(item => {
+      const card = document.createElement('div');
+      card.className = "product-card bg-white rounded-lg shadow-sm flex flex-col";
+      const img = item.image || (item._type === "shoes" ? shoeImgPreview?.src : bagImgPreview?.src);
+      const qty = item._type === "shoes"
+        ? Object.values(item.sizesStock || {}).reduce((a,b)=>a+Number(b||0),0)
+        : Number(item.quantity || 0);
+
+      card.innerHTML = `
+        <img src="${img || ''}" alt="product" class="w-full object-cover rounded-md mb-2 ${img ? '' : 'bg-gray-100'}">
+        <div class="flex-1">
+          <div class="flex justify-between items-start">
+            <h4 class="font-medium">${item.brand || ''} ${item.model || ''}</h4>
+            <span class="text-2xs text-gray-500">${item.code || ''}</span>
+          </div>
+          <p class="text-xs text-gray-600 capitalize">${item._type.slice(0,-1)} • ${item.color || ''}</p>
+          <div class="mt-1 text-xs text-gray-500">Stock: ${qty}</div>
+          <div class="mt-1 font-bold text-sm">$${money(item.price)}</div>
+        </div>
+        <div class="mt-2 flex gap-2">
+          <button class="add-to-cart-btn bg-indigo-600 hover:bg-indigo-700 text-white px-2 py-1 rounded-md text-xs flex-1">Add to Cart</button>
+          ${currentUser?.role === 'admin' ? `
+            <button class="edit-item-btn border border-gray-300 rounded-md px-2 py-1 text-xs">Edit</button>
+            <button class="delete-item-btn bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded-md text-xs">Delete</button>
+          ` : ''}
+        </div>
+      `;
+
+      // Add to cart
+      const addBtn = card.querySelector('.add-to-cart-btn');
+      addBtn.addEventListener('click', () => openAddToCart(item));
+
+      // Edit button
+      const editBtn = card.querySelector('.edit-item-btn');
+      if (editBtn) editBtn.addEventListener('click', () => {
+        if (item._type === 'shoes') {
+          openShoeModalForEdit(item);
+        } else {
+          openBagModalForEdit(item);
+        }
+      });
+
+      // Delete button
+      const deleteBtn = card.querySelector('.delete-item-btn');
+      if (deleteBtn) deleteBtn.addEventListener('click', () => {
+        deleteItem(item._type, item.id);
+      });
+
+      inventoryList.appendChild(card);
+    });
+  }
+
+  async function showInventory() {
+    currentData = normalizeData(await getData());
+    if (!currentData) return;
+    showView('inventory-view');
+    renderInventory(currentData);
+  }
+
+  [filterType, filterBrand, filterColor, filterMinPrice, filterMaxPrice, filterCode].forEach(el => {
+    el.addEventListener('input', () => renderInventory(currentData || {inventory:{shoes:[],bags:[]}}));
+  });
+  resetFiltersBtn.addEventListener('click', () => {
+    filterType.value = "";
+    filterBrand.value = "";
+    filterColor.value = "";
+    filterMinPrice.value = "";
+    filterMaxPrice.value = "";
+    filterCode.value = "";
+    renderInventory(currentData || {inventory:{shoes:[],bags:[]}});
+  });
+
+  // ---------- Add / Edit Items ----------
+  function openShoeModalForEdit(item) {
+    // Populate fields
+    shoeBrand.value = item.brand || "";
+    shoeModel.value = item.model || "";
+    shoeColor.value = item.color || "";
+    shoeOriginalPrice.value = item.originalPrice || "";
+    shoeMinPrice.value = item.minPrice || "";
+    shoePrice.value = item.price || "";
+    shoeCode.value = item.code || "";
+    // compute per-size qty assumption: sizesStock map
+    const sizes = Object.keys(item.sizesStock || {});
+    shoeSizes.value = sizes.join(',');
+    shoeQuantity.value = sizes.length ? item.sizesStock[sizes[0]] : 0; // default display only
+
+    shoeImgPreview.src = item.image || "";
+    if (shoeImgPreview.src) shoeImgPreview.classList.remove('hidden'); else shoeImgPreview.classList.add('hidden');
+    shoeImgFile.value = ''; // Clear file input
+    shoeImgUrl.value = item.image || ''; // Set URL input
+
+    // Hide the "editable when adding only" note and disable image inputs for editing
+    shoeImageNote.classList.add('hidden');
+    shoeImgFile.disabled = true;
+    shoeImgUrl.disabled = true;
+
+
+    addShoeForm.dataset.editId = item.id;
+    addShoeModal.classList.remove('hidden');
+  }
+
+  function openBagModalForEdit(item) {
+    bagBrand.value = item.brand || "";
+    bagModel.value = item.model || "";
+    bagColor.value = item.color || "";
+    bagOriginalPrice.value = item.originalPrice || "";
+    bagMinPrice.value = item.minPrice || "";
+    bagPrice.value = item.price || "";
+    bagQuantity.value = item.quantity || "";
+    bagCode.value = item.code || "";
+    bagImgPreview.src = item.image || "";
+    if (bagImgPreview.src) bagImgPreview.classList.remove('hidden'); else bagImgPreview.classList.add('hidden');
+    bagImgFile.value = ''; // Clear file input
+    bagImgUrl.value = item.image || ''; // Set URL input
+
+    // Hide the "editable when adding only" note and disable image inputs for editing
+    bagImageNote.classList.add('hidden');
+    bagImgFile.disabled = true;
+    bagImgUrl.disabled = true;
+
+    addBagForm.dataset.editId = item.id;
+    addBagModal.classList.remove('hidden');
+  }
+
+  addShoeBtn.addEventListener('click', () => {
+    if (currentUser?.role !== 'admin') return alert('Only admins can add items.');
+    addShoeForm.reset();
+    delete addShoeForm.dataset.editId;
+    shoeImgPreview.classList.add('hidden');
+    shoeImgFile.value = ''; // Clear file input
+    shoeImgUrl.value = ''; // Clear URL input
+    shoeImageNote.classList.remove('hidden'); // Show note for adding
+    shoeImgFile.disabled = false; // Enable inputs for adding
+    shoeImgUrl.disabled = false;
+    addShoeModal.classList.remove('hidden');
+  });
+  addBagBtn.addEventListener('click', () => {
+    if (currentUser?.role !== 'admin') return alert('Only admins can add items.');
+    addBagForm.reset();
+    delete addBagForm.dataset.editId;
+    bagImgPreview.classList.add('hidden');
+    bagImgFile.value = ''; // Clear file input
+    bagImgUrl.value = ''; // Clear URL input
+    bagImageNote.classList.remove('hidden'); // Show note for adding
+    bagImgFile.disabled = false; // Enable inputs for adding
+    bagImgUrl.disabled = false;
+    addBagModal.classList.remove('hidden');
+  });
+  [closeShoeModal, cancelShoeBtn].forEach(btn => btn.addEventListener('click', () => addShoeModal.classList.add('hidden')));
+  [closeBagModal, cancelBagBtn].forEach(btn => btn.addEventListener('click', () => addBagModal.classList.add('hidden')));
+
+  // live previews
+  shoeImgFile.addEventListener('change', async () => {
+    if (shoeImgFile.files && shoeImgFile.files[0]) {
+      shoeImgPreview.src = await fileToDataURL(shoeImgFile.files[0]);
+      shoeImgPreview.classList.remove('hidden');
+      shoeImgUrl.value = ''; // Clear URL input if file is selected
+    }
+  });
+  shoeImgUrl.addEventListener('input', () => {
+    if (shoeImgUrl.value.trim()) {
+      shoeImgPreview.src = shoeImgUrl.value.trim();
+      shoeImgPreview.classList.remove('hidden');
+      shoeImgFile.value = ''; // Clear file input if URL is entered
+    }
+  });
+  bagImgFile.addEventListener('change', async () => {
+    if (bagImgFile.files && bagImgFile.files[0]) {
+      bagImgPreview.src = await fileToDataURL(bagImgFile.files[0]);
+      bagImgPreview.classList.remove('hidden');
+      bagImgUrl.value = ''; // Clear URL input if file is selected
+    }
+  });
+  bagImgUrl.addEventListener('input', () => {
+    if (bagImgUrl.value.trim()) {
+      bagImgPreview.src = bagImgUrl.value.trim();
+      bagImgPreview.classList.remove('hidden');
+      bagImgFile.value = ''; // Clear file input if URL is entered
+    }
+  });
+
+  addShoeForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (currentUser?.role !== 'admin') return alert('Only admins can add items.');
+    const img = shoeImgPreview && !shoeImgPreview.classList.contains('hidden') ? shoeImgPreview.src : (shoeImgUrl.value.trim() || '');
+
+    const sizesArr = shoeSizes.value.split(',').map(s => s.trim()).filter(Boolean);
+    const perSizeQty = Number(shoeQuantity.value || 0);
+    const sizesStock = {};
+    sizesArr.forEach(s => sizesStock[s] = perSizeQty);
+
+    const newItem = {
+      id: addShoeForm.dataset.editId || uid(),
+      brand: shoeBrand.value.trim(),
+      model: shoeModel.value.trim(),
+      color: shoeColor.value.trim(),
+      originalPrice: Number(shoeOriginalPrice.value || 0),
+      minPrice: Number(shoeMinPrice.value || 0),
+      price: Number(shoePrice.value || 0),
+      code: shoeCode.value.trim(),
+      sizesStock,
+      image: img
+    };
+
+    const data = normalizeData(await getData());
+    if (!data) return;
+    const idx = data.inventory.shoes.findIndex(x => x.id === newItem.id);
+    if (idx >= 0) data.inventory.shoes[idx] = newItem;
+    else data.inventory.shoes.push(newItem);
+
+    if (await putData(data)) {
+      addShoeModal.classList.add('hidden');
+      currentData = data;
+      renderInventory(currentData);
+    }
+  });
+
+  addBagForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (currentUser?.role !== 'admin') return alert('Only admins can add items.');
+    const img = bagImgPreview && !bagImgPreview.classList.contains('hidden') ? bagImgPreview.src : (bagImgUrl.value.trim() || '');
+
+    const newItem = {
+      id: addBagForm.dataset.editId || uid(),
+      brand: bagBrand.value.trim(),
+      model: bagModel.value.trim(),
+      color: bagColor.value.trim(),
+      originalPrice: Number(bagOriginalPrice.value || 0),
+      minPrice: Number(bagMinPrice.value || 0),
+      price: Number(bagPrice.value || 0),
+      quantity: Number(bagQuantity.value || 0),
+      code: bagCode.value.trim(),
+      image: img
+    };
+
+    const data = normalizeData(await getData());
+    if (!data) return;
+    const idx = data.inventory.bags.findIndex(x => x.id === newItem.id);
+    if (idx >= 0) data.inventory.bags[idx] = newItem;
+    else data.inventory.bags.push(newItem);
+
+    if (await putData(data)) {
+      addBagModal.classList.add('hidden');
+      currentData = data;
+      renderInventory(currentData);
+    }
+  });
+
+  // ---------- Delete Item Functionality ----------
+  async function deleteItem(type, id) {
+    if (currentUser?.role !== 'admin') {
+      alert('Only admins can delete items.');
+      return;
     }
 
-    const data = getInventoryData();
+    if (!confirm('Are you sure you want to delete this item? This action cannot be undone.')) {
+      return;
+    }
+
+    const data = normalizeData(await getData());
     if (!data) return;
 
-    if ((data.admins || []).some(a => a.username === adminUsername)) {
-        alert('Username already exists. Please choose a different one.');
-        return;
+    if (type === 'shoes') {
+      data.inventory.shoes = data.inventory.shoes.filter(item => item.id !== id);
+    } else if (type === 'bags') {
+      data.inventory.bags = data.inventory.bags.filter(item => item.id !== id);
     }
 
-    data.admins = data.admins || [];
-    data.admins.push({ username: adminUsername, password: adminPassword, role: 'admin' }); // Assign 'admin' role
-    saveInventoryData(data);
-    alert('New admin account created successfully!');
-    createAdminModal.classList.add('hidden');
-    createAdminForm.reset();
+    if (await putData(data)) {
+      alert('Item deleted successfully.');
+      currentData = data;
+      renderInventory(currentData);
+    }
+  }
+
+  
+
+// ---------- Delete Account Feature ----------
+const deleteAccountBtn = document.getElementById('delete-account-btn');
+const deleteAccountModal = document.getElementById('delete-account-modal');
+const deleteAccountForm = document.getElementById('delete-account-form');
+const cancelDelete = document.getElementById('cancel-delete');
+
+deleteAccountBtn.addEventListener('click', () => {
+  if (currentUser?.role !== 'admin') return alert('No permission.');
+  deleteAccountModal.classList.remove('hidden');
+  deleteAccountForm.reset();
 });
 
-
-viewCartBtn.addEventListener('click', () => {
-    showView('cart-view');
-    renderCart();
+cancelDelete.addEventListener('click', () => {
+  deleteAccountModal.classList.add('hidden');
 });
 
-backToInventoryBtn.addEventListener('click', () => {
-    showView('inventory-view');
-    renderInventory();
+deleteAccountForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const username = document.getElementById('delete-username').value.trim();
+  if (!username) return alert('Enter a username.');
+
+  const data = normalizeData(await getData());
+  if (!data) return;
+  const before = data.admins.length;
+  data.admins = data.admins.filter(acc => acc.username !== username);
+  if (data.admins.length === before) {
+    alert('No account found with that username.');
+    return;
+  }
+  if (await putData(data)) {
+    alert('Account deleted successfully.');
+    deleteAccountModal.classList.add('hidden');
+    currentData = data;
+  }
 });
 
-salesHistoryBtn.addEventListener('click', () => {
-    showView('sales-history-view');
-    renderSalesHistory();
-});
+  // ---------- Add to Cart flow ----------
+  function openAddToCart(item) {
+    selectedItemForCart = item;
+    addToCartModalTitle.textContent = `Add to Cart — ${item.brand || ''} ${item.model || ''}`;
+    sizeColorOptions.innerHTML = "";
+    priceOptions.innerHTML = "";
 
-backToInventoryFromHistoryBtn.addEventListener('click', () => {
-    showView('inventory-view');
-    renderInventory();
-});
+    // Price radio
+    priceOptionsContainer.classList.remove('hidden');
+    const prices = [item.price];
+    if (item.minPrice) prices.push(item.minPrice);
+    // Removed: if (item.originalPrice) prices.push(item.originalPrice); // Only min sales price or sales price
+    const uniq = Array.from(new Set(prices.map(n => Number(n).toFixed(2)))).map(Number);
+    uniq.sort((a,b)=>a-b);
+    uniq.forEach((p,i) => {
+      const id = `price-choice-${i}`;
+      const div = document.createElement('div');
+      div.innerHTML = `<label class="inline-flex items-center gap-2">
+        <input type="radio" name="priceChoice" value="${p}" ${i===0?'checked':''}>
+        <span>$${money(p)}</span>
+      </label>`;
+      priceOptions.appendChild(div);
+    });
 
-// Consolidated checkoutBtn click listener
-checkoutBtn.addEventListener('click', () => {
-    const data = getInventoryData();
-    if (!data || !data.cart || data.cart.length === 0) {
-        alert('Your cart is empty!');
-        return;
+    // Sizes (for shoes) or Quantity for bags
+    if (item._type === 'shoes') {
+      const sizesStock = item.sizesStock || {};
+      Object.keys(sizesStock).forEach((size, idx) => {
+        const inStock = Number(sizesStock[size] || 0);
+        const id = `size-choice-${size}`;
+        const disabled = inStock <= 0 ? 'disabled' : '';
+        const li = document.createElement('div');
+        li.className = "flex items-center justify-between border p-2 rounded-md";
+        li.innerHTML = `
+          <label class="inline-flex items-center gap-2">
+            <input type="radio" name="sizeChoice" value="${size}" ${idx===0 && inStock>0 ? 'checked' : ''} ${disabled}>
+            <span>Size ${size}</span>
+          </label>
+          <span class="text-xs text-gray-500">Stock: ${inStock}</span>
+        `;
+        sizeColorOptions.appendChild(li);
+      });
+      selectedItemStockEl.textContent = `Stock: ${Object.values(sizesStock).reduce((a,b)=>a+Number(b||0),0)}`;
+    } else {
+      const qty = Number(item.quantity || 0);
+      selectedItemStockEl.textContent = `Stock: ${qty}`;
+      const id = "bag-qty-one";
+      const div = document.createElement('div');
+      div.className = "flex items-center justify-between border p-2 rounded-md";
+      div.innerHTML = `
+        <label class="inline-flex items-center gap-2">
+          <input type="radio" name="bagOne" value="1" ${qty>0 ? 'checked' : 'disabled'}>
+          <span>Qty 1</span>
+        </label>
+        <span class="text-xs text-gray-500">Available: ${qty}</span>
+      `;
+      sizeColorOptions.appendChild(div);
     }
 
-    const cartTotal = parseFloat(cartTotalSpan.textContent);
-    const discountPerc = parseFloat(checkoutDiscountInput.value || 0);
-    const paymentMethod = document.getElementById('payment-method').value; // Get the selected payment method
+    addToCartModal.classList.remove('hidden');
+  }
 
-    addSaleRecord(data.cart, cartTotal, discountPerc, paymentMethod); // Pass paymentMethod to addSaleRecord
-    data.cart = []; // Clear cart after checkout
-    saveInventoryData(data);
-    alert('Checkout successful! Sales recorded.');
-    renderCart(); // Re-render cart (will show empty)
+  [closeAddToCartModalBtn, cancelAddToCartBtn].forEach(btn => btn.addEventListener('click', () => {
+    addToCartModal.classList.add('hidden');
+    selectedItemForCart = null;
+  }));
+
+  addToCartForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!selectedItemForCart) return;
+
+    const selectedPrice = Number((document.querySelector('input[name="priceChoice"]:checked')?.value) || selectedItemForCart.price);
+    if (selectedItemForCart._type === 'shoes') {
+      const size = document.querySelector('input[name="sizeChoice"]:checked')?.value;
+      if (!size) return alert('Choose a size.');
+      cart.push({
+        type: 'shoes',
+        id: selectedItemForCart.id,
+        brand: selectedItemForCart.brand,
+        model: selectedItemForCart.model,
+        code: selectedItemForCart.code,
+        price: selectedPrice,
+        size,
+        image: selectedItemForCart.image || ''
+      });
+    } else {
+      cart.push({
+        type: 'bags',
+        id: selectedItemForCart.id,
+        brand: selectedItemForCart.brand,
+        model: selectedItemForCart.model,
+        code: selectedItemForCart.code,
+        price: selectedPrice,
+        qty: 1,
+        image: selectedItemForCart.image || ''
+      });
+    }
     updateCartCount();
-    showView('inventory-view'); // Go back to inventory
-    renderInventory(); // Re-render inventory to reflect stock changes
-});
+    addToCartModal.classList.add('hidden');
+    selectedItemForCart = null;
+  });
 
-checkoutDiscountInput.addEventListener('input', renderCart); // Recalculate total on discount change
+  function updateCartCount() {
+    cartCountEl.textContent = String(cart.length);
+  }
 
-clearStorageBtn.addEventListener('click', () => {
-    if (confirm('Are you sure you want to reset all data (inventory, sales, users)? This cannot be undone.')) {
-        localStorage.clear();
-        location.reload(); // Reload page to re-initialize with sample data
+  // ---------- Cart View & Checkout ----------
+  viewCartBtn.addEventListener('click', () => {
+    renderCart();
+    showView('cart-view');
+  });
+  backToInventoryBtn.addEventListener('click', () => showInventory());
+
+  function renderCart() {
+    cartItemsList.innerHTML = "";
+    if (!cart.length) {
+      cartItemsList.innerHTML = '<p class="text-gray-500">Your cart is empty.</p>';
+      cartTotalEl.textContent = "0.00";
+      return;
     }
-});
+    let total = 0;
+    cart.forEach((item, idx) => {
+      total += Number(item.price) * (item.qty || 1);
+      const row = document.createElement('div');
+      row.className = "bg-white rounded-md shadow-sm p-2 flex items-center gap-2 cart-item-row";
+      row.innerHTML = `
+        <img src="${item.image || ''}" class="object-cover rounded-md ${item.image?'':'bg-gray-100'}" alt="">
+        <div class="flex-1">
+          <div class="flex justify-between">
+            <div class="font-semibold text-sm">${item.brand || ''} ${item.model || ''}</div>
+            <button data-idx="${idx}" class="remove-cart-item text-red-600 text-xs">Remove</button>
+          </div>
+          <div class="text-2xs text-gray-500">${item.code || ''} ${item.size ? '• Size ' + item.size : ''}</div>
+          <div class="mt-0.5 font-bold text-sm">$${money(item.price)}</div>
+        </div>
+      `;
+      cartItemsList.appendChild(row);
+    });
+    cartItemsList.querySelectorAll('.remove-cart-item').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const i = Number(btn.dataset.idx);
+        cart.splice(i, 1);
+        updateCartCount();
+        renderCart();
+      });
+    });
+    const discount = Number(discountInput.value || 0) / 100;
+    const finalTotal = total * (1 - discount);
+    cartTotalEl.textContent = money(finalTotal);
+  }
 
-filterSalesDateInput.addEventListener('change', (e) => {
-    renderSalesHistory(e.target.value);
-});
+  discountInput.addEventListener('input', renderCart);
 
-clearSalesDateBtn.addEventListener('click', () => {
-    filterSalesDateInput.value = '';
-    renderSalesHistory();
-});
+  checkoutBtn.addEventListener('click', async () => {
+    if (!cart.length) return alert('Cart is empty.');
+    const data = normalizeData(await getData());
+    if (!data) return;
 
-// Function to check if at least one admin account exists
-function checkAdminAccountExists() {
-    const data = getInventoryData();
-    const admins = (data && data.admins) || [];
-    const adminExists = admins.some(admin => admin.role === 'admin');
-    if (adminExists) {
-        registerBtn.classList.add('hidden'); // Hide the button on the login screen
-    } else {
-        registerBtn.classList.remove('hidden'); // Show the button on the login screen
-    }
-}
-
-// Navbar Toggler Functionality
-navbarToggler.addEventListener('click', () => {
-    navbarItems.classList.toggle('active');
-});
-
-// Filter Toggler Functionality
-filterToggler.addEventListener('click', () => {
-    filterControls.classList.toggle('active');
-});
-
-// Close navbar and filter dropdowns if clicked outside
-document.addEventListener('click', (event) => {
-    // Close navbar dropdown
-    if (!navbarItems.contains(event.target) && !navbarToggler.contains(event.target)) {
-        if (navbarItems.classList.contains('active')) {
-            navbarItems.classList.remove('active');
+    // reduce stock
+    cart.forEach(ci => {
+      if (ci.type === 'shoes') {
+        const idx = data.inventory.shoes.findIndex(x => x.id === ci.id);
+        if (idx >= 0) {
+          const size = ci.size;
+          const cur = Number(data.inventory.shoes[idx].sizesStock?.[size] || 0);
+          if (cur > 0) data.inventory.shoes[idx].sizesStock[size] = cur - 1;
         }
-    }
-    // Close filter dropdown
-    if (!filterControls.contains(event.target) && !filterToggler.contains(event.target)) {
-        if (filterControls.classList.contains('active')) {
-            filterControls.classList.remove('active');
+      } else {
+        const idx = data.inventory.bags.findIndex(x => x.id === ci.id);
+        if (idx >= 0) {
+          const cur = Number(data.inventory.bags[idx].quantity || 0);
+          if (cur > 0) data.inventory.bags[idx].quantity = cur - 1;
         }
+      }
+    });
+
+    // create sale record
+    const totalBefore = cart.reduce((a, c) => a + Number(c.price) * (c.qty || 1), 0);
+    const discountPct = Number(discountInput.value || 0);
+    const totalAfter = totalBefore * (1 - discountPct / 100);
+    const sale = {
+      id: uid(),
+      date: new Date().toISOString(),
+      payment: paymentMethod.value,
+      discountPct,
+      totalBefore: Number(totalBefore.toFixed(2)),
+      totalAfter: Number(totalAfter.toFixed(2)),
+      items: cart.map(c => ({
+        type: c.type,
+        id: c.id,
+        code: c.code,
+        size: c.size || null,
+        price: c.price
+      }))
+    };
+    data.sales.push(sale);
+
+    if (await putData(data)) {
+      cart = [];
+      updateCartCount();
+      discountInput.value = "0";
+      renderCart();
+      alert('Checkout successful.');
+      currentData = data;
+      renderInventory(currentData);
     }
-});
+  });
 
+  // ---------- Sales History ----------
+  salesHistoryBtn.addEventListener('click', async () => {
+    const data = normalizeData(await getData());
+    if (!data) return;
+    currentData = data;
+    renderSales(data.sales);
+    showView('sales-history-view');
+  });
 
-// Initial load check
-document.addEventListener('DOMContentLoaded', () => {
-    const storedUser = localStorage.getItem('currentUser');
-    if (storedUser) {
-        currentUser = JSON.parse(storedUser);
-        showView('inventory-view');
-        renderInventory();
-    } else {
-        showView('login-view');
-        checkAdminAccountExists(); // Check on initial load of login view
+  backToInventoryFromHistory.addEventListener('click', () => showInventory());
+
+  clearSalesDate.addEventListener('click', () => {
+    filterSalesDate.value = "";
+    renderSales((currentData && currentData.sales) || []);
+  });
+
+  function renderSales(sales) {
+    const filterDate = filterSalesDate.value; // YYYY-MM-DD
+    let list = sales.slice().sort((a,b) => new Date(b.date) - new Date(a.date));
+    if (filterDate) {
+      list = list.filter(s => s.date.slice(0,10) === filterDate);
     }
+
+    // Table rows
+    salesHistoryTable.innerHTML = "";
+    let dailySum = 0;
+    let monthlySum = 0;
+    const todayStr = new Date().toISOString().slice(0,10);
+    const monthStr = todayStr.slice(0,7);
+
+    list.forEach(sale => {
+      const tr = document.createElement('tr');
+      const itemsHtml = sale.items.map(i => {
+        let itemDetails;
+        if (i.type === 'shoes') {
+          itemDetails = currentData.inventory.shoes.find(shoe => shoe.id === i.id);
+        } else {
+          itemDetails = currentData.inventory.bags.find(bag => bag.id === i.id);
+        }
+        const imageUrl = itemDetails?.image || '';
+        const altText = `${i.type === 'shoes' ? 'Shoe' : 'Bag'} ${i.code}`;
+        return `
+          <div class="flex items-center">
+            <img src="${imageUrl}" alt="${altText}" class="sales-history-item-image ${imageUrl ? '' : 'bg-gray-100'}">
+            <span>${i.type === 'shoes' ? 'Shoe' : 'Bag'} ${i.code}${i.size ? ' (size ' + i.size + ')' : ''}</span>
+          </div>
+        `;
+      }).join('');
+
+      tr.innerHTML = `
+        <td class="px-3 py-1.5">${new Date(sale.date).toLocaleString()}</td>
+        <td class="px-3 py-1.5">${itemsHtml}</td>
+        <td class="px-3 py-1.5">${(sale.payment || '').toUpperCase()}</td>
+        <td class="px-3 py-1.5 text-right">${money(sale.totalAfter)}</td>
+      `;
+      salesHistoryTable.appendChild(tr);
+
+      if (sale.date.slice(0,10) === todayStr) dailySum += Number(sale.totalAfter || 0);
+      if (sale.date.slice(0,7) === monthStr) monthlySum += Number(sale.totalAfter || 0);
+    });
+
+    salesSummary.textContent = `Sales records: ${list.length}`;
+    dailyTotal.textContent = `Today's total: $${money(dailySum)}`;
+    monthlyTotal.textContent = `This month's total: $${money(monthlySum)}`;
+  }
+
+  filterSalesDate.addEventListener('input', () => {
+    renderSales((currentData && currentData.sales) || []);
+  });
+
+  // ---------- Initial session ----------
+  const stored = localStorage.getItem('currentUser');
+  if (stored) {
+    try {
+      currentUser = JSON.parse(stored);
+    } catch {}
+  }
+  if (currentUser) {
+    showInventory();
+    applyRoleRestrictions();
+  } else {
+    showView('login-view');
+  }
 });
-
-// Initial render of filters
-document.addEventListener('DOMContentLoaded', updateFilterOptions);
-
-// Event listeners for filters
-document.getElementById('filter-type').addEventListener('change', renderInventory);
-document.getElementById('filter-brand').addEventListener('change', renderInventory);
-document.getElementById('filter-color').addEventListener('change', renderInventory);
-document.getElementById('filter-min-price').addEventListener('input', renderInventory);
-document.getElementById('filter-max-price').addEventListener('input', renderInventory);
-// Event listener for the new filter-code input
-document.getElementById('filter-code').addEventListener('input', renderInventory);
-
-
-// --- Added Reset Filters button functionality ---
-document.getElementById('reset-filters-btn').addEventListener('click', () => {
-    document.getElementById('filter-type').value = '';
-    document.getElementById('filter-brand').value = '';
-    document.getElementById('filter-color').value = '';
-    document.getElementById('filter-min-price').value = '';
-    document.getElementById('filter-max-price').value = '';
-    document.getElementById('filter-code').value = '';
-    renderInventory();
-});
-
 </script>
+
+
+<!-- Delete Account Modal -->
+<div id="delete-account-modal" class="hidden fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center p-4 z-50">
+  <div class="bg-white rounded-xl shadow-2xl p-6 w-full max-w-md">
+    <div class="text-center mb-4">
+      <h2 class="modal-title font-bold text-gray-800">Delete Account</h2>
+    </div>
+    <form id="delete-account-form" class="space-y-4">
+      <div>
+        <label for="delete-username" class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+        <input id="delete-username" type="text" required class="w-full border rounded-lg px-3 py-2"/>
+      </div>
+      <div class="flex justify-between pt-4">
+        <button type="button" id="cancel-delete" class="px-3 py-1.5 text-gray-600">Cancel</button>
+        <button type="submit" class="px-3 py-1.5 bg-red-600 text-white rounded-md">Delete</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 </body>
 </html>
