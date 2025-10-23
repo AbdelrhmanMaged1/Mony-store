@@ -2,13 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="width=device-device-width, initial-scale=1.0" name="viewport"/>
 <title>Mony Store - Shoes &amp; Bags Inventory (Modified)</title>
-<script src="https://cdn.tailwindcss.com">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
 async function compressAndEncodeImage(input, maxWidth = 200, quality = 0.3) {
   return new Promise((resolve, reject) => {
     const img = new Image();
-    img.crossOrigin = "anonymous"; // helps with CORS images (only if server allows)
+    //- img.crossOrigin = "anonymous"; // <-- REMOVED FROM HERE
     img.onload = () => {
       try {
         const origW = img.width || 1;
@@ -41,13 +42,13 @@ async function compressAndEncodeImage(input, maxWidth = 200, quality = 0.3) {
       reader.onerror = () => reject(new Error('FileReader error while reading the file.'));
       reader.readAsDataURL(input);
     } else if (typeof input === 'string' && input.trim()) {
+      img.crossOrigin = "anonymous"; // <-- MOVED HERE (Only set for URL strings)
       img.src = input.trim();
     } else {
       reject(new Error('Invalid input: expected a File or a URL string.'));
     }
   });
 }
-
 </script>
 <style>
         /* Custom smaller font size for general text */
@@ -345,7 +346,6 @@ async function compressAndEncodeImage(input, maxWidth = 200, quality = 0.3) {
 </head>
 <body class="bg-gray-50 text-gray-800">
 <div class="min-h-screen" id="app">
-<!-- Login View -->
 <div class="flex items-center justify-center h-screen bg-gradient-to-br from-indigo-50 to-pink-50 px-4" id="login-view">
 <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md glass">
 <div class="text-center mb-6">
@@ -370,7 +370,6 @@ async function compressAndEncodeImage(input, maxWidth = 200, quality = 0.3) {
 </form>
 </div>
 </div>
-<!-- Register Admin Modal (for initial admin creation) -->
 <div class="hidden fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center p-4 z-50" id="register-modal">
 <div class="bg-white rounded-xl shadow-2xl p-6 w-full max-w-md">
 <div class="text-center mb-4">
@@ -392,7 +391,6 @@ async function compressAndEncodeImage(input, maxWidth = 200, quality = 0.3) {
 </form>
 </div>
 </div>
-<!-- Create Admin Account Modal (for logged-in admin) -->
 <div class="hidden fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center p-4 z-50" id="create-admin-modal">
 <div class="bg-white rounded-xl shadow-2xl p-6 w-full max-w-md">
 <div class="text-center mb-4">
@@ -414,7 +412,6 @@ async function compressAndEncodeImage(input, maxWidth = 200, quality = 0.3) {
 </form>
 </div>
 </div>
-<!-- Create Limited Account Modal -->
 <div class="hidden fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center p-4 z-50" id="create-limited-modal">
 <div class="bg-white rounded-xl shadow-2xl p-6 w-full max-w-md">
 <div class="text-center mb-4">
@@ -436,7 +433,6 @@ async function compressAndEncodeImage(input, maxWidth = 200, quality = 0.3) {
 </form>
 </div>
 </div>
-<!-- Inventory View -->
 <div class="hidden" id="inventory-view">
 <header class="bg-white shadow-sm sticky top-0 z-50">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col sm:flex-row justify-between items-center gap-2">
@@ -448,7 +444,6 @@ async function compressAndEncodeImage(input, maxWidth = 200, quality = 0.3) {
 <p class="header-subtitle text-gray-500">Shoes &amp; Bags • Manage stock &amp; sales</p>
 </div>
 </div>
-<!-- Toggler button for small screens -->
 <button class="sm:hidden text-gray-600 hover:text-gray-900 p-1.5 rounded-md" id="navbar-toggler" type="button">
 <svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 <path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
@@ -476,7 +471,6 @@ async function compressAndEncodeImage(input, maxWidth = 200, quality = 0.3) {
 <button class="admin-action-button bg-red-600 hover:bg-red-700 text-white rounded-md font-medium" id="delete-account-btn">Delete Account</button>
 </div>
 </div>
-<!-- Filters -->
 <div class="mb-4 bg-white p-3 rounded-lg shadow-sm flex flex-col" id="inventory-filters">
 <div class="flex justify-between items-center mb-3 sm:mb-0">
 <h3 class="text-base font-semibold text-gray-800">Filters</h3>
@@ -515,7 +509,6 @@ async function compressAndEncodeImage(input, maxWidth = 200, quality = 0.3) {
 <label class="filter-label block font-medium text-gray-700">Max Price</label>
 <input class="border border-gray-300 rounded-md" id="filter-max-price" step="0.01" type="number"/>
 </div>
-<!-- New: Item Code Filter -->
 <div>
     <label class="filter-label block font-medium text-gray-700">Item Code</label>
     <input class="border border-gray-300 rounded-md" id="filter-code" type="text" placeholder="e.g., S001"/>
@@ -530,12 +523,10 @@ async function compressAndEncodeImage(input, maxWidth = 200, quality = 0.3) {
 <div class="mb-6">
 <h3 class="text-base font-semibold text-gray-800 mb-3" id="inventory-type-title">All Products</h3>
 <div class="inventory-grid" id="inventory-list">
-<!-- Products will be dynamically inserted here -->
 </div>
 </div>
 </main>
 </div>
-<!-- Sales History View -->
 <div class="hidden max-w-7xl mx-auto px-4 py-6" id="sales-history-view">
 <div class="mb-3 font-semibold text-gray-800" id="salesSummary"></div>
 <header class="bg-white shadow-sm mb-4 sticky top-0 z-40">
@@ -565,7 +556,6 @@ async function compressAndEncodeImage(input, maxWidth = 200, quality = 0.3) {
 <div class="mt-3 font-semibold text-gray-800" id="daily-total"></div>
 <div class="mt-1.5 font-semibold text-gray-800" id="monthly-total"></div>
 </div>
-<!-- Cart View -->
 <div class="hidden max-w-7xl mx-auto px-4 py-6" id="cart-view">
 <header class="bg-white shadow-sm mb-4 sticky top-0 z-40">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
@@ -596,7 +586,6 @@ async function compressAndEncodeImage(input, maxWidth = 200, quality = 0.3) {
 </div>
 </main>
 </div>
-<!-- Add Shoe Modal -->
 <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden" id="add-shoe-modal">
 <div class="bg-white rounded-lg shadow-xl w-full max-w-xl">
 <div class="p-4">
@@ -638,7 +627,7 @@ async function compressAndEncodeImage(input, maxWidth = 200, quality = 0.3) {
 </div>
 <div>
 <label class="block text-xs font-medium text-gray-700 mb-1" for="shoe-sizes">Available Sizes (comma-separated)</label>
-<input class="w-full border border-gray-300 rounded-md" id="shoe-sizes" placeholder="e.g., 38,39,40" required="" type="text"/>
+<input class="w-full border border-gray-300 rounded-md" id="shoe-sizes" placeholder="e.g., 38, 39, 39, 40" required="" type="text"/>
 </div>
 <div class="md:col-span-2">
 <label class="block text-xs font-medium text-gray-700 mt-2 mb-1">Image (file or url) — <span class="text-2xs text-gray-500" id="shoe-image-note">editable when adding only</span></label>
@@ -657,7 +646,6 @@ async function compressAndEncodeImage(input, maxWidth = 200, quality = 0.3) {
 </div>
 </div>
 </div>
-<!-- Add Bag Modal -->
 <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden" id="add-bag-modal">
 <div class="bg-white rounded-lg shadow-xl w-full max-w-xl">
 <div class="p-4">
@@ -694,20 +682,19 @@ async function compressAndEncodeImage(input, maxWidth = 200, quality = 0.3) {
 <input class="w-full border border-gray-300 rounded-md" id="bag-price" min="0" required="" step="0.01" type="number"/>
 </div>
 <div>
-<label class="block text-xs font-medium text-gray-700 mb-1" for="bag-quantity">Quantity</label>
-<input class="w-full border border-gray-300 rounded-md" id="bag-quantity" min="0" required="" type="number"/>
+<label class="block text-xs font-medium text-gray-700 mb-1" for="bag-code">Item Code</label>
+<input class="w-full border border-gray-300 rounded-md" id="bag-code" required="" type="text"/>
 </div>
-<!-- New: Item Code for Bag -->
 <div>
-    <label class="block text-xs font-medium text-gray-700 mb-1" for="bag-code">Item Code</label>
-    <input class="w-full border border-gray-300 rounded-md" id="bag-code" required="" type="text"/>
+<label class="block text-xs font-medium text-gray-700 mb-1" for="bag-stock">Stock</label>
+<input class="w-full border border-gray-300 rounded-md" id="bag-stock" min="0" required="" step="1" type="number"/>
 </div>
 <div class="md:col-span-2">
 <label class="block text-xs font-medium text-gray-700 mt-2 mb-1">Image (file or url) — <span class="text-2xs text-gray-500" id="bag-image-note">editable when adding only</span></label>
 <input accept="image/*" class="w-full border border-gray-300 rounded-md" id="bag-image-file" type="file"/>
 <input class="w-full border border-gray-300 rounded-md mt-1" id="bag-image-url" placeholder="https://example.com/image.jpg" type="text"/>
 <div class="mt-3">
-<img alt="Image Preview" class="hidden w-32 h-24 object-cover rounded-md mx-auto border" id="bag-image-preview" src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/8985c871-cd01-42e0-af4e-7dd15f59e8ad.png">
+<img alt="Image Preview" class="hidden w-32 h-24 object-cover rounded-md mx-auto border" id="bag-image-preview" src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/e8513746-6820-4bba-9260-b0f38c8939ad.png">
 </div>
 </div>
 </div>
@@ -719,1079 +706,1183 @@ async function compressAndEncodeImage(input, maxWidth = 200, quality = 0.3) {
 </div>
 </div>
 </div>
-<!-- Add to Cart Modal (for size/color selection) -->
-<div class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50" id="add-to-cart-modal">
+<div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden" id="add-to-cart-modal">
 <div class="bg-white rounded-lg shadow-xl w-full max-w-sm">
 <div class="p-4">
 <div class="flex justify-between items-center mb-3">
-<h3 class="modal-title font-bold text-gray-800" id="add-to-cart-modal-title">Add to Cart</h3>
-<button class="text-gray-500 hover:text-gray-700" id="close-add-to-cart-modal" type="button">
+<h3 class="modal-title font-bold text-gray-800" id="add-to-cart-title">Add to Cart</h3>
+<button class="text-gray-500 hover:text-gray-700" id="close-cart-modal">
 <svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
 </button>
 </div>
-<form class="space-y-3" id="add-to-cart-form">
-<div class="max-h-48 overflow-y-auto pr-2" id="size-color-options"></div>
-<p class="text-xs text-gray-600" id="selected-item-stock">Stock: --</p>
-<!-- Price Options -->
-<div id="price-options-container" class="hidden">
-    <label class="block text-xs font-medium text-gray-700 mb-1">Select Sold Price:</label>
-    <div id="price-options" class="flex flex-col space-y-1.5">
-        <!-- Price radio buttons will be inserted here -->
-    </div>
+<form id="add-to-cart-form">
+<div class="mb-3" id="size-color-options"></div>
+<div>
+<label class="block text-xs font-medium text-gray-700 mb-1" for="cart-quantity">Quantity</label>
+<input class="w-full border border-gray-300 rounded-md" id="cart-quantity" min="1" required="" type="number" value="1"/>
 </div>
 <div class="flex justify-end space-x-2 pt-3">
 <button class="px-3 py-1.5 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50" id="cancel-add-to-cart" type="button">Cancel</button>
-<button class="px-3 py-1.5 bg-indigo-600 text-white rounded-md hover:bg-indigo-700" type="submit">Add to Cart</button>
+<button class="px-3 py-1.5 bg-green-600 text-white rounded-md hover:bg-green-700" type="submit">Add</button>
 </div>
 </form>
 </div>
 </div>
 </div>
+<div class="hidden fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center p-4 z-50" id="delete-account-modal">
+<div class="bg-white rounded-xl shadow-2xl p-6 w-full max-w-md">
+<div class="text-center mb-4">
+<h2 class="modal-title font-bold text-gray-800">Delete Account</h2>
+</div>
+<form class="space-y-4" id="delete-account-form">
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1" for="delete-username">Username</label>
+<input class="w-full border rounded-lg px-3 py-2" id="delete-username" required="" type="text"/>
+</div>
+<div class="flex justify-between pt-4">
+<button class="px-3 py-1.5 text-gray-600 hover:text-gray-800" id="cancel-delete-account" type="button">Cancel</button>
+<button class="px-3 py-1.5 bg-red-600 text-white rounded-md hover:bg-red-700" type="submit">Delete</button>
+</div>
+</form>
+</div>
+</div>
 </div>
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  // ---------- DOM Shortcuts ----------
-  const loginView = document.getElementById('login-view');
-  const inventoryView = document.getElementById('inventory-view');
-  const cartView = document.getElementById('cart-view');
-  const salesHistoryView = document.getElementById('sales-history-view');
+    // ... (Your existing compressAndEncodeImage function is in the head) ...
 
-  const loginForm = document.getElementById('login-form');
-  const registerBtn = document.getElementById('register-btn');
-  const registerModal = document.getElementById('register-modal');
-  const registerForm = document.getElementById('register-form');
-  const cancelRegister = document.getElementById('cancel-register');
+    document.addEventListener('DOMContentLoaded', () => {
+        // ... (The rest of your application logic) ...
+        const DB_KEY_USERS = 'mony_store_users';
+        const DB_KEY_INVENTORY = 'mony_store_inventory';
+        const DB_KEY_SALES = 'mony_store_sales';
+        const DB_KEY_LOGGED_IN = 'mony_store_logged_in';
 
-  const createLimitedAccountBtn = document.getElementById('create-limited-account-btn');
-  const createLimitedModal = document.getElementById('create-limited-modal');
-  const createLimitedForm = document.getElementById('create-limited-form');
-  const cancelLimitedCreation = document.getElementById('cancel-limited-creation');
+        // ... (All your existing JS code from the original file follows) ...
+        // (Assuming the rest of the JS logic starts here in the original file)
+        
+        // --- State ---
+        let users = JSON.parse(localStorage.getItem(DB_KEY_USERS)) || [];
+        let inventory = JSON.parse(localStorage.getItem(DB_KEY_INVENTORY)) || [];
+        let salesHistory = JSON.parse(localStorage.getItem(DB_KEY_SALES)) || [];
+        let cart = [];
+        let loggedInUser = JSON.parse(localStorage.getItem(DB_KEY_LOGGED_IN)) || null;
+        let editingItemId = null; // Used for tracking which item is being edited
 
-  const createAdminAccountBtn = document.getElementById('create-admin-account-btn');
-  const createAdminModal = document.getElementById('create-admin-modal');
-  const createAdminForm = document.getElementById('create-admin-form');
-  const cancelAdminCreation = document.getElementById('cancel-admin-creation');
+        // --- Selectors ---
+        const app = document.getElementById('app');
+        const loginView = document.getElementById('login-view');
+        const inventoryView = document.getElementById('inventory-view');
+        const salesHistoryView = document.getElementById('sales-history-view');
+        const cartView = document.getElementById('cart-view');
 
-  const logoutBtn = document.getElementById('logout-btn');
+        // Login/Register Selectors
+        const loginForm = document.getElementById('login-form');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const registerBtn = document.getElementById('register-btn');
+        const registerModal = document.getElementById('register-modal');
+        const registerForm = document.getElementById('register-form');
+        const newUsernameInput = document.getElementById('new-username');
+        const newPasswordInput = document.getElementById('new-password');
+        const cancelRegisterBtn = document.getElementById('cancel-register');
 
-  // Navbar + filter togglers (mobile)
-  const navbarToggler = document.getElementById('navbar-toggler');
-  const navbarItems = document.getElementById('navbar-items');
-  const filterToggler = document.getElementById('filter-toggler');
-  const filterControls = document.getElementById('filter-controls');
+        // Admin Creation Modals
+        const createAdminModal = document.getElementById('create-admin-modal');
+        const createAdminForm = document.getElementById('create-admin-form');
+        const adminUsernameInput = document.getElementById('admin-username');
+        const adminPasswordInput = document.getElementById('admin-password');
+        const cancelAdminCreationBtn = document.getElementById('cancel-admin-creation');
+        const createAdminAccountBtn = document.getElementById('create-admin-account-btn');
 
-  // Inventory controls
-  const addShoeBtn = document.getElementById('add-shoe-btn');
-  const addBagBtn = document.getElementById('add-bag-btn');
-  const addShoeModal = document.getElementById('add-shoe-modal');
-  const addBagModal = document.getElementById('add-bag-modal');
-  const closeShoeModal = document.getElementById('close-shoe-modal');
-  const closeBagModal = document.getElementById('close-bag-modal');
-  const cancelShoeBtn = document.getElementById('cancel-shoe');
-  const cancelBagBtn = document.getElementById('cancel-bag');
-  const addShoeForm = document.getElementById('add-shoe-form');
-  const addBagForm = document.getElementById('add-bag-form');
+        // Limited Account Modals
+        const createLimitedModal = document.getElementById('create-limited-modal');
+        const createLimitedForm = document.getElementById('create-limited-form');
+        const limitedUsernameInput = document.getElementById('limited-username');
+        const limitedPasswordInput = document.getElementById('limited-password');
+        const cancelLimitedCreationBtn = document.getElementById('cancel-limited-creation');
+        const createLimitedAccountBtn = document.getElementById('create-limited-account-btn');
 
-  // Shoe fields
-  const shoeBrand = document.getElementById('shoe-brand');
-  const shoeModel = document.getElementById('shoe-model');
-  const shoeColor = document.getElementById('shoe-color');
-  const shoeOriginalPrice = document.getElementById('shoe-original-price');
-  const shoeMinPrice = document.getElementById('shoe-min-price');
-  const shoePrice = document.getElementById('shoe-price');
-  const shoeCode = document.getElementById('shoe-code');
-  const shoeQuantity = document.getElementById('shoe-quantity');
-  const shoeSizes = document.getElementById('shoe-sizes');
-  const shoeImgFile = document.getElementById('shoe-image-file');
-  const shoeImgUrl = document.getElementById('shoe-image-url');
-  const shoeImgPreview = document.getElementById('shoe-image-preview');
-  const shoeImageNote = document.getElementById('shoe-image-note');
+        // Delete Account Modal
+        const deleteAccountBtn = document.getElementById('delete-account-btn');
+        const deleteAccountModal = document.getElementById('delete-account-modal');
+        const deleteAccountForm = document.getElementById('delete-account-form');
+        const deleteUsernameInput = document.getElementById('delete-username');
+        const cancelDeleteAccountBtn = document.getElementById('cancel-delete-account');
 
+        // Nav Selectors
+        const logoutBtn = document.getElementById('logout-btn');
+        const salesHistoryBtn = document.getElementById('sales-history-btn');
+        const viewCartBtn = document.getElementById('view-cart-btn');
+        const cartCountEl = document.getElementById('cart-count');
+        const backToInventoryBtn = document.getElementById('back-to-inventory-btn');
+        const backToInventoryFromHistoryBtn = document.getElementById('back-to-inventory-from-history');
+        const navbarToggler = document.getElementById('navbar-toggler');
+        const navbarItems = document.getElementById('navbar-items');
 
-  // Bag fields
-  const bagBrand = document.getElementById('bag-brand');
-  const bagModel = document.getElementById('bag-model');
-  const bagColor = document.getElementById('bag-color');
-  const bagOriginalPrice = document.getElementById('bag-original-price');
-  const bagMinPrice = document.getElementById('bag-min-price');
-  const bagPrice = document.getElementById('bag-price');
-  const bagQuantity = document.getElementById('bag-quantity');
-  const bagCode = document.getElementById('bag-code');
-  const bagImgFile = document.getElementById('bag-image-file');
-  const bagImgUrl = document.getElementById('bag-image-url');
-  const bagImgPreview = document.getElementById('bag-image-preview');
-  const bagImageNote = document.getElementById('bag-image-note');
+        // Inventory Selectors
+        const inventoryList = document.getElementById('inventory-list');
+        const inventoryTypeTitle = document.getElementById('inventory-type-title');
+        const adminActions = document.getElementById('admin-actions');
+        const addShoeBtn = document.getElementById('add-shoe-btn');
+        const addBagBtn = document.getElementById('add-bag-btn');
+        const clearStorageBtn = document.getElementById('clear-storage-btn');
 
+        // Filter Selectors
+        const filterType = document.getElementById('filter-type');
+        const filterBrand = document.getElementById('filter-brand');
+        const filterColor = document.getElementById('filter-color');
+        const filterMinPrice = document.getElementById('filter-min-price');
+        const filterMaxPrice = document.getElementById('filter-max-price');
+        const filterCode = document.getElementById('filter-code');
+        const resetFiltersBtn = document.getElementById('reset-filters-btn');
+        const filterToggler = document.getElementById('filter-toggler');
+        const filterControls = document.getElementById('filter-controls');
 
-  // Inventory list + filters
-  const inventoryList = document.getElementById('inventory-list');
-  const inventoryTypeTitle = document.getElementById('inventory-type-title');
-  const filterType = document.getElementById('filter-type');
-  const filterBrand = document.getElementById('filter-brand');
-  const filterColor = document.getElementById('filter-color');
-  const filterMinPrice = document.getElementById('filter-min-price');
-  const filterMaxPrice = document.getElementById('filter-max-price');
-  const filterCode = document.getElementById('filter-code');
-  const resetFiltersBtn = document.getElementById('reset-filters-btn');
-
-  // Cart + sales
-  const viewCartBtn = document.getElementById('view-cart-btn');
-  const cartItemsList = document.getElementById('cart-items-list');
-  const cartTotalEl = document.getElementById('cart-total');
-  const cartCountEl = document.getElementById('cart-count');
-  const backToInventoryBtn = document.getElementById('back-to-inventory-btn');
-  const checkoutBtn = document.getElementById('checkout-btn');
-  const discountInput = document.getElementById('checkout-discount');
-  const paymentMethod = document.getElementById('payment-method');
-
-  const salesHistoryBtn = document.getElementById('sales-history-btn');
-  const backToInventoryFromHistory = document.getElementById('back-to-inventory-from-history');
-  const salesHistoryTable = document.getElementById('sales-history-table').querySelector('tbody');
-  const salesSummary = document.getElementById('salesSummary');
-  const dailyTotal = document.getElementById('daily-total');
-  const monthlyTotal = document.getElementById('monthly-total');
-  const filterSalesDate = document.getElementById('filter-sales-date');
-  const clearSalesDate = document.getElementById('clear-sales-date');
-
-  // Add to Cart Modal
-  const addToCartModal = document.getElementById('add-to-cart-modal');
-  const closeAddToCartModalBtn = document.getElementById('close-add-to-cart-modal');
-  const cancelAddToCartBtn = document.getElementById('cancel-add-to-cart');
-  const addToCartForm = document.getElementById('add-to-cart-form');
-  const sizeColorOptions = document.getElementById('size-color-options');
-  const selectedItemStockEl = document.getElementById('selected-item-stock');
-  const priceOptionsContainer = document.getElementById('price-options-container');
-  const priceOptions = document.getElementById('price-options');
-  const addToCartModalTitle = document.getElementById('add-to-cart-modal-title');
-
-  // ---------- App State ----------
-  let currentUser = null;
-  let cart = []; // session cart, persisted in JSONBin on checkout
-  let currentData = null; // latest JSONBin data
-  let selectedItemForCart = null; // { type, id, brand, model, code, price, minPrice, originalPrice, sizesStock or qty, image }
-
-  const JSONBIN_BIN_ID = "689ce95f43b1c97be91dac6e";
-  const JSONBIN_API_KEY = "$2a$10$pQWGhc3nsux3Gmixzmy2QudoWSLo7yy42SqxRKL5E1CcSEgAQ3Jky";
-
-  // ---------- JSONBin helpers ----------
-  async function getData() {
-    try {
-      const res = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`, {
-        headers: { "X-Master-Key": JSONBIN_API_KEY }
-      });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const json = await res.json();
-      return json.record || {};
-    } catch (e) {
-      console.error("JSONBin getData error:", e);
-      alert("Couldn't load data from server. Check console/network.");
-      return null;
-    }
-  }
-
-  async function putData(data) {
-    try {
-      const res = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Master-Key": JSONBIN_API_KEY
-        },
-        body: JSON.stringify(data)
-      });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      return true;
-    } catch (e) {
-      console.error("JSONBin putData error:", e);
-      alert("Couldn't save data to server. Check console/network.");
-      return false;
-    }
-  }
-
-  // Ensure structure
-  function normalizeData(data) {
-    const d = data || {};
-    if (!Array.isArray(d.admins)) d.admins = [];
-    if (!d.inventory) d.inventory = { shoes: [], bags: [] };
-    if (!Array.isArray(d.inventory.shoes)) d.inventory.shoes = [];
-    if (!Array.isArray(d.inventory.bags)) d.inventory.bags = [];
-    if (!Array.isArray(d.sales)) d.sales = [];
-    return d;
-  }
-
-  // ---------- Utility ----------
-  function showView(viewId) {
-    [loginView, inventoryView, cartView, salesHistoryView].forEach(v => v.classList.add('hidden'));
-    document.getElementById(viewId).classList.remove('hidden');
-  }
-
-  function applyRoleRestrictions() {
-    const adminActions = document.getElementById('admin-actions');
-    if (!currentUser || currentUser.role === 'viewer') {
-      adminActions.classList.add('hidden');
-      createLimitedAccountBtn.classList.add('hidden');
-      createAdminAccountBtn.classList.add('hidden');
-    } else {
-      adminActions.classList.remove('hidden');
-      createLimitedAccountBtn.classList.remove('hidden');
-      createAdminAccountBtn.classList.remove('hidden');
-    }
-  }
-
-  function uid() {
-    return String(Date.now()) + "-" + Math.random().toString(36).slice(2, 8);
-  }
-
-  function money(n) {
-    return (Number(n) || 0).toFixed(2);
-  }
-
-  function fileToDataURL(file) {
-    // legacy, not used anymore
-
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    }
+        // Add/Edit Shoe Modal Selectors
+        const addShoeModal = document.getElementById('add-shoe-modal');
+        const closeShoeModalBtn = document.getElementById('close-shoe-modal');
+        const cancelShoeBtn = document.getElementById('cancel-shoe');
+        const addShoeForm = document.getElementById('add-shoe-form');
+        const shoeBrand = document.getElementById('shoe-brand');
+        const shoeModel = document.getElementById('shoe-model');
+        const shoeColor = document.getElementById('shoe-color');
+        const shoeOriginalPrice = document.getElementById('shoe-original-price');
+        const shoeMinPrice = document.getElementById('shoe-min-price');
+        const shoePrice = document.getElementById('shoe-price');
+        const shoeCode = document.getElementById('shoe-code');
+        const shoeSizes = document.getElementById('shoe-sizes');
+        const shoeImageFile = document.getElementById('shoe-image-file');
+        const shoeImageUrl = document.getElementById('shoe-image-url');
+        const shoeImagePreview = document.getElementById('shoe-image-preview');
+        const shoeImageNote = document.getElementById('shoe-image-note');
 
 
-);
-  }
+        // Add/Edit Bag Modal Selectors
+        const addBagModal = document.getElementById('add-bag-modal');
+        const closeBagModalBtn = document.getElementById('close-bag-modal');
+        const cancelBagBtn = document.getElementById('cancel-bag');
+        const addBagForm = document.getElementById('add-bag-form');
+        const bagBrand = document.getElementById('bag-brand');
+        const bagModel = document.getElementById('bag-model');
+        const bagColor = document.getElementById('bag-color');
+        const bagOriginalPrice = document.getElementById('bag-original-price');
+        const bagMinPrice = document.getElementById('bag-min-price');
+        const bagPrice = document.getElementById('bag-price');
+        const bagCode = document.getElementById('bag-code');
+        const bagStock = document.getElementById('bag-stock');
+        const bagImageFile = document.getElementById('bag-image-file');
+        const bagImageUrl = document.getElementById('bag-image-url');
+        const bagImagePreview = document.getElementById('bag-image-preview');
+        const bagImageNote = document.getElementById('bag-image-note');
 
-  // ---------- Navbar/filter toggles ----------
-  if (navbarToggler && navbarItems) {
-    navbarToggler.addEventListener('click', () => {
-      navbarItems.classList.toggle('active');
+        // Add to Cart Modal Selectors
+        const addToCartModal = document.getElementById('add-to-cart-modal');
+        const addToCartTitle = document.getElementById('add-to-cart-title');
+        const closeCartModalBtn = document.getElementById('close-cart-modal');
+        const cancelAddToCartBtn = document.getElementById('cancel-add-to-cart');
+        const addToCartForm = document.getElementById('add-to-cart-form');
+        const sizeColorOptions = document.getElementById('size-color-options');
+        const cartQuantity = document.getElementById('cart-quantity');
+
+        // Cart View Selectors
+        const cartItemsList = document.getElementById('cart-items-list');
+        const cartTotalEl = document.getElementById('cart-total');
+        const checkoutBtn = document.getElementById('checkout-btn');
+        const checkoutDiscount = document.getElementById('checkout-discount');
+        const paymentMethod = document.getElementById('payment-method');
+
+        // Sales History Selectors
+        const salesHistoryTableBody = document.querySelector('#sales-history-table tbody');
+        const salesSummaryEl = document.getElementById('salesSummary');
+        const filterSalesDate = document.getElementById('filter-sales-date');
+        const clearSalesDate = document.getElementById('clear-sales-date');
+        const dailyTotalEl = document.getElementById('daily-total');
+        const monthlyTotalEl = document.getElementById('monthly-total');
+
+        // --- Utility Functions ---
+        const saveState = () => {
+            localStorage.setItem(DB_KEY_USERS, JSON.stringify(users));
+            localStorage.setItem(DB_KEY_INVENTORY, JSON.stringify(inventory));
+            localStorage.setItem(DB_KEY_SALES, JSON.stringify(salesHistory));
+            localStorage.setItem(DB_KEY_LOGGED_IN, JSON.stringify(loggedInUser));
+        };
+
+        const generateId = (prefix) => {
+            return `${prefix}-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+        };
+
+        const showView = (view) => {
+            [loginView, inventoryView, salesHistoryView, cartView].forEach(v => v.classList.add('hidden'));
+            view.classList.remove('hidden');
+        };
+
+        // --- Image Preview Logic ---
+        const setupImagePreview = (fileInput, urlInput, previewEl) => {
+            const updatePreview = (src) => {
+                if (src) {
+                    previewEl.src = src;
+                    previewEl.classList.remove('hidden');
+                } else {
+                    previewEl.classList.add('hidden');
+                }
+            };
+
+            fileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    urlInput.value = ''; // Clear URL input if file is selected
+                    const reader = new FileReader();
+                    reader.onload = (event) => updatePreview(event.target.result);
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            urlInput.addEventListener('input', () => {
+                if (urlInput.value) {
+                    fileInput.value = ''; // Clear file input if URL is typed
+                    updatePreview(urlInput.value);
+                } else {
+                    updatePreview(null);
+                }
+            });
+
+            // Add an error handler to the preview image
+            previewEl.onerror = () => {
+                previewEl.src = 'https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/e8513746-6820-4bba-9260-b0f38c8939ad.png'; // Fallback
+            };
+        };
+        
+        setupImagePreview(shoeImageFile, shoeImageUrl, shoeImagePreview);
+        setupImagePreview(bagImageFile, bagImageUrl, bagImagePreview);
+
+        const resetImagePreview = (fileInput, urlInput, previewEl) => {
+             fileInput.value = '';
+             urlInput.value = '';
+             previewEl.src = 'https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/e8513746-6820-4bba-9260-b0f38c8939ad.png';
+             previewEl.classList.add('hidden');
+        };
+
+        // --- Authentication ---
+        const checkLogin = () => {
+            if (loggedInUser) {
+                showView(inventoryView);
+                renderInventory();
+                updateUserUI();
+            } else {
+                showView(loginView);
+                // Show register button only if no admins exist
+                const adminExists = users.some(u => u.role === 'admin');
+                registerBtn.classList.toggle('hidden', adminExists);
+            }
+        };
+
+        const updateUserUI = () => {
+            if (!loggedInUser) return;
+            const isAdmin = loggedInUser.role === 'admin';
+            adminActions.classList.toggle('hidden', !isAdmin);
+            createAdminAccountBtn.classList.toggle('hidden', !isAdmin);
+            createLimitedAccountBtn.classList.toggle('hidden', !isAdmin);
+            deleteAccountBtn.classList.toggle('hidden', !isAdmin);
+            // Show edit buttons only for admin
+            document.querySelectorAll('.edit-item-btn').forEach(btn => {
+                btn.classList.toggle('hidden', !isAdmin);
+            });
+        };
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = usernameInput.value;
+            const password = passwordInput.value;
+            const user = users.find(u => u.username === username && u.password === password);
+            if (user) {
+                loggedInUser = user;
+                saveState();
+                checkLogin();
+                usernameInput.value = '';
+                passwordInput.value = '';
+            } else {
+                alert('Invalid username or password.');
+            }
+        });
+
+        logoutBtn.addEventListener('click', () => {
+            loggedInUser = null;
+            saveState();
+            checkLogin();
+        });
+
+        const showRegisterModal = (role, modal, form, userEl, passEl) => {
+            modal.classList.remove('hidden');
+            form.onsubmit = (e) => {
+                e.preventDefault();
+                const username = userEl.value;
+                const password = passEl.value;
+                if (users.find(u => u.username === username)) {
+                    alert('Username already exists.');
+                    return;
+                }
+                users.push({ id: generateId('u'), username, password, role });
+                saveState();
+                alert(`${role.charAt(0).toUpperCase() + role.slice(1)} account created successfully!`);
+                form.reset();
+                modal.classList.add('hidden');
+                // If this was the first admin, log them in
+                if (role === 'admin' && !loggedInUser) {
+                    loggedInUser = users.find(u => u.username === username);
+                    saveState();
+                    checkLogin();
+                }
+            };
+        };
+
+        registerBtn.addEventListener('click', () => {
+            showRegisterModal('admin', registerModal, registerForm, newUsernameInput, newPasswordInput);
+        });
+        cancelRegisterBtn.addEventListener('click', () => registerModal.classList.add('hidden'));
+
+        createAdminAccountBtn.addEventListener('click', () => {
+            showRegisterModal('admin', createAdminModal, createAdminForm, adminUsernameInput, adminPasswordInput);
+        });
+        cancelAdminCreationBtn.addEventListener('click', () => createAdminModal.classList.add('hidden'));
+
+        createLimitedAccountBtn.addEventListener('click', () => {
+            showRegisterModal('limited', createLimitedModal, createLimitedForm, limitedUsernameInput, limitedPasswordInput);
+        });
+        cancelLimitedCreationBtn.addEventListener('click', () => createLimitedModal.classList.add('hidden'));
+
+        // Delete Account Logic
+        deleteAccountBtn.addEventListener('click', () => {
+            deleteAccountModal.classList.remove('hidden');
+            deleteUsernameInput.value = '';
+        });
+
+        cancelDeleteAccountBtn.addEventListener('click', () => {
+            deleteAccountModal.classList.add('hidden');
+        });
+
+        deleteAccountForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const usernameToDelete = deleteUsernameInput.value;
+            const userIndex = users.findIndex(u => u.username === usernameToDelete);
+
+            if (userIndex === -1) {
+                alert('User not found.');
+                return;
+            }
+
+            if (users[userIndex].username === loggedInUser.username) {
+                alert("You cannot delete your own account while logged in.");
+                return;
+            }
+            
+            if (users[userIndex].role === 'admin' && users.filter(u => u.role === 'admin').length === 1) {
+                 alert('You cannot delete the last admin account.');
+                 return;
+            }
+
+            users.splice(userIndex, 1);
+            saveState();
+            alert(`Account '${usernameToDelete}' has been deleted.`);
+            deleteAccountModal.classList.add('hidden');
+        });
+
+        // --- Responsive Toggles ---
+        navbarToggler.addEventListener('click', () => {
+            navbarItems.classList.toggle('active');
+        });
+        filterToggler.addEventListener('click', () => {
+            filterControls.classList.toggle('active');
+        });
+
+
+        // --- Inventory Rendering ---
+        const getFilteredInventory = () => {
+            const type = filterType.value;
+            const brand = filterBrand.value.toLowerCase();
+            const color = filterColor.value.toLowerCase();
+            const minPrice = parseFloat(filterMinPrice.value) || 0;
+            const maxPrice = parseFloat(filterMaxPrice.value) || Infinity;
+            const code = filterCode.value.toLowerCase();
+
+            return inventory
+                .filter(item => !type || item.type === type)
+                .filter(item => !brand || item.brand.toLowerCase().includes(brand))
+                .filter(item => !color || (item.color && item.color.toLowerCase().includes(color)) || (item.options && item.options.some(o => o.color.toLowerCase().includes(color))))
+                .filter(item => item.price >= minPrice && item.price <= maxPrice)
+                .filter(item => !code || item.code.toLowerCase().includes(code))
+                .sort((a, b) => a.brand.localeCompare(b.brand) || a.model.localeCompare(b.model)); // Sort
+        };
+
+        const renderInventory = () => {
+            const filteredInventory = getFilteredInventory();
+            inventoryList.innerHTML = ''; // Clear list
+
+            if (filteredInventory.length === 0) {
+                inventoryList.innerHTML = '<p class="text-gray-500 col-span-full text-center">No products found matching your criteria.</p>';
+            }
+
+            filteredInventory.forEach(item => {
+                const isShoe = item.type === 'shoes';
+                const stockOrSizes = isShoe ?
+                    `Sizes: ${item.options.map(o => `${o.size} (${o.stock})`).join(', ') || 'N/A'}` :
+                    `Stock: ${item.options[0].stock || 0}`;
+
+                const totalStock = item.options.reduce((acc, opt) => acc + opt.stock, 0);
+                const stockColor = totalStock === 0 ? 'text-red-600' : (totalStock < 5 ? 'text-yellow-600' : 'text-green-700');
+                const stockText = totalStock === 0 ? 'Out of Stock' : `Total Stock: ${totalStock}`;
+
+                const card = `
+                    <div class="product-card bg-white rounded-xl shadow-lg overflow-hidden flex flex-col justify-between p-3 border border-gray-100">
+                        <div>
+                            <img class="product-card-img w-full h-32 object-cover mb-2 rounded-md" src="${item.image}" alt="${item.brand} ${item.model}" onerror="this.src='https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/e8513746-6820-4bba-9260-b0f38c8939ad.png';">
+                            <h4 class="text-sm font-semibold text-gray-900">${item.brand}</h4>
+                            <p class="text-xs text-gray-600 mb-1">${item.model} (${item.code})</p>
+                            <p class="text-2xs text-gray-500 mb-2">${isShoe ? item.color : (item.options[0].color || item.color)}</p>
+                            <p class="text-xs text-gray-500 mb-2 truncate" title="${stockOrSizes}">${stockOrSizes}</p>
+                            <p class="text-sm font-bold text-indigo-700">$${item.price.toFixed(2)}</p>
+                            <p class="text-2xs text-gray-400 line-through">Orig: $${item.originalPrice.toFixed(2)}</p>
+                            <p class="text-2xs text-gray-400">Min: $${item.minPrice.toFixed(2)}</p>
+                        </div>
+                        <div class="mt-3 flex flex-col gap-1.5">
+                            <button class="add-to-cart-btn w-full bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-md text-xs font-medium ${totalStock === 0 ? 'opacity-50 cursor-not-allowed' : ''}" data-id="${item.id}" ${totalStock === 0 ? 'disabled' : ''}>
+                                ${totalStock === 0 ? 'Out of Stock' : 'Add to Cart'}
+                            </button>
+                            <button class="edit-item-btn w-full bg-gray-50 hover:bg-gray-100 text-gray-700 rounded-md text-xs font-medium" data-id="${item.id}">
+                                Edit
+                            </button>
+                        </div>
+                    </div>
+                `;
+                inventoryList.innerHTML += card;
+            });
+
+            // Update UI based on user role
+            updateUserUI();
+            
+            // Re-attach event listeners for newly created buttons
+            attachInventoryListeners();
+            // Update filter dropdowns
+            updateFilterDropdowns();
+        };
+
+        const updateFilterDropdowns = () => {
+            const brands = [...new Set(inventory.map(item => item.brand))].sort();
+            const colors = [...new Set(inventory.flatMap(item => 
+                item.type === 'shoes' ? item.color : (item.options.map(o => o.color) || [item.color])
+            ))].sort();
+            
+            const currentBrand = filterBrand.value;
+            const currentColor = filterColor.value;
+
+            filterBrand.innerHTML = '<option value="">All</option>';
+            filterColor.innerHTML = '<option value="">All</option>';
+
+            brands.forEach(brand => {
+                filterBrand.innerHTML += `<option value="${brand.toLowerCase()}" ${currentBrand === brand.toLowerCase() ? 'selected' : ''}>${brand}</option>`;
+            });
+            colors.forEach(color => {
+                filterColor.innerHTML += `<option value="${color.toLowerCase()}" ${currentColor === color.toLowerCase() ? 'selected' : ''}>${color}</option>`;
+            });
+        };
+
+        // --- Inventory Event Listeners ---
+        const attachInventoryListeners = () => {
+            document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const id = e.target.dataset.id;
+                    openAddToCartModal(id);
+                });
+            });
+
+            document.querySelectorAll('.edit-item-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const id = e.target.dataset.id;
+                    const item = inventory.find(i => i.id === id);
+                    if (item.type === 'shoes') {
+                        openAddShoeModal(id);
+                    } else {
+                        openAddBagModal(id);
+                    }
+                });
+            });
+        };
+
+        [filterType, filterBrand, filterColor, filterMinPrice, filterMaxPrice, filterCode].forEach(el => {
+            el.addEventListener('input', renderInventory);
+        });
+
+        resetFiltersBtn.addEventListener('click', () => {
+             filterType.value = '';
+             filterBrand.value = '';
+             filterColor.value = '';
+             filterMinPrice.value = '';
+             filterMaxPrice.value = '';
+             filterCode.value = '';
+             renderInventory();
+        });
+
+        clearStorageBtn.addEventListener('click', () => {
+            if (confirm('Are you sure you want to reset all data? This cannot be undone.')) {
+                localStorage.removeItem(DB_KEY_INVENTORY);
+                localStorage.removeItem(DB_KEY_SALES);
+                inventory = [];
+                salesHistory = [];
+                renderInventory();
+                alert('All inventory and sales data has been cleared.');
+            }
+        });
+
+        // --- Add/Edit Shoe Modal ---
+        const openAddShoeModal = (id = null) => {
+            editingItemId = id;
+            addShoeForm.reset();
+            resetImagePreview(shoeImageFile, shoeImageUrl, shoeImagePreview);
+
+            const isEditing = id !== null;
+            shoeImageFile.disabled = isEditing;
+            shoeImageUrl.disabled = isEditing;
+            shoeImageNote.textContent = isEditing ? 'Image cannot be changed during edit' : 'editable when adding only';
+            
+            shoeCode.disabled = isEditing; // Disable code editing
+
+            if (isEditing) {
+                const item = inventory.find(i => i.id === id);
+                shoeBrand.value = item.brand;
+                shoeModel.value = item.model;
+                shoeColor.value = item.color;
+                shoeOriginalPrice.value = item.originalPrice;
+                shoeMinPrice.value = item.minPrice;
+                shoePrice.value = item.price;
+                shoeCode.value = item.code;
+                
+                // Convert options array back to comma-separated list
+                const sizesArray = item.options.flatMap(o => 
+                    Array(o.stock).fill(o.size)
+                ); // e.g., ["38", "39", "39"]
+                shoeSizes.value = sizesArray.join(', ');
+
+                if (item.image) {
+                    shoeImagePreview.src = item.image;
+                    shoeImagePreview.classList.remove('hidden');
+                }
+            }
+            
+            addShoeModal.classList.remove('hidden');
+        };
+
+        const closeAddShoeModal = () => {
+            addShoeModal.classList.add('hidden');
+            editingItemId = null;
+        };
+
+        addShoeBtn.addEventListener('click', () => openAddShoeModal());
+        closeShoeModalBtn.addEventListener('click', closeAddShoeModal);
+        cancelShoeBtn.addEventListener('click', closeAddShoeModal);
+
+        addShoeForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const code = shoeCode.value;
+            if (!editingItemId && inventory.some(i => i.code === code)) {
+                alert('Error: Item code already exists.');
+                return;
+            }
+
+            // Parse sizes from new format
+            const allSizes = shoeSizes.value.split(',')
+                .map(s => s.trim())
+                .filter(Boolean); // e.g., ["38", "39", "39", "40"]
+                
+            let options;
+            try {
+                 if (allSizes.length === 0) {
+                     throw new Error("Please enter at least one size.");
+                 }
+
+                // Count occurrences of each size
+                const sizeCounts = allSizes.reduce((acc, size) => {
+                    acc[size] = (acc[size] || 0) + 1;
+                    return acc;
+                }, {}); // e.g., {"38": 1, "39": 2, "40": 1}
+
+                // Convert to the options array structure
+                options = Object.keys(sizeCounts).map(size => {
+                    return {
+                        size: size,
+                        stock: sizeCounts[size]
+                    };
+                }).sort((a, b) => a.size.localeCompare(b.size, undefined, {numeric: true})); // Sort numerically
+
+            } catch (error) {
+                alert(error.message);
+                return; // Stop submission
+            }
+
+            const itemData = {
+                brand: shoeBrand.value,
+                model: shoeModel.value,
+                color: shoeColor.value,
+                originalPrice: parseFloat(shoeOriginalPrice.value),
+                minPrice: parseFloat(shoeMinPrice.value) || 0,
+                price: parseFloat(shoePrice.value),
+                code: shoeCode.value,
+                type: 'shoes',
+                options: options,
+            };
+
+            // Handle image processing
+            const fileInput = shoeImageFile.files[0];
+            const urlInput = shoeImageUrl.value.trim();
+            let imageSource = null;
+
+            if (!editingItemId) { // Only process new images when adding
+                 try {
+                    if (fileInput) {
+                        imageSource = fileInput;
+                    } else if (urlInput) {
+                        imageSource = urlInput;
+                    }
+
+                    if (imageSource) {
+                        // Show loading indicator (e.g., disable save button)
+                        addShoeForm.querySelector('button[type="submit"]').disabled = true;
+                        addShoeForm.querySelector('button[type="submit"]').textContent = 'Saving...';
+                        
+                        itemData.image = await compressAndEncodeImage(imageSource);
+                        
+                    } else {
+                         itemData.image = 'https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/e8513746-6820-4bba-9260-b0f38c8939ad.png'; // Default
+                    }
+                 } catch (error) {
+                    console.error('Image compression failed:', error);
+                    alert(`Failed to process image: ${error.message}. Please try another image or URL.`);
+                    // Re-enable button
+                    addShoeForm.querySelector('button[type="submit"]').disabled = false;
+                    addShoeForm.querySelector('button[type="submit"]').textContent = 'Save';
+                    return; // Stop submission
+                 }
+            }
+
+
+            if (editingItemId) {
+                // Update existing item
+                const index = inventory.findIndex(i => i.id === editingItemId);
+                // Preserve original image
+                itemData.image = inventory[index].image; 
+                inventory[index] = { ...inventory[index], ...itemData };
+            } else {
+                // Add new item
+                itemData.id = generateId('s');
+                inventory.push(itemData);
+            }
+
+            saveState();
+            renderInventory();
+            closeAddShoeModal();
+            
+            // Reset button text
+            addShoeForm.querySelector('button[type="submit"]').disabled = false;
+            addShoeForm.querySelector('button[type="submit"]').textContent = 'Save';
+        });
+
+        // --- Add/Edit Bag Modal ---
+        const openAddBagModal = (id = null) => {
+            editingItemId = id;
+            addBagForm.reset();
+            resetImagePreview(bagImageFile, bagImageUrl, bagImagePreview);
+
+            const isEditing = id !== null;
+            bagImageFile.disabled = isEditing;
+            bagImageUrl.disabled = isEditing;
+            bagImageNote.textContent = isEditing ? 'Image cannot be changed during edit' : 'editable when adding only';
+            
+            bagCode.disabled = isEditing; // Disable code editing
+            
+            // For bags, we map the single stock/color to the "options" model
+            if (isEditing) {
+                const item = inventory.find(i => i.id === id);
+                bagBrand.value = item.brand;
+                bagModel.value = item.model;
+                bagOriginalPrice.value = item.originalPrice;
+                bagMinPrice.value = item.minPrice;
+                bagPrice.value = item.price;
+                bagCode.value = item.code;
+                // Bag-specific fields
+                bagColor.value = item.options[0]?.color || item.color || ''; // Handle old/new data
+                bagStock.value = item.options[0]?.stock || 0;
+                if (item.image) {
+                    bagImagePreview.src = item.image;
+                    bagImagePreview.classList.remove('hidden');
+                }
+            }
+            
+            addBagModal.classList.remove('hidden');
+        };
+
+        const closeAddBagModal = () => {
+            addBagModal.classList.add('hidden');
+            editingItemId = null;
+        };
+
+        addBagBtn.addEventListener('click', () => openAddBagModal());
+        closeBagModalBtn.addEventListener('click', closeAddBagModal);
+        cancelBagBtn.addEventListener('click', closeAddBagModal);
+
+        addBagForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const code = bagCode.value;
+            if (!editingItemId && inventory.some(i => i.code === code)) {
+                alert('Error: Item code already exists.');
+                return;
+            }
+
+            const itemData = {
+                brand: bagBrand.value,
+                model: bagModel.value,
+                color: bagColor.value, // Store base color for filtering
+                originalPrice: parseFloat(bagOriginalPrice.value),
+                minPrice: parseFloat(bagMinPrice.value) || 0,
+                price: parseFloat(bagPrice.value),
+                code: bagCode.value,
+                type: 'bags',
+                options: [
+                    {
+                        color: bagColor.value,
+                        stock: parseInt(bagStock.value, 10)
+                    }
+                ],
+            };
+            
+            // Handle image processing
+            const fileInput = bagImageFile.files[0];
+            const urlInput = bagImageUrl.value.trim();
+            let imageSource = null;
+
+            if (!editingItemId) { // Only process new images when adding
+                 try {
+                    if (fileInput) {
+                        imageSource = fileInput;
+                    } else if (urlInput) {
+                        imageSource = urlInput;
+                    }
+
+                    if (imageSource) {
+                        // Show loading indicator
+                        addBagForm.querySelector('button[type="submit"]').disabled = true;
+                        addBagForm.querySelector('button[type="submit"]').textContent = 'Saving...';
+                        
+                        itemData.image = await compressAndEncodeImage(imageSource);
+
+                    } else {
+                         itemData.image = 'https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/e8513746-6820-4bba-9260-b0f38c8939ad.png'; // Default
+                    }
+                 } catch (error) {
+                    console.error('Image compression failed:', error);
+                    alert(`Failed to process image: ${error.message}. Please try another image or URL.`);
+                    // Re-enable button
+                    addBagForm.querySelector('button[type="submit"]').disabled = false;
+                    addBagForm.querySelector('button[type="submit"]').textContent = 'Save';
+                    return; // Stop submission
+                 }
+            }
+
+
+            if (editingItemId) {
+                // Update existing item
+                const index = inventory.findIndex(i => i.id === editingItemId);
+                 // Preserve original image
+                itemData.image = inventory[index].image;
+                inventory[index] = { ...inventory[index], ...itemData };
+            } else {
+                // Add new item
+                itemData.id = generateId('b');
+                inventory.push(itemData);
+            }
+
+            saveState();
+            renderInventory();
+            closeAddBagModal();
+            
+            // Reset button text
+            addBagForm.querySelector('button[type="submit"]').disabled = false;
+            addBagForm.querySelector('button[type="submit"]').textContent = 'Save';
+        });
+
+        // --- Add to Cart Modal ---
+        const openAddToCartModal = (id) => {
+            const item = inventory.find(i => i.id === id);
+            if (!item) return;
+
+            addToCartForm.dataset.itemId = id;
+            addToCartTitle.textContent = `Add ${item.brand} ${item.model}`;
+            cartQuantity.value = 1;
+            sizeColorOptions.innerHTML = ''; // Clear previous options
+
+            if (item.type === 'shoes') {
+                // Shoes: Create radio buttons for available sizes
+                sizeColorOptions.innerHTML = '<label class="block text-xs font-medium text-gray-700 mb-1">Select Size:</label>';
+                const sizeList = document.createElement('div');
+                sizeList.className = 'flex flex-wrap gap-2 max-h-32 overflow-y-auto'; // Scrollable
+                
+                let firstAvailable = true;
+                item.options.forEach(opt => {
+                    const hasStock = opt.stock > 0;
+                    const label = document.createElement('label');
+                    label.className = `cursor-pointer px-2.5 py-1.5 border rounded-md text-xs ${hasStock ? 'hover:bg-gray-100' : 'opacity-50 line-through'}`;
+                    label.innerHTML = `
+                        <input type="radio" name="size-option" value="${opt.size}" class="sr-only" ${hasStock ? '' : 'disabled'} ${firstAvailable && hasStock ? 'checked' : ''}>
+                        <span>${opt.size} (Stock: ${opt.stock})</span>
+                    `;
+                    sizeList.appendChild(label);
+                    
+                    // Style checked state
+                    label.querySelector('input').addEventListener('change', () => {
+                         sizeList.querySelectorAll('label').forEach(l => l.classList.remove('bg-indigo-100', 'border-indigo-400'));
+                         if(label.querySelector('input').checked) {
+                             label.classList.add('bg-indigo-100', 'border-indigo-400');
+                         }
+                    });
+                    
+                    if(firstAvailable && hasStock) {
+                        label.classList.add('bg-indigo-100', 'border-indigo-400');
+                        firstAvailable = false;
+                    }
+                });
+                sizeColorOptions.appendChild(sizeList);
+            } else {
+                // Bags: Just show stock
+                const stock = item.options[0].stock;
+                sizeColorOptions.innerHTML = `<p class="text-xs text-gray-600">Color: ${item.options[0].color} (Stock: ${stock})</p>`;
+                cartQuantity.max = stock; // Set max quantity for bags
+            }
+
+            addToCartModal.classList.remove('hidden');
+        };
+
+        const closeAddToCartModal = () => {
+            addToCartModal.classList.add('hidden');
+        };
+
+        closeCartModalBtn.addEventListener('click', closeAddToCartModal);
+        cancelAddToCartBtn.addEventListener('click', closeAddToCartModal);
+
+        addToCartForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const id = e.target.dataset.itemId;
+            const item = inventory.find(i => i.id === id);
+            const quantity = parseInt(cartQuantity.value, 10);
+            let selectedOption = null; // For shoes
+            let optionIdentifier = item.options[0].color; // For bags
+
+            if (item.type === 'shoes') {
+                const selectedSizeInput = document.querySelector('input[name="size-option"]:checked');
+                if (!selectedSizeInput) {
+                    alert('Please select a size.');
+                    return;
+                }
+                const selectedSize = selectedSizeInput.value;
+                selectedOption = item.options.find(o => o.size === selectedSize);
+                optionIdentifier = selectedSize; // Use size to identify shoe option
+                
+                if (quantity > selectedOption.stock) {
+                    alert(`Only ${selectedOption.stock} in stock for size ${selectedSize}.`);
+                    return;
+                }
+            } else {
+                // Bag
+                if (quantity > item.options[0].stock) {
+                    alert(`Only ${item.options[0].stock} in stock.`);
+                    return;
+                }
+            }
+            
+            // Check if item (with specific option) is already in cart
+            const cartIdentifier = `${item.id}-${optionIdentifier}`;
+            const existingCartItem = cart.find(ci => ci.cartIdentifier === cartIdentifier);
+            
+            if (existingCartItem) {
+                 // Check stock limit
+                 const newQuantity = existingCartItem.quantity + quantity;
+                 const stockLimit = item.type === 'shoes' ? selectedOption.stock : item.options[0].stock;
+                 if (newQuantity > stockLimit) {
+                     alert(`Cannot add ${quantity} more. Stock limit is ${stockLimit}. You already have ${existingCartItem.quantity} in cart.`);
+                     return;
+                 }
+                 existingCartItem.quantity = newQuantity;
+            } else {
+                cart.push({
+                    cartIdentifier: cartIdentifier, // Unique ID for item-option combo
+                    id: item.id,
+                    brand: item.brand,
+                    model: item.model,
+                    price: item.price,
+                    originalPrice: item.originalPrice,
+                    minPrice: item.minPrice,
+                    image: item.image,
+                    type: item.type,
+                    quantity: quantity,
+                    option: item.type === 'shoes' ? { size: selectedOption.size } : { color: item.options[0].color }
+                });
+            }
+
+            updateCartCount();
+            closeAddToCartModal();
+        });
+
+
+        // --- Cart View ---
+        const updateCartCount = () => {
+            cartCountEl.textContent = cart.reduce((acc, item) => acc + item.quantity, 0);
+        };
+
+        const renderCart = () => {
+            cartItemsList.innerHTML = '';
+            if (cart.length === 0) {
+                cartItemsList.innerHTML = '<p class="text-gray-500 text-center">Your cart is empty.</p>';
+                cartTotalEl.textContent = '0.00';
+                checkoutDiscount.value = 0;
+                return;
+            }
+
+            let total = 0;
+            cart.forEach((item, index) => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                const optionText = item.type === 'shoes' ? `Size: ${item.option.size}` : `Color: ${item.option.color}`;
+
+                const cartItemRow = `
+                    <div class="cart-item-row bg-white rounded-lg shadow-sm p-3 flex items-center gap-3">
+                        <img class="w-12 h-12 object-cover rounded-md" src="${item.image}" alt="${item.brand}" onerror="this.src='https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/e8513746-6820-4bba-9260-b0f38c8939ad.png';">
+                        <div class="flex-grow">
+                            <p class="text-sm font-semibold">${item.brand} ${item.model}</p>
+                            <p class="text-xs text-gray-500">${optionText}</p>
+                            <p class="text-xs text-gray-500">$${item.price.toFixed(2)} x ${item.quantity}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-sm font-bold text-gray-900">$${itemTotal.toFixed(2)}</p>
+                            <button class="text-red-600 hover:text-red-800 text-xs mt-1" data-cart-id="${item.cartIdentifier}">Remove</button>
+                        </div>
+                    </div>
+                `;
+                cartItemsList.innerHTML += cartItemRow;
+            });
+
+            // Recalculate total with discount
+            calculateCartTotal();
+
+            // Add remove listeners
+            document.querySelectorAll('.cart-item-row button').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const cartId = e.target.dataset.cartId;
+                    cart = cart.filter(item => item.cartIdentifier !== cartId);
+                    updateCartCount();
+                    renderCart(); // Re-render the cart view
+                });
+            });
+        };
+
+        const calculateCartTotal = () => {
+             let subtotal = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+             let discountPercent = parseFloat(checkoutDiscount.value) || 0;
+             if (discountPercent < 0) discountPercent = 0;
+             if (discountPercent > 100) discountPercent = 100;
+             
+             const discountAmount = (subtotal * discountPercent) / 100;
+             const finalTotal = subtotal - discountAmount;
+             
+             cartTotalEl.textContent = finalTotal.toFixed(2);
+             
+             // Check against minPrice
+             let belowMinPrice = false;
+             cart.forEach(cartItem => {
+                 const itemMinPrice = cartItem.minPrice || 0;
+                 const discountedPrice = cartItem.price * (1 - (discountPercent / 100));
+                 if (discountedPrice < itemMinPrice) {
+                     belowMinPrice = true;
+                 }
+             });
+             
+             if(belowMinPrice) {
+                 cartTotalEl.classList.add('text-red-600');
+                 cartTotalEl.title = 'Warning: Discount makes one or more items fall below minimum price.';
+             } else {
+                 cartTotalEl.classList.remove('text-red-600');
+                 cartTotalEl.title = '';
+             }
+             
+             return finalTotal;
+        };
+
+        checkoutDiscount.addEventListener('input', calculateCartTotal);
+
+        checkoutBtn.addEventListener('click', () => {
+            if (cart.length === 0) {
+                alert('Your cart is empty.');
+                return;
+            }
+
+            // Final check for minPrice
+            const discountPercent = parseFloat(checkoutDiscount.value) || 0;
+            let belowMinPriceItems = [];
+             cart.forEach(cartItem => {
+                 const itemMinPrice = cartItem.minPrice || 0;
+                 const discountedPrice = cartItem.price * (1 - (discountPercent / 100));
+                 
+                 // Use a small tolerance for floating point issues
+                 if (discountedPrice < (itemMinPrice - 0.001)) { 
+                     belowMinPriceItems.push(`${cartItem.brand} ${cartItem.model} (Min: $${itemMinPrice.toFixed(2)}, Sale: $${discountedPrice.toFixed(2)})`);
+                 }
+             });
+             
+             if(belowMinPriceItems.length > 0) {
+                 alert(`Cannot checkout: The current discount makes the following items fall below their minimum price:\n\n${belowMinPriceItems.join('\n')}`);
+                 return;
+             }
+
+            const finalTotal = calculateCartTotal();
+            const selectedPaymentMethod = paymentMethod.value;
+
+            // 1. Update stock in inventory
+            cart.forEach(cartItem => {
+                const inventoryItem = inventory.find(i => i.id === cartItem.id);
+                if (inventoryItem) {
+                    let optionToUpdate;
+                    if (inventoryItem.type === 'shoes') {
+                        optionToUpdate = inventoryItem.options.find(o => o.size === cartItem.option.size);
+                    } else {
+                        optionToUpdate = inventoryItem.options[0]; // Bags only have one option
+                    }
+
+                    if (optionToUpdate) {
+                        optionToUpdate.stock -= cartItem.quantity;
+                        if (optionToUpdate.stock < 0) {
+                            console.error(`Oversold item: ${inventoryItem.code}`);
+                            optionToUpdate.stock = 0; // Correct stock
+                        }
+                    }
+                }
+            });
+
+            // 2. Add to sales history
+            const saleRecord = {
+                id: generateId('sale'),
+                date: new Date().toISOString(),
+                items: cart.map(item => ({
+                    ...item // Copy cart item details
+                })),
+                total: finalTotal,
+                discountPercent: discountPercent,
+                paymentMethod: selectedPaymentMethod
+            };
+            salesHistory.push(saleRecord);
+
+            // 3. Save state
+            saveState();
+
+            // 4. Clear cart
+            cart = [];
+            updateCartCount();
+
+            // 5. Show success and switch view
+            alert(`Checkout successful! Total: $${finalTotal.toFixed(2)}`);
+            renderInventory(); // Re-render inventory to show updated stock
+            showView(inventoryView);
+        });
+
+        // --- View Switching ---
+        viewCartBtn.addEventListener('click', () => {
+            renderCart();
+            showView(cartView);
+        });
+
+        salesHistoryBtn.addEventListener('click', () => {
+            renderSalesHistory();
+            showView(salesHistoryView);
+        });
+
+        backToInventoryBtn.addEventListener('click', () => showView(inventoryView));
+        backToInventoryFromHistoryBtn.addEventListener('click', () => showView(inventoryView));
+
+
+        // --- Sales History ---
+        const renderSalesHistory = () => {
+            salesHistoryTableBody.innerHTML = '';
+            
+            const filterDate = filterSalesDate.value;
+            let dailyTotal = 0;
+            let monthlyTotal = 0;
+            const now = new Date();
+            const currentMonth = now.toISOString().slice(0, 7); // "YYYY-MM"
+
+            let totalSales = 0;
+            let totalProfit = 0;
+
+            const filteredSales = salesHistory
+                .filter(sale => {
+                    if (!filterDate) return true;
+                    return sale.date.startsWith(filterDate);
+                })
+                .sort((a, b) => new Date(b.date) - new Date(a.date)); // Newest first
+
+            if (filteredSales.length === 0) {
+                 salesHistoryTableBody.innerHTML = '<tr><td colspan="4" class="text-center p-3 text-gray-500">No sales found for this date.</td></tr>';
+            }
+
+            filteredSales.forEach(sale => {
+                const saleDate = new Date(sale.date);
+                const itemsHtml = sale.items.map(item =>
+                    `<div class="flex items-center">
+                       <img src="${item.image}" class="sales-history-item-image" alt="" onerror="this.src='https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/e8513746-6820-4bba-9260-b0f38c8939ad.png';">
+                       <span>${item.quantity} x ${item.brand} ${item.model} ${item.type === 'shoes' ? `(Size ${item.option.size})` : ''}</span>
+                     </div>`
+                ).join('');
+
+                const row = `
+                    <tr>
+                        <td class="px-3 py-1.5 align-top">${saleDate.toLocaleString()}</td>
+                        <td class="px-3 py-1.5 align-top">${itemsHtml}</td>
+                        <td class="px-3 py-1.5 align-top">${sale.paymentMethod || 'N/A'}</td>
+                        <td class="px-3 py-1.5 align-top text-right">$${sale.total.toFixed(2)} ${sale.discountPercent > 0 ? `(${sale.discountPercent}% off)` : ''}</td>
+                    </tr>
+                `;
+                salesHistoryTableBody.innerHTML += row;
+
+                // Calculate totals for the *filtered* date
+                if (filterDate) {
+                     dailyTotal += sale.total;
+                }
+            });
+            
+            // Calculate monthly and summary totals regardless of date filter
+             salesHistory.forEach(sale => {
+                 totalSales += sale.total;
+                 sale.items.forEach(item => {
+                     const profitPerItem = item.price - (item.originalPrice || item.price);
+                     totalProfit += (profitPerItem * item.quantity);
+                 });
+                 
+                 if (sale.date.startsWith(currentMonth)) {
+                     monthlyTotal += sale.total;
+                 }
+             });
+
+            salesSummaryEl.textContent = `Total Sales: $${totalSales.toFixed(2)} | Total Profit: $${totalProfit.toFixed(2)}`;
+            monthlyTotalEl.textContent = filterDate ? `Total for ${currentMonth}: $${monthlyTotal.toFixed(2)}` : `This Month's Total: $${monthlyTotal.toFixed(2)}`;
+            dailyTotalEl.textContent = filterDate ? `Total for ${filterDate}: $${dailyTotal.toFixed(2)}` : '';
+            dailyTotalEl.classList.toggle('hidden', !filterDate);
+        };
+        
+        filterSalesDate.addEventListener('input', renderSalesHistory);
+        clearSalesDate.addEventListener('click', () => {
+             filterSalesDate.value = '';
+             renderSalesHistory();
+        });
+
+
+        // --- Initial Load ---
+        checkLogin();
     });
-  }
-
-  if (filterToggler && filterControls) {
-    filterToggler.addEventListener('click', () => {
-      filterControls.classList.toggle('active');
-    });
-  }
-
-  // ---------- Auth ----------
-  loginForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const u = document.getElementById('username').value.trim();
-    const p = document.getElementById('password').value.trim();
-    if (!u || !p) return alert('Enter username and password');
-    const data = normalizeData(await getData());
-    if (!data) return;
-
-    const account = (data.admins || []).find(a => a.username === u && a.password === p);
-    if (account) {
-      currentUser = { username: u, role: account.role };
-      localStorage.setItem('currentUser', JSON.stringify(currentUser));
-      currentData = data;
-      showInventory();
-      applyRoleRestrictions();
-    } else {
-      alert('Invalid username or password.');
-    }
-  });
-
-  logoutBtn.addEventListener('click', () => {
-    currentUser = null;
-    localStorage.removeItem('currentUser');
-    showView('login-view');
-    checkAdminAccountExists();
-  });
-
-  registerBtn.addEventListener('click', () => {
-    registerModal.classList.remove('hidden');
-    registerForm.reset();
-  });
-  cancelRegister.addEventListener('click', () => registerModal.classList.add('hidden'));
-
-  registerForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const newUsername = document.getElementById('new-username').value.trim();
-    const newPassword = document.getElementById('new-password').value.trim();
-    if (!newUsername || !newPassword) return alert('Enter both username and password.');
-
-    const data = normalizeData(await getData());
-    if (!data) return;
-    if ((data.admins || []).some(a => a.username === newUsername)) return alert('Username already exists.');
-
-    data.admins.push({ username: newUsername, password: newPassword, role: 'admin' });
-    if (await putData(data)) {
-      alert('Admin account created!');
-      registerModal.classList.add('hidden');
-      checkAdminAccountExists();
-    }
-  });
-
-  createLimitedAccountBtn.addEventListener('click', () => {
-    if (currentUser?.role !== 'admin') return alert('No permission.');
-    createLimitedModal.classList.remove('hidden');
-    createLimitedForm.reset();
-  });
-  cancelLimitedCreation.addEventListener('click', () => createLimitedModal.classList.add('hidden'));
-  createLimitedForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    if (currentUser?.role !== 'admin') return alert('No permission.');
-    const u = document.getElementById('limited-username').value.trim();
-    const p = document.getElementById('limited-password').value.trim();
-    if (!u || !p) return alert('Enter both username and password.');
-
-    const data = normalizeData(await getData());
-    if (!data) return;
-    if ((data.admins || []).some(a => a.username === u)) return alert('Username exists.');
-    data.admins.push({ username: u, password: p, role: 'viewer' });
-    if (await putData(data)) {
-      alert('Limited account created.');
-      createLimitedModal.classList.add('hidden');
-    }
-  });
-
-  createAdminAccountBtn.addEventListener('click', () => {
-    if (currentUser?.role !== 'admin') return alert('No permission.');
-    createAdminModal.classList.remove('hidden');
-    createAdminForm.reset();
-  });
-  cancelAdminCreation.addEventListener('click', () => createAdminModal.classList.add('hidden'));
-  createAdminForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    if (currentUser?.role !== 'admin') return alert('No permission.');
-    const u = document.getElementById('admin-username').value.trim();
-    const p = document.getElementById('admin-password').value.trim();
-    if (!u || !p) return alert('Enter both username and password.');
-
-    const data = normalizeData(await getData());
-    if (!data) return;
-    if ((data.admins || []).some(a => a.username === u)) return alert('Username exists.');
-    data.admins.push({ username: u, password: p, role: 'admin' });
-    if (await putData(data)) {
-      alert('New admin account created.');
-      createAdminModal.classList.add('hidden');
-    }
-  });
-
-  async function checkAdminAccountExists() {
-    const data = normalizeData(await getData());
-    const exists = (data.admins || []).some(a => a.role === 'admin');
-    if (exists) registerBtn.classList.add('hidden'); else registerBtn.classList.remove('hidden');
-  }
-  checkAdminAccountExists();
-
-  // ---------- Inventory Rendering & Filters ----------
-  function buildInventoryArray(data) {
-    const shoes = (data.inventory?.shoes || []).map(s => ({...s, _type: 'shoes'}));
-    const bags  = (data.inventory?.bags  || []).map(b => ({...b,  _type: 'bags'}));
-    return [...shoes, ...bags];
-  }
-
-  function applyFilters(items) {
-    let out = items.slice();
-    const t = filterType.value;
-    const b = filterBrand.value.toLowerCase();
-    const c = filterColor.value.toLowerCase();
-    const minP = parseFloat(filterMinPrice.value || ""); // NaN if empty
-    const maxP = parseFloat(filterMaxPrice.value || "");
-    const code = filterCode.value.trim().toLowerCase();
-
-    if (t) out = out.filter(i => i._type === t);
-    if (b) out = out.filter(i => (i.brand || "").toLowerCase() === b);
-    if (c) out = out.filter(i => (i.color || "").toLowerCase() === c);
-    if (!isNaN(minP)) out = out.filter(i => Number(i.price) >= minP);
-    if (!isNaN(maxP)) out = out.filter(i => Number(i.price) <= maxP);
-    if (code) out = out.filter(i => (i.code || "").toLowerCase().includes(code));
-    return out;
-  }
-
-  function refreshFilterOptions(items) {
-    const brands = Array.from(new Set(items.map(i => (i.brand || "").trim()).filter(Boolean))).sort();
-    const colors = Array.from(new Set(items.map(i => (i.color || "").trim()).filter(Boolean))).sort();
-    // Rebuild selects (keep "All" first option)
-    filterBrand.innerHTML = '<option value="">All</option>' + brands.map(v => `<option value="${v}">${v}</option>`).join("");
-    filterColor.innerHTML = '<option value="">All</option>' + colors.map(v => `<option value="${v}">${v}</option>`).join("");
-  }
-
-  function renderInventory(data) {
-    const all = buildInventoryArray(data);
-    refreshFilterOptions(all);
-    const filtered = applyFilters(all);
-    inventoryList.innerHTML = "";
-    if (!filtered.length) {
-      inventoryList.innerHTML = '<p class="text-gray-500">No products found.</p>';
-      return;
-    }
-    filtered.forEach(item => {
-      const card = document.createElement('div');
-      card.className = "product-card bg-white rounded-lg shadow-sm flex flex-col";
-      const img = item.image || (item._type === "shoes" ? shoeImgPreview?.src : bagImgPreview?.src);
-      const qty = item._type === "shoes"
-        ? Object.values(item.sizesStock || {}).reduce((a,b)=>a+Number(b||0),0)
-        : Number(item.quantity || 0);
-
-      card.innerHTML = `
-        <img src="${img || ''}" alt="product" class="w-full object-cover rounded-md mb-2 ${img ? '' : 'bg-gray-100'}">
-        <div class="flex-1">
-          <div class="flex justify-between items-start">
-            <h4 class="font-medium">${item.brand || ''} ${item.model || ''}</h4>
-            <span class="text-2xs text-gray-500">${item.code || ''}</span>
-          </div>
-          <p class="text-xs text-gray-600 capitalize">${item._type.slice(0,-1)} • ${item.color || ''}</p>
-          <div class="mt-1 text-xs text-gray-500">Stock: ${qty}</div>
-          <div class="mt-1 font-bold text-sm">$${money(item.price)}</div>
-        </div>
-        <div class="mt-2 flex gap-2">
-          <button class="add-to-cart-btn bg-indigo-600 hover:bg-indigo-700 text-white px-2 py-1 rounded-md text-xs flex-1">Add to Cart</button>
-          ${currentUser?.role === 'admin' ? `
-            <button class="edit-item-btn border border-gray-300 rounded-md px-2 py-1 text-xs">Edit</button>
-            <button class="delete-item-btn bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded-md text-xs">Delete</button>
-          ` : ''}
-        </div>
-      `;
-
-      // Add to cart
-      const addBtn = card.querySelector('.add-to-cart-btn');
-      addBtn.addEventListener('click', () => openAddToCart(item));
-
-      // Edit button
-      const editBtn = card.querySelector('.edit-item-btn');
-      if (editBtn) editBtn.addEventListener('click', () => {
-        if (item._type === 'shoes') {
-          openShoeModalForEdit(item);
-        } else {
-          openBagModalForEdit(item);
-        }
-      });
-
-      // Delete button
-      const deleteBtn = card.querySelector('.delete-item-btn');
-      if (deleteBtn) deleteBtn.addEventListener('click', () => {
-        deleteItem(item._type, item.id);
-      });
-
-      inventoryList.appendChild(card);
-    });
-  }
-
-  async function showInventory() {
-    currentData = normalizeData(await getData());
-    if (!currentData) return;
-    showView('inventory-view');
-    renderInventory(currentData);
-  }
-
-  [filterType, filterBrand, filterColor, filterMinPrice, filterMaxPrice, filterCode].forEach(el => {
-    el.addEventListener('input', () => renderInventory(currentData || {inventory:{shoes:[],bags:[]}}));
-  });
-  resetFiltersBtn.addEventListener('click', () => {
-    filterType.value = "";
-    filterBrand.value = "";
-    filterColor.value = "";
-    filterMinPrice.value = "";
-    filterMaxPrice.value = "";
-    filterCode.value = "";
-    renderInventory(currentData || {inventory:{shoes:[],bags:[]}});
-  });
-
-  // ---------- Add / Edit Items ----------
-  function openShoeModalForEdit(item) {
-    // Populate fields
-    shoeBrand.value = item.brand || "";
-    shoeModel.value = item.model || "";
-    shoeColor.value = item.color || "";
-    shoeOriginalPrice.value = item.originalPrice || "";
-    shoeMinPrice.value = item.minPrice || "";
-    shoePrice.value = item.price || "";
-    shoeCode.value = item.code || "";
-    // compute per-size qty assumption: sizesStock map
-    const sizes = Object.keys(item.sizesStock || {});
-    shoeSizes.value = sizes.join(',');
-    // shoeQuantity removed, stock comes from duplicate sizes
-
-    shoeImgPreview.src = item.image || "";
-    if (shoeImgPreview.src) shoeImgPreview.classList.remove('hidden'); else shoeImgPreview.classList.add('hidden');
-    shoeImgFile.value = ''; // Clear file input
-    shoeImgUrl.value = item.image || ''; // Set URL input
-
-    // Hide the "editable when adding only" note and disable image inputs for editing
-    shoeImageNote.classList.add('hidden');
-    shoeImgFile.disabled = true;
-    shoeImgUrl.disabled = true;
-
-
-    addShoeForm.dataset.editId = item.id;
-    addShoeModal.classList.remove('hidden');
-  }
-
-  function openBagModalForEdit(item) {
-    bagBrand.value = item.brand || "";
-    bagModel.value = item.model || "";
-    bagColor.value = item.color || "";
-    bagOriginalPrice.value = item.originalPrice || "";
-    bagMinPrice.value = item.minPrice || "";
-    bagPrice.value = item.price || "";
-    bagQuantity.value = item.quantity || "";
-    bagCode.value = item.code || "";
-    bagImgPreview.src = item.image || "";
-    if (bagImgPreview.src) bagImgPreview.classList.remove('hidden'); else bagImgPreview.classList.add('hidden');
-    bagImgFile.value = ''; // Clear file input
-    bagImgUrl.value = item.image || ''; // Set URL input
-
-    // Hide the "editable when adding only" note and disable image inputs for editing
-    bagImageNote.classList.add('hidden');
-    bagImgFile.disabled = true;
-    bagImgUrl.disabled = true;
-
-    addBagForm.dataset.editId = item.id;
-    addBagModal.classList.remove('hidden');
-  }
-
-  addShoeBtn.addEventListener('click', () => {
-    if (currentUser?.role !== 'admin') return alert('Only admins can add items.');
-    addShoeForm.reset();
-    delete addShoeForm.dataset.editId;
-    shoeImgPreview.classList.add('hidden');
-    shoeImgFile.value = ''; // Clear file input
-    shoeImgUrl.value = ''; // Clear URL input
-    shoeImageNote.classList.remove('hidden'); // Show note for adding
-    shoeImgFile.disabled = false; // Enable inputs for adding
-    shoeImgUrl.disabled = false;
-    addShoeModal.classList.remove('hidden');
-  });
-  addBagBtn.addEventListener('click', () => {
-    if (currentUser?.role !== 'admin') return alert('Only admins can add items.');
-    addBagForm.reset();
-    delete addBagForm.dataset.editId;
-    bagImgPreview.classList.add('hidden');
-    bagImgFile.value = ''; // Clear file input
-    bagImgUrl.value = ''; // Clear URL input
-    bagImageNote.classList.remove('hidden'); // Show note for adding
-    bagImgFile.disabled = false; // Enable inputs for adding
-    bagImgUrl.disabled = false;
-    addBagModal.classList.remove('hidden');
-  });
-  [closeShoeModal, cancelShoeBtn].forEach(btn => btn.addEventListener('click', () => addShoeModal.classList.add('hidden')));
-  [closeBagModal, cancelBagBtn].forEach(btn => btn.addEventListener('click', () => addBagModal.classList.add('hidden')));
-
-  // live previews
-  shoeImgFile.addEventListener('change', async () => {
-    if (shoeImgFile.files && shoeImgFile.files[0]) {
-      shoeImgPreview.src = await compressAndEncodeImage(shoeImgFile.files[0]);
-      shoeImgPreview.classList.remove('hidden');
-      shoeImgUrl.value = ''; // Clear URL input if file is selected
-    }
-  });
-  shoeImgUrl.addEventListener('input', async () => {
-    if (shoeImgUrl.value.trim()) {
-      shoeImgPreview.src = await compressAndEncodeImage(shoeImgUrl.value.trim());
-      shoeImgPreview.classList.remove('hidden');
-      shoeImgFile.value = ''; // Clear file input if URL is entered
-    }
-  });
-  bagImgFile.addEventListener('change', async () => {
-    if (bagImgFile.files && bagImgFile.files[0]) {
-      bagImgPreview.src = await compressAndEncodeImage(bagImgFile.files[0]);
-      bagImgPreview.classList.remove('hidden');
-      bagImgUrl.value = ''; // Clear URL input if file is selected
-    }
-  });
-  bagImgUrl.addEventListener('input', async () => {
-    if (bagImgUrl.value.trim()) {
-      bagImgPreview.src = await compressAndEncodeImage(bagImgUrl.value.trim());
-      bagImgPreview.classList.remove('hidden');
-      bagImgFile.value = ''; // Clear file input if URL is entered
-    }
-  });
-
-  addShoeForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    if (currentUser?.role !== 'admin') return alert('Only admins can add items.');
-    const img = shoeImgPreview && !shoeImgPreview.classList.contains('hidden') ? shoeImgPreview.src : (shoeImgUrl.value.trim() || '');
-
-    const sizesArr = shoeSizes.value.split(',').map(s => s.trim()).filter(Boolean);
-const sizesStock = {};
-sizesArr.forEach(s => {
-  sizesStock[s] = (sizesStock[s] || 0) + 1; // count duplicates
-});
-
-    const newItem = {
-      id: addShoeForm.dataset.editId || uid(),
-      brand: shoeBrand.value.trim(),
-      model: shoeModel.value.trim(),
-      color: shoeColor.value.trim(),
-      originalPrice: Number(shoeOriginalPrice.value || 0),
-      minPrice: Number(shoeMinPrice.value || 0),
-      price: Number(shoePrice.value || 0),
-      code: shoeCode.value.trim(),
-      sizesStock,
-      image: img
-    };
-
-    const data = normalizeData(await getData());
-    if (!data) return;
-    const idx = data.inventory.shoes.findIndex(x => x.id === newItem.id);
-    if (idx >= 0) data.inventory.shoes[idx] = newItem;
-    else data.inventory.shoes.push(newItem);
-
-    if (await putData(data)) {
-      addShoeModal.classList.add('hidden');
-      currentData = data;
-      renderInventory(currentData);
-    }
-  });
-
-  addBagForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    if (currentUser?.role !== 'admin') return alert('Only admins can add items.');
-    const img = bagImgPreview && !bagImgPreview.classList.contains('hidden') ? bagImgPreview.src : (bagImgUrl.value.trim() || '');
-
-    const newItem = {
-      id: addBagForm.dataset.editId || uid(),
-      brand: bagBrand.value.trim(),
-      model: bagModel.value.trim(),
-      color: bagColor.value.trim(),
-      originalPrice: Number(bagOriginalPrice.value || 0),
-      minPrice: Number(bagMinPrice.value || 0),
-      price: Number(bagPrice.value || 0),
-      quantity: Number(bagQuantity.value || 0),
-      code: bagCode.value.trim(),
-      image: img
-    };
-
-    const data = normalizeData(await getData());
-    if (!data) return;
-    const idx = data.inventory.bags.findIndex(x => x.id === newItem.id);
-    if (idx >= 0) data.inventory.bags[idx] = newItem;
-    else data.inventory.bags.push(newItem);
-
-    if (await putData(data)) {
-      addBagModal.classList.add('hidden');
-      currentData = data;
-      renderInventory(currentData);
-    }
-  });
-
-  // ---------- Delete Item Functionality ----------
-  async function deleteItem(type, id) {
-    if (currentUser?.role !== 'admin') {
-      alert('Only admins can delete items.');
-      return;
-    }
-
-    if (!confirm('Are you sure you want to delete this item? This action cannot be undone.')) {
-      return;
-    }
-
-    const data = normalizeData(await getData());
-    if (!data) return;
-
-    if (type === 'shoes') {
-      data.inventory.shoes = data.inventory.shoes.filter(item => item.id !== id);
-    } else if (type === 'bags') {
-      data.inventory.bags = data.inventory.bags.filter(item => item.id !== id);
-    }
-
-    if (await putData(data)) {
-      alert('Item deleted successfully.');
-      currentData = data;
-      renderInventory(currentData);
-    }
-  }
-
-  
-
-// ---------- Delete Account Feature ----------
-const deleteAccountBtn = document.getElementById('delete-account-btn');
-const deleteAccountModal = document.getElementById('delete-account-modal');
-const deleteAccountForm = document.getElementById('delete-account-form');
-const cancelDelete = document.getElementById('cancel-delete');
-
-deleteAccountBtn.addEventListener('click', () => {
-  if (currentUser?.role !== 'admin') return alert('No permission.');
-  deleteAccountModal.classList.remove('hidden');
-  deleteAccountForm.reset();
-});
-
-cancelDelete.addEventListener('click', () => {
-  deleteAccountModal.classList.add('hidden');
-});
-
-deleteAccountForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const username = document.getElementById('delete-username').value.trim();
-  if (!username) return alert('Enter a username.');
-
-  const data = normalizeData(await getData());
-  if (!data) return;
-  const before = data.admins.length;
-  data.admins = data.admins.filter(acc => acc.username !== username);
-  if (data.admins.length === before) {
-    alert('No account found with that username.');
-    return;
-  }
-  if (await putData(data)) {
-    alert('Account deleted successfully.');
-    deleteAccountModal.classList.add('hidden');
-    currentData = data;
-  }
-});
-
-  // ---------- Add to Cart flow ----------
-  function openAddToCart(item) {
-    selectedItemForCart = item;
-    addToCartModalTitle.textContent = `Add to Cart — ${item.brand || ''} ${item.model || ''}`;
-    sizeColorOptions.innerHTML = "";
-    priceOptions.innerHTML = "";
-
-    // Price radio
-    priceOptionsContainer.classList.remove('hidden');
-    const prices = [item.price];
-    if (item.minPrice) prices.push(item.minPrice);
-    // Removed: if (item.originalPrice) prices.push(item.originalPrice); // Only min sales price or sales price
-    const uniq = Array.from(new Set(prices.map(n => Number(n).toFixed(2)))).map(Number);
-    uniq.sort((a,b)=>a-b);
-    uniq.forEach((p,i) => {
-      const id = `price-choice-${i}`;
-      const div = document.createElement('div');
-      div.innerHTML = `<label class="inline-flex items-center gap-2">
-        <input type="radio" name="priceChoice" value="${p}" ${i===0?'checked':''}>
-        <span>$${money(p)}</span>
-      </label>`;
-      priceOptions.appendChild(div);
-    });
-
-    // Sizes (for shoes) or Quantity for bags
-    if (item._type === 'shoes') {
-      const sizesStock = item.sizesStock || {};
-      Object.keys(sizesStock).forEach((size, idx) => {
-        const inStock = Number(sizesStock[size] || 0);
-        const id = `size-choice-${size}`;
-        const disabled = inStock <= 0 ? 'disabled' : '';
-        const li = document.createElement('div');
-        li.className = "flex items-center justify-between border p-2 rounded-md";
-        li.innerHTML = `
-          <label class="inline-flex items-center gap-2">
-            <input type="radio" name="sizeChoice" value="${size}" ${idx===0 && inStock>0 ? 'checked' : ''} ${disabled}>
-            <span>Size ${size}</span>
-          </label>
-          <span class="text-xs text-gray-500">Stock: ${inStock}</span>
-        `;
-        sizeColorOptions.appendChild(li);
-      });
-      selectedItemStockEl.textContent = `Stock: ${Object.values(sizesStock).reduce((a,b)=>a+Number(b||0),0)}`;
-    } else {
-      const qty = Number(item.quantity || 0);
-      selectedItemStockEl.textContent = `Stock: ${qty}`;
-      const id = "bag-qty-one";
-      const div = document.createElement('div');
-      div.className = "flex items-center justify-between border p-2 rounded-md";
-      div.innerHTML = `
-        <label class="inline-flex items-center gap-2">
-          <input type="radio" name="bagOne" value="1" ${qty>0 ? 'checked' : 'disabled'}>
-          <span>Qty 1</span>
-        </label>
-        <span class="text-xs text-gray-500">Available: ${qty}</span>
-      `;
-      sizeColorOptions.appendChild(div);
-    }
-
-    addToCartModal.classList.remove('hidden');
-  }
-
-  [closeAddToCartModalBtn, cancelAddToCartBtn].forEach(btn => btn.addEventListener('click', () => {
-    addToCartModal.classList.add('hidden');
-    selectedItemForCart = null;
-  }));
-
-  addToCartForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    if (!selectedItemForCart) return;
-
-    const selectedPrice = Number((document.querySelector('input[name="priceChoice"]:checked')?.value) || selectedItemForCart.price);
-    if (selectedItemForCart._type === 'shoes') {
-      const size = document.querySelector('input[name="sizeChoice"]:checked')?.value;
-      if (!size) return alert('Choose a size.');
-      cart.push({
-        type: 'shoes',
-        id: selectedItemForCart.id,
-        brand: selectedItemForCart.brand,
-        model: selectedItemForCart.model,
-        code: selectedItemForCart.code,
-        price: selectedPrice,
-        size,
-        image: selectedItemForCart.image || ''
-      });
-    } else {
-      cart.push({
-        type: 'bags',
-        id: selectedItemForCart.id,
-        brand: selectedItemForCart.brand,
-        model: selectedItemForCart.model,
-        code: selectedItemForCart.code,
-        price: selectedPrice,
-        qty: 1,
-        image: selectedItemForCart.image || ''
-      });
-    }
-    updateCartCount();
-    addToCartModal.classList.add('hidden');
-    selectedItemForCart = null;
-  });
-
-  function updateCartCount() {
-    cartCountEl.textContent = String(cart.length);
-  }
-
-  // ---------- Cart View & Checkout ----------
-  viewCartBtn.addEventListener('click', () => {
-    renderCart();
-    showView('cart-view');
-  });
-  backToInventoryBtn.addEventListener('click', () => showInventory());
-
-  function renderCart() {
-    cartItemsList.innerHTML = "";
-    if (!cart.length) {
-      cartItemsList.innerHTML = '<p class="text-gray-500">Your cart is empty.</p>';
-      cartTotalEl.textContent = "0.00";
-      return;
-    }
-    let total = 0;
-    cart.forEach((item, idx) => {
-      total += Number(item.price) * (item.qty || 1);
-      const row = document.createElement('div');
-      row.className = "bg-white rounded-md shadow-sm p-2 flex items-center gap-2 cart-item-row";
-      row.innerHTML = `
-        <img src="${item.image || ''}" class="object-cover rounded-md ${item.image?'':'bg-gray-100'}" alt="">
-        <div class="flex-1">
-          <div class="flex justify-between">
-            <div class="font-semibold text-sm">${item.brand || ''} ${item.model || ''}</div>
-            <button data-idx="${idx}" class="remove-cart-item text-red-600 text-xs">Remove</button>
-          </div>
-          <div class="text-2xs text-gray-500">${item.code || ''} ${item.size ? '• Size ' + item.size : ''}</div>
-          <div class="mt-0.5 font-bold text-sm">$${money(item.price)}</div>
-        </div>
-      `;
-      cartItemsList.appendChild(row);
-    });
-    cartItemsList.querySelectorAll('.remove-cart-item').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const i = Number(btn.dataset.idx);
-        cart.splice(i, 1);
-        updateCartCount();
-        renderCart();
-      });
-    });
-    const discount = Number(discountInput.value || 0) / 100;
-    const finalTotal = total * (1 - discount);
-    cartTotalEl.textContent = money(finalTotal);
-  }
-
-  discountInput.addEventListener('input', renderCart);
-
-  checkoutBtn.addEventListener('click', async () => {
-    if (!cart.length) return alert('Cart is empty.');
-    const data = normalizeData(await getData());
-    if (!data) return;
-
-    // reduce stock
-    cart.forEach(ci => {
-      if (ci.type === 'shoes') {
-        const idx = data.inventory.shoes.findIndex(x => x.id === ci.id);
-        if (idx >= 0) {
-          const size = ci.size;
-          const cur = Number(data.inventory.shoes[idx].sizesStock?.[size] || 0);
-          if (cur > 0) data.inventory.shoes[idx].sizesStock[size] = cur - 1;
-        }
-      } else {
-        const idx = data.inventory.bags.findIndex(x => x.id === ci.id);
-        if (idx >= 0) {
-          const cur = Number(data.inventory.bags[idx].quantity || 0);
-          if (cur > 0) data.inventory.bags[idx].quantity = cur - 1;
-        }
-      }
-    });
-
-    // create sale record
-    const totalBefore = cart.reduce((a, c) => a + Number(c.price) * (c.qty || 1), 0);
-    const discountPct = Number(discountInput.value || 0);
-    const totalAfter = totalBefore * (1 - discountPct / 100);
-    const sale = {
-      id: uid(),
-      date: new Date().toISOString(),
-      payment: paymentMethod.value,
-      discountPct,
-      totalBefore: Number(totalBefore.toFixed(2)),
-      totalAfter: Number(totalAfter.toFixed(2)),
-      items: cart.map(c => ({
-        type: c.type,
-        id: c.id,
-        code: c.code,
-        size: c.size || null,
-        price: c.price
-      }))
-    };
-    data.sales.push(sale);
-
-    if (await putData(data)) {
-      cart = [];
-      updateCartCount();
-      discountInput.value = "0";
-      renderCart();
-      alert('Checkout successful.');
-      currentData = data;
-      renderInventory(currentData);
-    }
-  });
-
-  // ---------- Sales History ----------
-  salesHistoryBtn.addEventListener('click', async () => {
-    const data = normalizeData(await getData());
-    if (!data) return;
-    currentData = data;
-    renderSales(data.sales);
-    showView('sales-history-view');
-  });
-
-  backToInventoryFromHistory.addEventListener('click', () => showInventory());
-
-  clearSalesDate.addEventListener('click', () => {
-    filterSalesDate.value = "";
-    renderSales((currentData && currentData.sales) || []);
-  });
-
-  function renderSales(sales) {
-    const filterDate = filterSalesDate.value; // YYYY-MM-DD
-    let list = sales.slice().sort((a,b) => new Date(b.date) - new Date(a.date));
-    if (filterDate) {
-      list = list.filter(s => s.date.slice(0,10) === filterDate);
-    }
-
-    // Table rows
-    salesHistoryTable.innerHTML = "";
-    let dailySum = 0;
-    let monthlySum = 0;
-    const todayStr = new Date().toISOString().slice(0,10);
-    const monthStr = todayStr.slice(0,7);
-
-    list.forEach(sale => {
-      const tr = document.createElement('tr');
-      const itemsHtml = sale.items.map(i => {
-        let itemDetails;
-        if (i.type === 'shoes') {
-          itemDetails = currentData.inventory.shoes.find(shoe => shoe.id === i.id);
-        } else {
-          itemDetails = currentData.inventory.bags.find(bag => bag.id === i.id);
-        }
-        const imageUrl = itemDetails?.image || '';
-        const altText = `${i.type === 'shoes' ? 'Shoe' : 'Bag'} ${i.code}`;
-        return `
-          <div class="flex items-center">
-            <img src="${imageUrl}" alt="${altText}" class="sales-history-item-image ${imageUrl ? '' : 'bg-gray-100'}">
-            <span>${i.type === 'shoes' ? 'Shoe' : 'Bag'} ${i.code}${i.size ? ' (size ' + i.size + ')' : ''}</span>
-          </div>
-        `;
-      }).join('');
-
-      tr.innerHTML = `
-        <td class="px-3 py-1.5">${new Date(sale.date).toLocaleString()}</td>
-        <td class="px-3 py-1.5">${itemsHtml}</td>
-        <td class="px-3 py-1.5">${(sale.payment || '').toUpperCase()}</td>
-        <td class="px-3 py-1.5 text-right">${money(sale.totalAfter)}</td>
-      `;
-      salesHistoryTable.appendChild(tr);
-
-      if (sale.date.slice(0,10) === todayStr) dailySum += Number(sale.totalAfter || 0);
-      if (sale.date.slice(0,7) === monthStr) monthlySum += Number(sale.totalAfter || 0);
-    });
-
-    salesSummary.textContent = `Sales records: ${list.length}`;
-    dailyTotal.textContent = `Today's total: $${money(dailySum)}`;
-    monthlyTotal.textContent = `This month's total: $${money(monthlySum)}`;
-  }
-
-  filterSalesDate.addEventListener('input', () => {
-    renderSales((currentData && currentData.sales) || []);
-  });
-
-  // ---------- Initial session ----------
-  const stored = localStorage.getItem('currentUser');
-  if (stored) {
-    try {
-      currentUser = JSON.parse(stored);
-    } catch {}
-  }
-  if (currentUser) {
-    showInventory();
-    applyRoleRestrictions();
-  } else {
-    showView('login-view');
-  }
-});
-
-async function compressAndEncodeImage(input, maxWidth = 200, quality = 0.3) {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.crossOrigin = "anonymous"; // helps with CORS images (only if server allows)
-    img.onload = () => {
-      try {
-        const origW = img.width || 1;
-        const origH = img.height || 1;
-        // only scale down (don't upscale small images)
-        const scale = origW > maxWidth ? (maxWidth / origW) : 1;
-        const width = Math.max(1, Math.round(origW * scale));
-        const height = Math.max(1, Math.round(origH * scale));
-
-        const canvas = document.createElement('canvas');
-        canvas.width = width;
-        canvas.height = height;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, width, height);
-
-        // compress to JPEG and return data URL
-        const compressed = canvas.toDataURL('image/jpeg', quality);
-        resolve(compressed);
-      } catch (err) {
-        reject(err);
-      }
-    };
-
-    img.onerror = () => reject(new Error('Failed to load image (cross-origin or invalid URL/file).'));
-
-    // If input is a File, read as data URL first. Otherwise treat it as a URL string.
-    if (input instanceof File) {
-      const reader = new FileReader();
-      reader.onload = (e) => { img.src = e.target.result; };
-      reader.onerror = () => reject(new Error('FileReader error while reading the file.'));
-      reader.readAsDataURL(input);
-    } else if (typeof input === 'string' && input.trim()) {
-      img.src = input.trim();
-    } else {
-      reject(new Error('Invalid input: expected a File or a URL string.'));
-    }
-  });
-}
-
 </script>
-
-
-<!-- Delete Account Modal -->
-<div id="delete-account-modal" class="hidden fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center p-4 z-50">
-  <div class="bg-white rounded-xl shadow-2xl p-6 w-full max-w-md">
-    <div class="text-center mb-4">
-      <h2 class="modal-title font-bold text-gray-800">Delete Account</h2>
-    </div>
-    <form id="delete-account-form" class="space-y-4">
-      <div>
-        <label for="delete-username" class="block text-sm font-medium text-gray-700 mb-1">Username</label>
-        <input id="delete-username" type="text" required class="w-full border rounded-lg px-3 py-2"/>
-      </div>
-      <div class="flex justify-between pt-4">
-        <button type="button" id="cancel-delete" class="px-3 py-1.5 text-gray-600">Cancel</button>
-        <button type="submit" class="px-3 py-1.5 bg-red-600 text-white rounded-md">Delete</button>
-      </div>
-    </form>
-  </div>
-</div>
-
 </body>
 </html>
